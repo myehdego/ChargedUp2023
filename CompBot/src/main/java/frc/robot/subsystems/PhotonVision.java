@@ -9,6 +9,7 @@ import org.photonvision.PhotonTargetSortMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -43,18 +44,26 @@ public class PhotonVision extends SubsystemBase {
     return 999;
   }
 
-  public Transform2d getTargetPosition() {
+  /** determine the location on the field of the robot
+   * from its orientation relative to a visible April Tag
+   * 
+   * returns a Pose2d 
+   */
+  public Pose2d getTargetPosition() {
     Transform3d campos = target.getBestCameraToTarget();
+    /*
+     * Assume for now the Pitch angle of the camera is zero
     double lxyz = Math.pow(campos.getX(),2.) + 
      Math.pow(campos.getY(),2.) +  
      Math.pow(campos.getZ(),2.);
     double lxy = lxyz * Math.cos(CamConstant.PitchAngle);  // TODO missing a piece
-
-    double x = campos.getX() * lxy;   // TODO finish this
+    */
+    double x = campos.getX();   // TODO finish this
     double y = campos.getY();
     double ang = campos.getRotation().getY();
 
-      return new Transform2d(new Translation2d(x ,y), new Rotation2d(ang));
+
+      return new Pose2d(x ,y, new Rotation2d(ang));
   }
 
   @Override
