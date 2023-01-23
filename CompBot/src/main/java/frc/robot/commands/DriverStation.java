@@ -27,30 +27,37 @@ public class DriverStation extends CommandBase {
     this.driveon = driveon;
   }
 
-  // Called when the command is initially scheduled.
+  /* Assuming robot has driven to the edge of the charging station
+     and is oriented perpendicular to the edge:
+     o set the end pose to be the current pose + the width of the ramp and one apron
+     o drive straight ahead in robot frame
+     o stop after driving to the end pose
+     */
   @Override
   public void initialize() {
     endPose = driveon.getPose() 
     // TODO next line need to be tranform into robot coordinate system
-      .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0), new Rotation2d(0)));
+      .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
+            new Rotation2d(0)));
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // set a drive speed in the robot frame
   @Override
   public void execute() {
-    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(-0.1, 0, 0);
-    SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    ChassisSpeeds chassisSpeeds = 
+          new ChassisSpeeds(-0.1, 0, 0);
+    SwerveModuleState[] moduleStates = 
+          DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
     driveon.setModuleStates(moduleStates);
   }
 
-  // Called once the command ends or is interrupted.
+  // stop the robot.
   @Override
   public void end(boolean interrupted) {
     driveon.stopModules();
-    
   }
 
-  // Returns true when the command should end.
+  // Returns true when the robot has reached the desired end pose.
   @Override
   public boolean isFinished() {
     return driveon.getPose() .equals(endPose);
