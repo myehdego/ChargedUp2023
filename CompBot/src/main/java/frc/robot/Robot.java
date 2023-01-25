@@ -136,6 +136,7 @@ public class Robot extends TimedRobot {
         arm.resetEncoders();
         // }
     }
+
     double smoothedXSpeed = 0.;
     double smoothedYSpeed = 0.;
     double smoothedTurningSpeed = 0.;
@@ -151,17 +152,14 @@ public class Robot extends TimedRobot {
             }
 
 
-SmartDashboard.putNumber("BotA", pigeon.getAngle());
-SmartDashboard.putNumber("BatV", PDP.getVoltage());
+        SmartDashboard.putNumber("BotA", pigeon.getAngle());
+        SmartDashboard.putNumber("BatV", PDP.getVoltage());
 
-SmartDashboard.putNumber("Pitch", pigeon.getPitch());
-SmartDashboard.putNumber("Yaw", pigeon.getYaw());
-SmartDashboard.putNumber("Angle", pigeon.getAngle());
+        SmartDashboard.putNumber("Pitch", pigeon.getPitch());
+        SmartDashboard.putNumber("Yaw", pigeon.getYaw());
+        SmartDashboard.putNumber("Angle", pigeon.getAngle());
 
-
-
-//SmartDashboard.putNumber()
-
+        //SmartDashboard.putNumber()
 
         // CRG use SwerveSubsystem drive methods similar to the SwerveJoysickCmd  {
         // 1. Get real-time joystick inputs
@@ -245,13 +243,13 @@ SmartDashboard.putNumber("Angle", pigeon.getAngle());
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (driverJoytick.getRawButton(1)){
+        if (driverJoytick.getRawButton(1)){  // A Button
             arm.extend();
         }
-        if (driverJoytick.getRawButton(4)){
+        if (driverJoytick.getRawButton(4)){  // Y Button
             arm.retract();
         }
-        if (driverJoytick.getRawButton(2)){
+        if (driverJoytick.getRawButton(2)){  // B Button
             arm.stopExtend();
         }
         

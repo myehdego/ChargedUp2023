@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -153,24 +154,29 @@ public class SwerveSubsystem extends SubsystemBase {
 
 //        SmartDashboard.putString("Gyro: ", String.format("%.3f", gyro.getAngle()));
 
-SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
-SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
-SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
-SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
+        SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
+        SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
+        SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
+        SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
 
-SmartDashboard.putNumber("BotX", odometer.getPoseMeters().getX());
-SmartDashboard.putNumber("BotY", odometer.getPoseMeters().getY());
+        SmartDashboard.putNumber("BotX", odometer.getPoseMeters().getX());
+        SmartDashboard.putNumber("BotY", odometer.getPoseMeters().getY());
 
-SmartDashboard.putNumber("FLPos", frontLeft.getDrivePosition());
-SmartDashboard.putNumber("FRPos", frontRight.getDrivePosition());
-SmartDashboard.putNumber("BLPos", backLeft.getDrivePosition());
-SmartDashboard.putNumber("BRPos", backRight.getDrivePosition());
+        SmartDashboard.putNumber("FLPos", frontLeft.getDrivePosition());
+        SmartDashboard.putNumber("FRPos", frontRight.getDrivePosition());
+        SmartDashboard.putNumber("BLPos", backLeft.getDrivePosition());
+        SmartDashboard.putNumber("BRPos", backRight.getDrivePosition());
 
-SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
-SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
-SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
-SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
+        SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
+        SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
+        SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
+        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
+    }
 
-
-}
+    /** driveMe just stops because it is unimplemented */
+    public CommandBase driveMe(double howfast){
+        return runOnce(
+            () -> stopModules()
+        );
+    }
 }
