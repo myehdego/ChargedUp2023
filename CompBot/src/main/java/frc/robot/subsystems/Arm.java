@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -19,10 +20,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Arm extends SubsystemBase {
   CANSparkMax retractorMotor;
   CANSparkMax raiserMotor;
-  private SparkMaxPIDController m_pidController;
+  private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
   private RelativeEncoder raiserEncoder;
-  public double kP, kD, kI, kFF, kIz, kMinOutput, kMaxOutput, maxRPM, maxVel, maxAcc;  
   
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
    * and retract to have the ability to reach futher up on the shelves and pegs  */
@@ -33,23 +33,8 @@ public class Arm extends SubsystemBase {
     // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
     retractorEncoder = retractorMotor.getEncoder();
     retractorMotor.restoreFactoryDefaults();
+    pidController = retractorMotor.getPIDController();
     // raiserEncoder = raiserMotor.getEncoder();
-
-    // PID coefficients
-    kP = 5e-5;
-    kI = 1e-6;
-    kD = 0.;
-    kIz = 0.;
-    kFF = 0.000156;
-    kMaxOutput = 1.;
-    kMinOutput = -1.;
-    maxRPM = 5700.;
-
-    // Smart Motion Coefficients
-    maxVel = 2000;
-    maxAcc = 1500;
-
-
   }
   
   /* public void raise() {

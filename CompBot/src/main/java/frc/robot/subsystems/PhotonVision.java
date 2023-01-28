@@ -49,8 +49,9 @@ public class PhotonVision extends SubsystemBase {
    * 
    * returns a Pose2d 
    */
-  public Pose2d getTargetPosition() {
+  public Pose2d getRobotPosition() {
     Transform3d campos = target.getBestCameraToTarget();
+    int targetid = getAprTag();
     /*
      * Assume for now the Pitch angle of the camera is zero
     double lxyz = Math.pow(campos.getX(),2.) + 
@@ -76,5 +77,15 @@ public class PhotonVision extends SubsystemBase {
     
   }
 
-
+  static final double taglocations[] [] = {
+    {610.77, 42.19, 18.22},
+    {610.77, 108.19, 18.22},
+    {610.77, 174.19, 18.22},
+    {636.96, 265.74, 27.38},
+    { 14.25, 265.74, 27.38}, 
+    { 40.45, 174.19, 18.22},
+    { 40.45, 108.19, 18.22},
+    { 40.45, 42.19, 18.22}
+    
+  };
 }

@@ -46,8 +46,10 @@ public class Robot extends TimedRobot {
     private Arm arm;
     private WPI_Pigeon2 pigeon;
 
-    private PowerDistribution PDP = new PowerDistribution(1, ModuleType.kCTRE);
-    private AnalogInput pixyCam = new AnalogInput(0);
+    private PowerDistribution PDP;
+    private PowerDistribution PDH;
+    private AnalogInput pixyCam;
+    private AnalogInput systemChooser; // Value of a hard wired constant resistor to determine which robo
 
     // }
 
@@ -61,8 +63,19 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
-
+        systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
+        boolean choice = systemChooser.getValue() == Constants.COMPBOT;
+        if (choice) {
+            PDH = new PowerDistribution(1, ModuleType.kRev);
+        } else {
+            PDP = new PowerDistribution(1, ModuleType.kCTRE);
+        }
+       
+        System.out.println("PDP = " + PDP.getType());
+        // PDH = new PowerDistribution(1, ModuleType.kRev);
+        if (Constants.PIXY_AVAILABLE) pixyCam = new AnalogInput(0);
+        m_robotContainer = new RobotContainer(!choice);
+        // TODO: Get Information about CompBot Swerve Modules
         pigeon = new WPI_Pigeon2(1);
 
     }
@@ -132,8 +145,8 @@ public class Robot extends TimedRobot {
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-        arm = m_robotContainer.getarmSS();
-        arm.resetEncoders();
+        // arm = m_robotContainer.getarmSS();
+        // arm.resetEncoders();
         // }
     }
 
@@ -174,15 +187,17 @@ public class Robot extends TimedRobot {
         //    System.out.println("X: " + String.format("%.3f", xSpeed) 
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
-        if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
-            int err = pixyCam.getAverageValue();
-            SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
-            //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
-            turningSpeed = Math.max(-.3,
-                               Math.min(.3,
-                               (err-1600)*-3.e-4  )); 
-            smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
-            SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
+        if (Constants.PIXY_AVAILABLE) {
+            if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
+                int err = pixyCam.getAverageValue();
+                SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
+                //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
+                turningSpeed = Math.max(-.3,
+                                Math.min(.3,
+                                (err-1600)*-3.e-4  )); 
+                smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
+                SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
+            }
         }
 
         // 2. Apply deadband
@@ -237,13 +252,13 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        arm = m_robotContainer.getarmSS();
+        // arm = m_robotContainer.getarmSS();
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (driverJoytick.getRawButton(1)){  // A Button
+        /* if (driverJoytick.getRawButton(1)){  // A Button
             arm.extend();
         }
         if (driverJoytick.getRawButton(4)){  // Y Button
@@ -253,6 +268,6 @@ public class Robot extends TimedRobot {
             arm.stopExtend();
         }
         
-        SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos());
+        SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); */
     }
 }

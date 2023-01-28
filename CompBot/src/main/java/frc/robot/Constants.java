@@ -8,6 +8,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
+  public static final boolean GRIPPER_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean PIXY_AVAILABLE = false;
+  public static final int SYSTEMCHOOSER = 0;
+
 
     public static final class ModuleConstants {
         public static final double kWheelDiameterMeters = Units.inchesToMeters(3.75);
@@ -25,6 +31,10 @@ public final class Constants {
         // Distance between right and left wheels
         public static final double kWheelBase = Units.inchesToMeters(24.75);
         // Distance between front and back wheels
+        public static final double kTrackWidth_Comp = Units.inchesToMeters(21.5);
+        //
+        public static final double kWheelBase_Comp = Units.inchesToMeters(24.75);
+        // 
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
 //                new Translation2d( kWheelBase / 2, -kTrackWidth / 2),
   //              new Translation2d( kWheelBase / 2,  kTrackWidth / 2),
@@ -35,6 +45,18 @@ public final class Constants {
                 new Translation2d( kWheelBase / 2,  kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2,  kTrackWidth / 2));
+
+        public static final SwerveDriveKinematics kDriveKinematics_Comp = new SwerveDriveKinematics(
+//                new Translation2d( kWheelBase / 2, -kTrackWidth / 2),
+  //              new Translation2d( kWheelBase / 2,  kTrackWidth / 2),
+    //            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+      //          new Translation2d(-kWheelBase / 2,  kTrackWidth / 2));
+                  
+                new Translation2d( kWheelBase_Comp / 2, -kTrackWidth_Comp / 2),
+                new Translation2d( kWheelBase_Comp / 2,  kTrackWidth_Comp / 2),
+                new Translation2d(-kWheelBase_Comp / 2, -kTrackWidth_Comp / 2),
+                new Translation2d(-kWheelBase_Comp / 2,  kTrackWidth_Comp / 2));
+                  
 
 //    COMP BOT  FRONT                PRAC BOT    FRONT
 //     +----------------------+        +----------------------+
@@ -124,7 +146,7 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int ArmRetractorMotor = 50;
+      public static final int ArmRetractorMotor = 31;
       public static final int ArmRaiserMotor = 42;
       public static final boolean retractorMotorInverted = false;
       public static final boolean ArmRaiserMotorInverted = false;
@@ -173,8 +195,8 @@ public final class Constants {
         public static final int kArmExtendPos2Button          = 3; // mechJoytick button X
         public static final int kgripperopenbutton            = 4; // mechJoytick button Y
         public static final int kgetAprilTagButton            = 5; // mechJoytick button left-bumper
-        public static final int kDrivertostationbutton        = 6; // mechJoytick button right-bumper
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
+        public static final int kDrivertostationbutton        = 2; // driverJoytick button B
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
@@ -196,6 +218,8 @@ public final class Constants {
     public static final class FieldConstants {
       public static final double chargingstationlength = Units.inchesToMeters(60.); // Width of the charging station.
     }
+
+    public static int COMPBOT;
 }
 
 

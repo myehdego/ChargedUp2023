@@ -19,7 +19,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class SwerveSubsystem extends SubsystemBase {
-    private final SwerveModule frontLeft = new SwerveModule(
+    private SwerveModule frontLeft;
+
+    private SwerveModule frontRight;
+
+    private SwerveModule backLeft;
+
+    private SwerveModule backRight;
+
+
+    private static WPI_Pigeon2 pigeon = new WPI_Pigeon2(1);
+///////////////////////////////////////////////////////////////////////////////////////
+// Creating my odometry object from the kinematics object and the initial wheel positions.
+// Here, our starting pose is 5 meters along the long end of the field and in the
+// center of the field along the short end, facing the opposing alliance wall.
+    boolean Old;
+    private SwerveDriveOdometry odometer;
+        
+////////////////////////////////////////////////////////////////////////////////////
+
+    public SwerveSubsystem(boolean Old) {
+        this.Old = Old;
+        frontLeft = new SwerveModule(
             DriveConstants.kFrontLeftDriveMotorPort,
             DriveConstants.kFrontLeftTurningMotorPort,
             DriveConstants.kFrontLeftDriveEncoderReversed,
@@ -28,8 +49,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
             ,"FL"
             );
-
-    private final SwerveModule frontRight = new SwerveModule(
+        frontRight = new SwerveModule(
             DriveConstants.kFrontRightDriveMotorPort,
             DriveConstants.kFrontRightTurningMotorPort,
             DriveConstants.kFrontRightDriveEncoderReversed,
@@ -38,8 +58,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
             ,"FR"
             );
-
-    private final SwerveModule backLeft = new SwerveModule(
+        backLeft = new SwerveModule(
             DriveConstants.kBackLeftDriveMotorPort,
             DriveConstants.kBackLeftTurningMotorPort,
             DriveConstants.kBackLeftDriveEncoderReversed,
@@ -48,8 +67,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
             ,"BL"
             );
-
-    private final SwerveModule backRight = new SwerveModule(
+        backRight = new SwerveModule(
             DriveConstants.kBackRightDriveMotorPort,
             DriveConstants.kBackRightTurningMotorPort,
             DriveConstants.kBackRightDriveEncoderReversed,
@@ -58,22 +76,10 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed
             ,"BR"
             );
-
-
-    private static WPI_Pigeon2 pigeon = new WPI_Pigeon2(1);
-///////////////////////////////////////////////////////////////////////////////////////
-// Creating my odometry object from the kinematics object and the initial wheel positions.
-// Here, our starting pose is 5 meters along the long end of the field and in the
-// center of the field along the short end, facing the opposing alliance wall.
-
-    private final SwerveDriveOdometry odometer = 
-        new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-                            pigeon.getRotation2d(),
-                            getModuleStates(), 
-                            new Pose2d(0.0, 0.0, new Rotation2d()));
-////////////////////////////////////////////////////////////////////////////////////
-
-    public SwerveSubsystem() {
+        odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
+            pigeon.getRotation2d(),
+            getModuleStates(), 
+            new Pose2d(0.0, 0.0, new Rotation2d()));
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -81,6 +87,9 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
+    }
+    public SwerveSubsystem() {
+        this(true);
     }
 
     public void zeroHeading() {

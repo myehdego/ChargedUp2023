@@ -31,14 +31,14 @@ import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
 
-    private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    private final Arm arm = new Arm();
+    private final SwerveSubsystem swerveSubsystem;
+    // private final Arm arm;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick = new Joystick(OIConstants.kDRiverCOntrollerPort2);
-    private final Gripper gripper = new Gripper();
-    private final PhotonVision camera = new PhotonVision();
+    // private final Gripper gripper = new Gripper();
+    // private final PhotonVision camera = new PhotonVision();
     
-    public RobotContainer() {
+    public RobotContainer(boolean Old) {
         /*  swapped out to put drive function in teleopPeriodic
         swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 swerveSubsystem,
@@ -47,7 +47,15 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
+        swerveSubsystem = new SwerveSubsystem();
+        
+        // if (Old) SwerveSubsystem(Old);
+        // else SwerveSubsystem();
+        // if (Constants.ARM_AVAILABLE) arm = new Arm();
         configureButtonBindings();
+    }
+    public RobotContainer() {
+        this(true);
     }
 
     private void configureButtonBindings() { 
@@ -59,19 +67,22 @@ public class RobotContainer {
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
         // mechJoytick Buttons
-        new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
-          onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
-        new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
-          onTrue(new ArmRun(arm,ArmConstants.cubeDepth2));
-        new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
-          onTrue(new ArmRun(arm,ArmConstants.retracto0));
+        /*  if (Constants.ARM_AVAILABLE) {
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
+                onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
+                onTrue(new ArmRun(arm,ArmConstants.cubeDepth2));
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
+                onTrue(new ArmRun(arm,ArmConstants.retracto0));
+        
        // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
        // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
-        new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
-         onTrue(new GripperOpenClose(gripper, true));
-        new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
-         onTrue(new GetAprilTag(camera));
-        new JoystickButton(mechJoytick, OIConstants.kDrivertostationbutton).
+        } */
+        /* new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
+         onTrue(new GripperOpenClose(gripper, true)); */
+        /* new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
+         onTrue(new GetAprilTag(camera)); */
+        new JoystickButton(driverJoytick, OIConstants.kDrivertostationbutton).
          onTrue(new DriverStation(swerveSubsystem));
      }
     
@@ -140,8 +151,10 @@ public class RobotContainer {
             return swerveSubsystem;
     }
 
-    public Arm getarmSS() {
-        return arm;
-    }
+    /* public Arm getarmSS() {
+        if (Constants.ARM_AVAILABLE) {
+                return arm;
+        } else return null;
+    } */
 
 }
