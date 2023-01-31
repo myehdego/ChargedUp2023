@@ -16,14 +16,22 @@ public final class Constants {
 
 
     public static final class ModuleConstants {
-        public static final double kWheelDiameterMeters = Units.inchesToMeters(3.75);
-        public static final double kDriveMotorGearRatio = 1 / 6.75;
-        public static final double kTurningMotorGearRatio = 1 / 12.8;
-        public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
-        public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
-        public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 42;
-        public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 42;
-        public static final double kPTurning = 0.5;
+      public static final double kWheelDiameterMeters = Units.inchesToMeters(3.75);
+      public static final double kDriveMotorGearRatio = 1 / 6.75;
+      public static final double kTurningMotorGearRatio = 1 / 12.8;
+      public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+      public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
+      public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 42;
+      public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 42;
+      public static final double kPTurning = 0.5;
+      public static final double kWheelDiameterMeters_Comp = Units.inchesToMeters(3.75);
+      public static final double kDriveMotorGearRatio_Comp = 1 / 6.75;
+      public static final double kTurningMotorGearRatio_Comp = 1 / 12.8;
+      public static final double kDriveEncoderRot2Meter_Comp = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+      public static final double kTurningEncoderRot2Rad_Comp = kTurningMotorGearRatio * 2 * Math.PI;
+      public static final double kDriveEncoderRPM2MeterPerSec_Comp = kDriveEncoderRot2Meter / 42;
+      public static final double kTurningEncoderRPM2RadPerSec_Comp = kTurningEncoderRot2Rad / 42;
+      public static final double kPTurning_Comp = 0.5;
     }
 
     public static final class DriveConstants {
@@ -31,9 +39,9 @@ public final class Constants {
         // Distance between right and left wheels
         public static final double kWheelBase = Units.inchesToMeters(24.75);
         // Distance between front and back wheels
-        public static final double kTrackWidth_Comp = Units.inchesToMeters(21.5);
+        public static final double kTrackWidth_Comp = Units.inchesToMeters(16.5);
         //
-        public static final double kWheelBase_Comp = Units.inchesToMeters(24.75);
+        public static final double kWheelBase_Comp = Units.inchesToMeters(22.5);
         // 
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
 //                new Translation2d( kWheelBase / 2, -kTrackWidth / 2),
@@ -85,6 +93,22 @@ public final class Constants {
         public static final int kBackLeftDriveMotorPort         = 14;    // Module 4
         public static final int kBackLeftTurningMotorPort       = 24;
         public static final int kBackLeftAbsoluteEncoderPort    = 34;
+
+        public static final int kFrontLeftDriveMotorPort_Comp        = 12;    // Module 1
+        public static final int kFrontLeftTurningMotorPort_Comp      = 22;
+        public static final int kFrontLeftAbsoluteEncoderPort_Comp   = 32;
+
+        public static final int kFrontRightDriveMotorPort_Comp       = 11;    // Module 2
+        public static final int kFrontRightTurningMotorPort_Comp     = 21;
+        public static final int kFrontRightAbsoluteEncoderPort_Comp  = 31;
+
+        public static final int kBackRightDriveMotorPort_Comp        = 14;    // Module 3
+        public static final int kBackRightTurningMotorPort_Comp      = 24;
+        public static final int kBackRightAbsoluteEncoderPort_Comp   = 34;
+
+        public static final int kBackLeftDriveMotorPort_Comp         = 13;    // Module 4
+        public static final int kBackLeftTurningMotorPort_Comp       = 23;
+        public static final int kBackLeftAbsoluteEncoderPort_Comp    = 33;
 
         public static final boolean kFrontLeftTurningEncoderReversed  = true;
         public static final boolean kBackLeftTurningEncoderReversed   = true;
