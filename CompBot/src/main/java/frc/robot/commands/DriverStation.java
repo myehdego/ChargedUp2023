@@ -4,12 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -19,12 +21,14 @@ public class DriverStation extends CommandBase {
   /** Make the robot go up the ramp, go to the middle and balance */
   public SwerveSubsystem driveon;
   private Pose2d endPose;
-
-  
+  private Pose2d fred;
+  private PIDController controller;
   public DriverStation(SwerveSubsystem driveon) {
     //
     addRequirements(driveon);
     this.driveon = driveon;
+
+    controller = new PIDController(0.1/1.5, 0, 0);
   }
 
   /* Assuming robot has driven to the edge of the charging station
@@ -37,18 +41,24 @@ public class DriverStation extends CommandBase {
   public void initialize() {
     endPose = driveon.getPose() 
     // TODO next line need to be tranform into robot coordinate system
-      .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
+     // .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
+      .plus(new Transform2d(new Translation2d(-1.55, 0),
             new Rotation2d(0)));
+            fred = driveon.getPose().relativeTo(endPose);
   }
 
   // set a drive speed in the robot frame
   @Override
   public void execute() {
-    ChassisSpeeds chassisSpeeds = 
+  
+
+
+   /*  ChassisSpeeds chassisSpeeds = 
           new ChassisSpeeds(-0.1, 0, 0);
     SwerveModuleState[] moduleStates = 
           DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    driveon.setModuleStates(moduleStates);
+          // TODO make this work for the comp bot, too
+    driveon.setModuleStates(moduleStates); */
   }
 
   // stop the robot.
@@ -60,6 +70,9 @@ public class DriverStation extends CommandBase {
   // Returns true when the robot has reached the desired end pose.
   @Override
   public boolean isFinished() {
-    return driveon.getPose() .equals(endPose);
+   // SmartDashboard.putNumber(endPose, 0);
+    Pose2d pose = driveon.getPose().relativeTo(endPose);
+   //  double size = pose.getX()*pose.getX() + pose.getY()*pose.getY(); 
+    return (pose.getX()*fred.getX() < 0.) && (pose.getY()*fred.getY() < .0);
   }
 }

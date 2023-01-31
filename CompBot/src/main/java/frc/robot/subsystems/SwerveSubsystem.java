@@ -40,46 +40,49 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem(boolean Old) {
         this.Old = Old;
-        frontLeft = new SwerveModule(
-            DriveConstants.kFrontLeftDriveMotorPort,
-            DriveConstants.kFrontLeftTurningMotorPort,
-            DriveConstants.kFrontLeftDriveEncoderReversed,
-            DriveConstants.kFrontLeftTurningEncoderReversed,
-            DriveConstants.kFrontLeftAbsoluteEncoderPort,
-            DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
-            ,"FL"
-            );
-        frontRight = new SwerveModule(
-            DriveConstants.kFrontRightDriveMotorPort,
-            DriveConstants.kFrontRightTurningMotorPort,
-            DriveConstants.kFrontRightDriveEncoderReversed,
-            DriveConstants.kFrontRightTurningEncoderReversed,
-            DriveConstants.kFrontRightAbsoluteEncoderPort,
-            DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
-            ,"FR"
-            );
-        backLeft = new SwerveModule(
-            DriveConstants.kBackLeftDriveMotorPort,
-            DriveConstants.kBackLeftTurningMotorPort,
-            DriveConstants.kBackLeftDriveEncoderReversed,
-            DriveConstants.kBackLeftTurningEncoderReversed,
-            DriveConstants.kBackLeftAbsoluteEncoderPort,
-            DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
-            ,"BL"
-            );
-        backRight = new SwerveModule(
-            DriveConstants.kBackRightDriveMotorPort,
-            DriveConstants.kBackRightTurningMotorPort,
-            DriveConstants.kBackRightDriveEncoderReversed,
-            DriveConstants.kBackRightTurningEncoderReversed,
-            DriveConstants.kBackRightAbsoluteEncoderPort,
-            DriveConstants.kBackRightDriveAbsoluteEncoderReversed
-            ,"BR"
-            );
-        odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-            pigeon.getRotation2d(),
-            getModuleStates(), 
-            new Pose2d(0.0, 0.0, new Rotation2d()));
+        //if (Old) {  // use backup bot swerve parameters
+            frontLeft = new SwerveModule(
+                Old?DriveConstants.kFrontLeftDriveMotorPort:DriveConstants.kFrontLeftDriveMotorPort_Comp,
+                Old?DriveConstants.kFrontLeftTurningMotorPort:DriveConstants.kFrontLeftTurningMotorPort_Comp,
+                DriveConstants.kFrontLeftDriveEncoderReversed,
+                DriveConstants.kFrontLeftTurningEncoderReversed,
+                Old?DriveConstants.kFrontLeftAbsoluteEncoderPort:DriveConstants.kFrontLeftAbsoluteEncoderPort_Comp,
+                DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
+                ,"FL"
+                );
+            frontRight = new SwerveModule(
+                Old?DriveConstants.kFrontRightDriveMotorPort:DriveConstants.kFrontRightDriveMotorPort_Comp,
+                Old?DriveConstants.kFrontRightTurningMotorPort:DriveConstants.kFrontRightTurningMotorPort_Comp,
+                DriveConstants.kFrontRightDriveEncoderReversed,
+                DriveConstants.kFrontRightTurningEncoderReversed,
+                Old?DriveConstants.kFrontRightAbsoluteEncoderPort:DriveConstants.kFrontRightAbsoluteEncoderPort_Comp,
+                DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
+                ,"FR"
+                );
+            backLeft = new SwerveModule(
+                Old?DriveConstants.kBackLeftDriveMotorPort:DriveConstants.kBackLeftDriveMotorPort_Comp,
+                Old?DriveConstants.kBackLeftTurningMotorPort:DriveConstants.kBackLeftTurningMotorPort_Comp,
+                DriveConstants.kBackLeftDriveEncoderReversed,
+                DriveConstants.kBackLeftTurningEncoderReversed,
+                Old?DriveConstants.kBackLeftAbsoluteEncoderPort:DriveConstants.kBackLeftAbsoluteEncoderPort_Comp,
+                DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
+                ,"BL"
+                );
+            backRight = new SwerveModule(
+                Old?DriveConstants.kBackRightDriveMotorPort:DriveConstants.kBackRightDriveMotorPort_Comp,
+                Old?DriveConstants.kBackRightTurningMotorPort:DriveConstants.kBackRightTurningMotorPort_Comp,
+                DriveConstants.kBackRightDriveEncoderReversed,
+                DriveConstants.kBackRightTurningEncoderReversed,
+                Old?DriveConstants.kBackRightAbsoluteEncoderPort:DriveConstants.kBackRightAbsoluteEncoderPort_Comp,
+                DriveConstants.kBackRightDriveAbsoluteEncoderReversed
+                ,"BR"
+                );
+            odometer = new SwerveDriveOdometry(Old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics_Comp,
+                pigeon.getRotation2d(),
+                getModuleStates(), 
+                new Pose2d(0.0, 0.0, new Rotation2d()));
+        //} else   // use Competition bot swerve parameters
+
         new Thread(() -> {
             try {
                 Thread.sleep(1000);

@@ -32,11 +32,12 @@ import frc.robot.subsystems.PhotonVision;
 public class RobotContainer {
 
     private final SwerveSubsystem swerveSubsystem;
-    // private final Arm arm;
+    private Arm arm;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick = new Joystick(OIConstants.kDRiverCOntrollerPort2);
-    // private final Gripper gripper = new Gripper();
-    // private final PhotonVision camera = new PhotonVision();
+    private Gripper gripper;
+    private PhotonVision camera;
+    boolean old;  // true if original swerve constants
     
     public RobotContainer(boolean Old) {
         /*  swapped out to put drive function in teleopPeriodic
@@ -47,11 +48,12 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
-        swerveSubsystem = new SwerveSubsystem();
+        this.old=Old;
+        swerveSubsystem = new SwerveSubsystem(Old);
         
-        // if (Old) SwerveSubsystem(Old);
-        // else SwerveSubsystem();
-        // if (Constants.ARM_AVAILABLE) arm = new Arm();
+        if (Constants.ARM_AVAILABLE) arm = new Arm();
+        if (Constants.GRIPPER_AVAILABLE) gripper = new Gripper();
+        if (Constants.PHOTONVISION_AVAILABLE) camera = new PhotonVision();
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -66,24 +68,28 @@ public class RobotContainer {
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
-        // mechJoytick Buttons
-        /*  if (Constants.ARM_AVAILABLE) {
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
-                onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
-                onTrue(new ArmRun(arm,ArmConstants.cubeDepth2));
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
-                onTrue(new ArmRun(arm,ArmConstants.retracto0));
-        
-       // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
-       // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
-        } */
-        /* new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
-         onTrue(new GripperOpenClose(gripper, true)); */
-        /* new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
-         onTrue(new GetAprilTag(camera)); */
         new JoystickButton(driverJoytick, OIConstants.kDrivertostationbutton).
-         onTrue(new DriverStation(swerveSubsystem));
+                onTrue(new DriverStation(swerveSubsystem));
+        // mechJoytick Buttons
+         if (Constants.ARM_AVAILABLE) {
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
+                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
+                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth2));
+                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
+                  onTrue(new ArmRun(arm,ArmConstants.retracto0));
+        
+                // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
+                // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
+        }
+        if (Constants.GRIPPER_AVAILABLE){
+                new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
+                  onTrue(new GripperOpenClose(gripper, true));
+        }
+        if (Constants.PHOTONVISION_AVAILABLE) {
+                new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
+                        onTrue(new GetAprilTag(camera));
+        }
      }
     
 
@@ -92,7 +98,7 @@ public class RobotContainer {
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                        .setKinematics(DriveConstants.kDriveKinematics);
+                  .setKinematics(old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics_Comp);
 
         // 2. Generate trajectory
         double scale = -.4;
@@ -133,7 +139,7 @@ public class RobotContainer {
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
                 trajectory,
                 swerveSubsystem::getPose,
-                DriveConstants.kDriveKinematics,
+                old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics_Comp,
                 xController,
                 yController,
                 thetaController,
@@ -151,10 +157,22 @@ public class RobotContainer {
             return swerveSubsystem;
     }
 
-    /* public Arm getarmSS() {
+    public Arm getarmSS() {
         if (Constants.ARM_AVAILABLE) {
                 return arm;
         } else return null;
-    } */
+    }
+
+    public Gripper getGripperSS() {
+        if (Constants.GRIPPER_AVAILABLE) {
+                return gripper;
+        } else return null;
+    }
+
+    public PhotonVision getPhotonVisionSS() {
+        if (Constants.PHOTONVISION_AVAILABLE) {
+                return camera;
+        } else return null;
+    }
 
 }

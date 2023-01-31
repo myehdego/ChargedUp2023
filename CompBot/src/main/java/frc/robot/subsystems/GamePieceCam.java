@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class GamePieceCam extends SubsystemBase {
-  AnalogInput pixyCam = new AnalogInput(0);
+  private AnalogInput pixyCam;
   private static final int center = 1600;
   private static final int minval = 0;
   private static final int maxval = 3200;
@@ -17,7 +17,9 @@ public class GamePieceCam extends SubsystemBase {
    *   and return info about it. 
    *  Current implementation returns the yaw angle
    *   from directly forward in degrees*/
-  public GamePieceCam() {}
+  public GamePieceCam() {
+    pixyCam = new AnalogInput(0);
+  }
 
   /** return the yaw angle to the observed game piece
    *  relative to directly forward, degrees [-22, 22]

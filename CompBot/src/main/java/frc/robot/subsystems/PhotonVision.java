@@ -19,18 +19,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CamConstant;
 
 public class PhotonVision extends SubsystemBase {
-  PhotonCamera camera;
-  PhotonPipelineResult result;
+  private PhotonCamera camera;
+  private PhotonPipelineResult result;
   /** Using a camera to get data from AprilTags
    * The data recived would be the area, pitch and yaw of an April tag 
    * Using the data we recive from the april tags we can determine the position of our robot relative to the tag
   */
   public PhotonVision() {
     camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
-    
   }
   
-  PhotonTrackedTarget target;
+  private PhotonTrackedTarget target;
   /** look for info on any recognized april tag:
    *   publish result to Network Table
    */
@@ -77,7 +76,7 @@ public class PhotonVision extends SubsystemBase {
     
   }
 
-  static final double taglocations[] [] = {
+  private static final double taglocations[] [] = {
     {610.77, 42.19, 18.22},
     {610.77, 108.19, 18.22},
     {610.77, 174.19, 18.22},

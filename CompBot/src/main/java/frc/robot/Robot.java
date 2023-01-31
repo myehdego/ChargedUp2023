@@ -17,10 +17,12 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import java.io.ObjectInputStream.GetField;
+import java.text.ChoiceFormat;
 
 import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
@@ -50,7 +52,7 @@ public class Robot extends TimedRobot {
     private PowerDistribution PDH;
     private AnalogInput pixyCam;
     private AnalogInput systemChooser; // Value of a hard wired constant resistor to determine which robo
-
+    private boolean choice;  // choose which robot to control, true is competion bot
     // }
 
     /**
@@ -60,11 +62,14 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        // Instantiate our RobotContainer. This will perform all our button bindings,
-        // and put our
-        // autonomous chooser on the dashboard.
-        systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
-        boolean choice = systemChooser.getValue() == Constants.COMPBOT;
+        // Instantiate our RobotContainer.
+        //      o build subsystems based on what is available,
+        //      o perform all our button bindings,
+        //      o put our autonomous chooser on the dashboard.
+
+        choice = Preferences.containsKey("Swerve");
+        //systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
+        //choice = systemChooser.getValue() == Constants.COMPBOT;
         if (choice) {
             PDH = new PowerDistribution(1, ModuleType.kRev);
         } else {
@@ -145,7 +150,7 @@ public class Robot extends TimedRobot {
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
-        // arm = m_robotContainer.getarmSS();
+        arm = m_robotContainer.getarmSS();
         // arm.resetEncoders();
         // }
     }
@@ -160,10 +165,7 @@ public class Robot extends TimedRobot {
         if (driverJoytick.getRawButton(3))
             {
                 System.out.println("Button Pressed");
-                
-
             }
-
 
         SmartDashboard.putNumber("BotA", pigeon.getAngle());
         SmartDashboard.putNumber("BatV", PDP.getVoltage());
@@ -239,7 +241,9 @@ public class Robot extends TimedRobot {
         //System.out.println("Encoder: " + frontleftsteerencoder.getPosition());
 
         // 5. Convert chassis speeds to individual module states
-        SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+        SwerveModuleState[] moduleStates = 
+           choice?DriveConstants.kDriveKinematics_Comp.toSwerveModuleStates(chassisSpeeds):
+           DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
         // 6. Output each module states to wheels
         swerveSubsystem.setModuleStates(moduleStates);
@@ -252,7 +256,7 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        // arm = m_robotContainer.getarmSS();
+        arm = m_robotContainer.getarmSS();
     }
 
     /** This function is called periodically during test mode. */
