@@ -25,7 +25,7 @@ public class GamePieceCam extends SubsystemBase {
    *  relative to directly forward, degrees [-22, 22]
    */
   public double getYaw() {
-    return (pixyCam.getAverageValue()-minval)*(fov/maxval);
+    return (pixyCam.getAverageValue()-center)*(fov/maxval);
   }
 
   @Override

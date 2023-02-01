@@ -28,7 +28,7 @@ public class DriverStation extends CommandBase {
     addRequirements(driveon);
     this.driveon = driveon;
 
-    controller = new PIDController(0.1/1.5, 0, 0);
+    controller = new PIDController(0.1/1.5, 0, 0);  // set robot speed relative to distance from goal
   }
 
   /* Assuming robot has driven to the edge of the charging station

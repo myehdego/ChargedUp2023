@@ -53,6 +53,17 @@ public class SwerveModule {
             absoluteEncoderId, absoluteEncoderReversed);
         this.comp = comp;
     }
+    public SwerveModule(int driveMotorId, int turningMotorId, 
+        boolean driveMotorReversed, boolean turningMotorReversed,
+        int absoluteEncoderId, boolean absoluteEncoderReversed,
+        String name,
+        boolean comp) {
+        this(driveMotorId, turningMotorId, 
+            driveMotorReversed, turningMotorReversed,
+            absoluteEncoderId, absoluteEncoderReversed);
+        this.comp = comp;
+        this.reportName=name;
+    }
 
     public SwerveModule(int driveMotorId, int turningMotorId, 
             boolean driveMotorReversed, boolean turningMotorReversed,
@@ -64,10 +75,8 @@ public class SwerveModule {
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
-        // CRG for Mike {
         driveMotor.restoreFactoryDefaults();
         turningMotor.restoreFactoryDefaults();
-        //}
 
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed);
@@ -117,8 +126,7 @@ public class SwerveModule {
     }
     public double getabsoluteEncoder()
     {
-    return absoluteEncoder.getAbsolutePosition();
-
+        return absoluteEncoder.getAbsolutePosition();
     }
 
     
@@ -151,7 +159,9 @@ public class SwerveModule {
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        driveMotor.set(state.speedMetersPerSecond / 
+            (comp?DriveConstants.kPhysicalMaxSpeedMetersPerSecond_Comp:
+                  DriveConstants.kPhysicalMaxSpeedMetersPerSecond));
         turningPidController.setReference(state.angle.getRadians(),ControlType.kPosition);
 //        SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
     }

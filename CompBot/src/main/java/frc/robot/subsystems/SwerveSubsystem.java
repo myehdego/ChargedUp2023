@@ -49,6 +49,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Old?DriveConstants.kFrontLeftAbsoluteEncoderPort:DriveConstants.kFrontLeftAbsoluteEncoderPort_Comp,
                 DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
                 ,"FL"
+                ,!Old
                 );
             frontRight = new SwerveModule(
                 Old?DriveConstants.kFrontRightDriveMotorPort:DriveConstants.kFrontRightDriveMotorPort_Comp,
@@ -58,6 +59,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Old?DriveConstants.kFrontRightAbsoluteEncoderPort:DriveConstants.kFrontRightAbsoluteEncoderPort_Comp,
                 DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
                 ,"FR"
+                ,!Old
                 );
             backLeft = new SwerveModule(
                 Old?DriveConstants.kBackLeftDriveMotorPort:DriveConstants.kBackLeftDriveMotorPort_Comp,
@@ -67,6 +69,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Old?DriveConstants.kBackLeftAbsoluteEncoderPort:DriveConstants.kBackLeftAbsoluteEncoderPort_Comp,
                 DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
                 ,"BL"
+                ,!Old
                 );
             backRight = new SwerveModule(
                 Old?DriveConstants.kBackRightDriveMotorPort:DriveConstants.kBackRightDriveMotorPort_Comp,
@@ -76,6 +79,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 Old?DriveConstants.kBackRightAbsoluteEncoderPort:DriveConstants.kBackRightAbsoluteEncoderPort_Comp,
                 DriveConstants.kBackRightDriveAbsoluteEncoderReversed
                 ,"BR"
+                ,!Old
                 );
             odometer = new SwerveDriveOdometry(Old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics_Comp,
                 pigeon.getRotation2d(),
@@ -138,6 +142,11 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.stop();
         backLeft.stop();
         backRight.stop();
+    }
+
+    public SwerveModuleState[] chassis2ModuleStates(ChassisSpeeds speeds){
+        return Old?DriveConstants.kDriveKinematics_Comp.toSwerveModuleStates(speeds):
+                   DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     }
 
     public SwerveModulePosition [] getModuleStates() {
