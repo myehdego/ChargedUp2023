@@ -51,9 +51,9 @@ public class RobotContainer {
         this.old=Old;
         swerveSubsystem = new SwerveSubsystem(Old);
         
-        if (Constants.ARM_AVAILABLE) arm = new Arm();
-        if (Constants.GRIPPER_AVAILABLE) gripper = new Gripper();
-        if (Constants.PHOTONVISION_AVAILABLE) camera = new PhotonVision();
+        if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
+        if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
+        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new PhotonVision();
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -71,7 +71,7 @@ public class RobotContainer {
         new JoystickButton(driverJoytick, OIConstants.kDrivertostationbutton).
                 onTrue(new DriverStation(swerveSubsystem));
         // mechJoytick Buttons
-         if (Constants.ARM_AVAILABLE) {
+         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
                   onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
@@ -82,11 +82,11 @@ public class RobotContainer {
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
         }
-        if (Constants.GRIPPER_AVAILABLE){
+        if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
                 new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
                   onTrue(new GripperOpenClose(gripper, true));
         }
-        if (Constants.PHOTONVISION_AVAILABLE) {
+        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
                         onTrue(new GetAprilTag(camera));
         }
@@ -158,19 +158,19 @@ public class RobotContainer {
     }
 
     public Arm getarmSS() {
-        if (Constants.ARM_AVAILABLE) {
+        if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 return arm;
         } else return null;
     }
 
     public Gripper getGripperSS() {
-        if (Constants.GRIPPER_AVAILABLE) {
+        if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) {
                 return gripper;
         } else return null;
     }
 
     public PhotonVision getPhotonVisionSS() {
-        if (Constants.PHOTONVISION_AVAILABLE) {
+        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 return camera;
         } else return null;
     }

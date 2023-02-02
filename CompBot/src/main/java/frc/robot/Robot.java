@@ -76,9 +76,8 @@ public class Robot extends TimedRobot {
             PDP = new PowerDistribution(1, ModuleType.kCTRE);
         }
        
-        System.out.println("PDP = " + PDP.getType());
-        // PDH = new PowerDistribution(1, ModuleType.kRev);
-        if (Constants.PIXY_AVAILABLE) pixyCam = new AnalogInput(0);
+        System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
+        if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixyCam = new AnalogInput(0);
         m_robotContainer = new RobotContainer(!choice);
         // TODO: Get Information about CompBot Swerve Modules
         pigeon = new WPI_Pigeon2(1);
@@ -189,7 +188,7 @@ public class Robot extends TimedRobot {
         //    System.out.println("X: " + String.format("%.3f", xSpeed) 
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
-        if (Constants.PIXY_AVAILABLE) {
+        if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) {
             if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
                 int err = pixyCam.getAverageValue();
                 SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
