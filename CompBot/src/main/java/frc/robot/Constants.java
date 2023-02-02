@@ -226,6 +226,8 @@ public final class Constants {
         public static final int kArmExtendPos2Button          = 3; // mechJoytick button X
         public static final int kgripperopenbutton            = 4; // mechJoytick button Y
         public static final int kgetAprilTagButton            = 5; // mechJoytick button left-bumper
+        public static final int kgetRobotPositionButton       = 6; // mechJoystick button right-bumper
+
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
         public static final int kDrivertostationbutton        = 2; // driverJoytick button B
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
@@ -238,7 +240,13 @@ public final class Constants {
     }
 
     public static final class CamConstant {
-        public static final double PitchAngle = 0.; // Pitch angle of camera in degrees
+        public static final double PitchAngle =           0.; // Pitch angle of camera in degrees
+        public static final double CameraLocationX =      0.; // camera location relative to robots center
+        public static final double CameraLocationY =      0.;
+        public static final double CameraLocationZ =      0.;
+        public static final double CameraLocationX_COMP = 0.; // camera location relative to robots center
+        public static final double CameraLocationY_COMP = 0.;
+        public static final double CameraLocationZ_COMP = 0.;
     }
     public static final class Pneumatics {
 

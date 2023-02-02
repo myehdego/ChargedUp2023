@@ -22,12 +22,13 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
+import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Gripper;
-import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.AprilTagCamera;
 
 public class RobotContainer {
 
@@ -36,7 +37,7 @@ public class RobotContainer {
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick = new Joystick(OIConstants.kDRiverCOntrollerPort2);
     private Gripper gripper;
-    private PhotonVision camera;
+    private AprilTagCamera camera;
     boolean old;  // true if original swerve constants
     
     public RobotContainer(boolean Old) {
@@ -53,7 +54,7 @@ public class RobotContainer {
         
         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
-        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new PhotonVision();
+        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new AprilTagCamera();
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -87,6 +88,8 @@ public class RobotContainer {
                   onTrue(new GripperOpenClose(gripper, true));
         }
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
+                new JoystickButton(mechJoytick, OIConstants.kgetRobotPositionButton).
+                        onTrue(new GetRobotPosition(camera));
                 new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
                         onTrue(new GetAprilTag(camera));
         }
@@ -169,7 +172,7 @@ public class RobotContainer {
         } else return null;
     }
 
-    public PhotonVision getPhotonVisionSS() {
+    public AprilTagCamera getPhotonVisionSS() {
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 return camera;
         } else return null;

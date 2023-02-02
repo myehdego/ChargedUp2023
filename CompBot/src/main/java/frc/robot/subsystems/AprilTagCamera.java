@@ -14,18 +14,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CamConstant;
 
-public class PhotonVision extends SubsystemBase {
+public class AprilTagCamera extends SubsystemBase {
   private PhotonCamera camera;
   private PhotonPipelineResult result;
   /** Using a camera to get data from AprilTags
    * The data recived would be the area, pitch and yaw of an April tag 
    * Using the data we recive from the april tags we can determine the position of our robot relative to the tag
   */
-  public PhotonVision() {
+  public AprilTagCamera() {
     camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
   }
   
@@ -49,8 +50,10 @@ public class PhotonVision extends SubsystemBase {
    * returns a Pose2d 
    */
   public Pose2d getRobotPosition() {
+    try {
     Transform3d campos = target.getBestCameraToTarget();
     int targetid = getAprTag();
+    if (targetid<1)throw new NullPointerException("Tag id not found");
     /*
      * Assume for now the Pitch angle of the camera is zero
     double lxyz = Math.pow(campos.getX(),2.) + 
@@ -58,12 +61,29 @@ public class PhotonVision extends SubsystemBase {
      Math.pow(campos.getZ(),2.);
     double lxy = lxyz * Math.cos(CamConstant.PitchAngle);  // TODO missing a piece
     */
-    double x = campos.getX();   // TODO finish this
-    double y = campos.getY();
-    double ang = campos.getRotation().getY();
+    /* 0.Presuming we are facing the tag head on
+     * 1. Get a April tag id
+     * 2. Get the x and y of the apriltag
+     * 3. Get the x and y offset of the camera relative to the tag
+     * 4. the camera position is  the april tag + the offset 
+     * 5. The robot position is the camera position + the offset of the camera relative to the robot
+     */
+    double camx = campos.getX();   // TODO finish this
+    double camy = campos.getY();
+    //double ang = campos.getRotation().getY();
+    double tagx = taglocations[targetid-1][0];
+    double tagy = taglocations[targetid-1][1];
+    double camlocationx = tagx + camx;
+    double camlocationy = tagy + camy;
+    double robotx = camlocationx + CamConstant.CameraLocationX;
+    double roboty = camlocationy + CamConstant.CameraLocationY;
 
 
-      return new Pose2d(x ,y, new Rotation2d(ang));
+      return new Pose2d(Units.metersToInches(robotx/100.),
+                        Units.metersToInches(roboty/100.), new Rotation2d(0.)); // Presumes we are facing the tag head on
+    }catch(NullPointerException e){
+      return new Pose2d(-999.,-999., new Rotation2d(-999.));
+    }
   }
 
   @Override

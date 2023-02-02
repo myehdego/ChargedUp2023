@@ -40,8 +40,9 @@ public class ArmRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Closed) {arm.closedLoopController(Target);}
-    else {}
+    if (Closed) {
+      arm.closedLoopController(Target);
+    }else {}
     SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
     && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
   }

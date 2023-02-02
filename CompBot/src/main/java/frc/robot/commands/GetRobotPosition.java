@@ -4,28 +4,32 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagCamera;
 
-public class GetAprilTag extends CommandBase {
-  /**Uses the PhotonVision subsystem to detect AprilTags and display the tag id */
+public class GetRobotPosition extends CommandBase {
+  /** Gets Robot position using the april tag camera  */
   AprilTagCamera camera;
-  public GetAprilTag(AprilTagCamera camera) {
+  Pose2d robotposition;
+  public GetRobotPosition(AprilTagCamera camera) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(camera);
     this.camera = camera;
+    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    robotposition = camera.getRobotPosition();
+    SmartDashboard.putString("Robot Positon", robotposition.toString());
+    System.out.println("Robot pos from Apr Teg:"+robotposition.toString());
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    camera.getAprTag();
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
