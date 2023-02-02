@@ -265,7 +265,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        /* if (driverJoytick.getRawButton(1)){  // A Button
+        if (driverJoytick.getRawButton(1)){  // A Button
             arm.extend();
         }
         if (driverJoytick.getRawButton(4)){  // Y Button
@@ -274,7 +274,10 @@ public class Robot extends TimedRobot {
         if (driverJoytick.getRawButton(2)){  // B Button
             arm.stopExtend();
         }
+        if (driverJoytick.getRawButton(3)) {  // X button
+            arm.resetEncoders();
+        }
         
-        SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); */
+        SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
     }
 }

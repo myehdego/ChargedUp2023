@@ -14,23 +14,34 @@ import frc.robot.subsystems.Arm;
 public class ArmRun extends CommandBase {
   Arm arm;
   double Target; 
-  /** Creates a new ArmRun. */
+  boolean Closed = false;
+  /** open loop command move arm to a target */
   public ArmRun(Arm arm, double Target) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.Target = Target;
   }
+  /** Able to change argument between closed and open */
+  public ArmRun(Arm arm, double Target, boolean closed) {
+    this(arm, Target);
+    this.Closed = closed;
+  }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (Closed) {}
+    else {
     arm.extend(arm.getExtenderPos() < Target);
+    }
     SmartDashboard.putNumber("target", Target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Closed) {arm.closedLoopController(Target);}
+    else {}
     SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
     && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
   }

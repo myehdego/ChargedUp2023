@@ -4,10 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.ArmConstants;
@@ -23,7 +23,7 @@ public class Arm extends SubsystemBase {
   private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
   private RelativeEncoder raiserEncoder;
-  
+
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
    * and retract to have the ability to reach futher up on the shelves and pegs  */
   public Arm() {
@@ -35,6 +35,7 @@ public class Arm extends SubsystemBase {
     retractorMotor.restoreFactoryDefaults();
     pidController = retractorMotor.getPIDController();
     // raiserEncoder = raiserMotor.getEncoder();
+    retractorEncoder.setPositionConversionFactor(ArmConstants.RETRACTOR_METERSPERCOUNT);
   }
   
   /* public void raise() {
@@ -48,6 +49,10 @@ public class Arm extends SubsystemBase {
   public void lower() {
     raiserMotor.set(-0.1);
   } */
+
+  public void closedLoopController(double Target) {
+    pidController.setReference(Target, ControlType.kPosition);
+  }
 
   public void extend() {
     retractorMotor.set(0.3);

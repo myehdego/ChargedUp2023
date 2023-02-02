@@ -9,7 +9,7 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public static final boolean GRIPPER_AVAILABLE = false;
-  public static final boolean ARM_AVAILABLE = false;
+  public static final boolean ARM_AVAILABLE = true;
   public static final boolean PHOTONVISION_AVAILABLE = false;
   public static final boolean PIXY_AVAILABLE = false;
   public static final int SYSTEMCHOOSER = 0;
@@ -172,7 +172,7 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int ArmRetractorMotor = 31;
+      public static final int ArmRetractorMotor = 50;
       public static final int ArmRaiserMotor = 42;
       public static final boolean retractorMotorInverted = false;
       public static final boolean ArmRaiserMotorInverted = false;
@@ -192,6 +192,7 @@ public final class Constants {
       public static final double retracto0 = 0.;
       public static final double coneDepth1 = 22.75;
       public static final double coneDepth2 = 39.75;  // All in inches
+      public static final double RETRACTOR_METERSPERCOUNT = 1;
     }
 
     public static final class AutoConstants {
