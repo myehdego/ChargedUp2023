@@ -72,8 +72,8 @@ public class AprilTagCamera extends SubsystemBase {
       //double ang = campos.getRotation().getY();
       double tagx = Units.metersToInches(taglocations[targetid-1][0]);
       double tagy = Units.metersToInches(taglocations[targetid-1][1]);
-      double camlocationx = tagx + ((targetid<4)?camx:(-camx));
-      double camlocationy = tagy + ((targetid<4)?camy:(-camy));
+      double camlocationx = tagx + ((targetid>3)?camx:(-camx));
+      double camlocationy = tagy + ((targetid>3)?camy:(-camy));
       double robotx = camlocationx + CamConstant.CameraLocationX;
       double roboty = camlocationy + CamConstant.CameraLocationY;
 

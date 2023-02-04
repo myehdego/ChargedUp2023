@@ -180,6 +180,16 @@ public class Robot extends TimedRobot {
         double xSpeed = driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
         double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
         double turningSpeed =  -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
+
+        // 2. Apply deadband
+        xSpeed = Math.abs(smoothedXSpeed) > OIConstants.kDeadband ? smoothedXSpeed : 0.0;
+        ySpeed = Math.abs(smoothedYSpeed) > OIConstants.kDeadband ? smoothedYSpeed : 0.0;
+        turningSpeed = Math.abs(smoothedTurningSpeed) > OIConstants.kDeadband ? smoothedTurningSpeed : 0.0;
+        //System.out.println("Deadband Applied");
+        //System.out.println("X: " + String.format("%.3f", xSpeed)
+        //                + " Y: " + String.format("%.3f", ySpeed)
+        //                + " R: " + String.format("%.3f", turningSpeed));
+
         //    Smooth driver inputs
         smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
         smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
@@ -188,6 +198,7 @@ public class Robot extends TimedRobot {
         //    System.out.println("X: " + String.format("%.3f", xSpeed) 
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
+
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) {
             if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
                 int err = pixyCam.getAverageValue();
@@ -200,15 +211,9 @@ public class Robot extends TimedRobot {
                 SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
             }
         }
-
-        // 2. Apply deadband
-        xSpeed = Math.abs(smoothedXSpeed) > OIConstants.kDeadband ? smoothedXSpeed : 0.0;
-        ySpeed = Math.abs(smoothedYSpeed) > OIConstants.kDeadband ? smoothedYSpeed : 0.0;
-        turningSpeed = Math.abs(smoothedTurningSpeed) > OIConstants.kDeadband ? smoothedTurningSpeed : 0.0;
-        //System.out.println("Deadband Applied");
-        //System.out.println("X: " + String.format("%.3f", xSpeed)
-        //                + " Y: " + String.format("%.3f", ySpeed)
-        //                + " R: " + String.format("%.3f", turningSpeed));
+        xSpeed = smoothedXSpeed;
+        ySpeed = smoothedYSpeed;
+        xSpeed = smoothedTurningSpeed;
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
