@@ -251,8 +251,10 @@ public final class Constants {
     }
     public static final class Pneumatics {
 
-        public static final int openChannel = 0; // the gripper channel to open
-        public static final int closeChannel = 0; // the gripper channel to close
+        public static final int openChannel = 0;      // the gripper channel to open
+        public static final int closeChannel = 1;     // the gripper channel to close
+        public static final int wristUpChannel = 2;   // gripper wrist up
+        public static final int wristDownChannel = 3; // gripper wrist down
     }
 
     public static final class FieldConstants {

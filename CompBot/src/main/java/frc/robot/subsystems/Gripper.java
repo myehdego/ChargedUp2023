@@ -18,16 +18,20 @@ public class Gripper extends SubsystemBase {
   /** manipulates and grabs game objects.
    *  opening and closing with pneumatics.
    */
-  private DoubleSolenoid gripper;  
+  private DoubleSolenoid gripper; 
+  private DoubleSolenoid lifter; 
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
 
-
+  
   public Gripper() {
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
            Pneumatics.openChannel, Pneumatics.closeChannel);
+    lifter = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+          Pneumatics.wristUpChannel, Pneumatics.wristDownChannel);
     roller.restoreFactoryDefaults();
   }
 
+  /** turn on rollers */
   public void rollersGo() {
     roller.set(1.);
   }
@@ -48,6 +52,14 @@ public class Gripper extends SubsystemBase {
     if ( gripper.get() == Value.kReverse) return true;
     return false;
   } 
+
+  public void liftGripper() {
+    lifter.set(Value.kForward);
+  }
+
+  public void lowerGripper() {
+    lifter.set(Value.kReverse);
+  }
 
   @Override
   public void periodic() {
