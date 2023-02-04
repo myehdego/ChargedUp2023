@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
@@ -74,11 +75,17 @@ public class RobotContainer {
         // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
-                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth1,true));
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  andThen(new WaitCommand(.5)).
+                  andThen(new ArmRun(arm,ArmConstants.cubeDepth1,true)));
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
-                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth2,true));
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  andThen(new WaitCommand(.5)).
+                  andThen(new ArmRun(arm,ArmConstants.cubeDepth2,true)));
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
-                  onTrue(new ArmRun(arm,ArmConstants.retracto0,true));
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  andThen(new WaitCommand(.5)).
+                  andThen(new ArmRun(arm,ArmConstants.retracto0,true)));
                 new JoystickButton(mechJoytick, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()));
         

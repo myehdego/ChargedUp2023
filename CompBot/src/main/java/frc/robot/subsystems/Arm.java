@@ -130,5 +130,6 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
+    SmartDashboard.putBoolean("am I done?", IamDone);
   }
 }

@@ -133,8 +133,8 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         odometer.update(new Rotation2d(-pigeon.getAngle()*Math.PI/180.), getModuleStates());
-        SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        //SmartDashboard.putNumber("Robot Heading", getHeading());
+        //SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
     public void stopModules() {
@@ -175,7 +175,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 //        SmartDashboard.putString("Gyro: ", String.format("%.3f", gyro.getAngle()));
 
-        SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
+        /*SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
         SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
         SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
         SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
@@ -191,7 +191,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
         SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
         SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
-        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
+        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());*/
     }
 
     /** driveMe just stops because it is unimplemented */

@@ -31,6 +31,13 @@ public class ArmRun extends CommandBase {
   @Override
   public void initialize() {
     if (Closed) {
+      // arm.makeMeDone();
+      /* try {
+        Thread.sleep(0200);
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        // e.printStackTrace();
+      } */
       arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()));
       arm.closedLoopController(Target);
     }
