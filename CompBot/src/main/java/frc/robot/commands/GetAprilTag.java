@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagCamera;
 
 public class GetAprilTag extends CommandBase {
-  /**Uses the PhotonVision subsystem to detect AprilTags and display the tag id */
   AprilTagCamera camera;
+  /**Uses the PhotonVision subsystem to detect AprilTags and display the tag id */
   public GetAprilTag(AprilTagCamera camera) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(camera);

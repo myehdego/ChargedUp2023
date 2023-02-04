@@ -30,7 +30,10 @@ public class ArmRun extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Closed) {}
+    if (Closed) {
+      arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()));
+      arm.closedLoopController(Target);
+    }
     else {
     arm.extend(arm.getExtenderPos() < Target);
     }
@@ -41,7 +44,7 @@ public class ArmRun extends CommandBase {
   @Override
   public void execute() {
     if (Closed) {
-      arm.closedLoopController(Target);
+      // arm.closedLoopController(Target);
     }else {}
     SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
     && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
@@ -51,12 +54,14 @@ public class ArmRun extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     arm.stopExtend();
+    SmartDashboard.putString("target", "quit");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
-    && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance;
+    && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
+    || arm.amIDone();
   }
 }

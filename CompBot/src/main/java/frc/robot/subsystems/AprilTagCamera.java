@@ -37,6 +37,9 @@ public class AprilTagCamera extends SubsystemBase {
   public int getAprTag() {
     if(result != null) {
       target = result.getBestTarget();
+      if(target == null){
+      return 998;
+      }
       int id = target.getFiducialId();
       SmartDashboard.putNumber("aprTag#",id);
       return id;
@@ -47,40 +50,35 @@ public class AprilTagCamera extends SubsystemBase {
   /** determine the location on the field of the robot
    * from its orientation relative to a visible April Tag
    * 
-   * returns a Pose2d 
+   * returns a Pose2d, dimensions in meters relative to corner of blue grid
    */
   public Pose2d getRobotPosition() {
     try {
-    Transform3d campos = target.getBestCameraToTarget();
-    int targetid = getAprTag();
-    if (targetid<1)throw new NullPointerException("Tag id not found");
-    /*
-     * Assume for now the Pitch angle of the camera is zero
-    double lxyz = Math.pow(campos.getX(),2.) + 
-     Math.pow(campos.getY(),2.) +  
-     Math.pow(campos.getZ(),2.);
-    double lxy = lxyz * Math.cos(CamConstant.PitchAngle);  // TODO missing a piece
-    */
-    /* 0.Presuming we are facing the tag head on
-     * 1. Get a April tag id
-     * 2. Get the x and y of the apriltag
-     * 3. Get the x and y offset of the camera relative to the tag
-     * 4. the camera position is  the april tag + the offset 
-     * 5. The robot position is the camera position + the offset of the camera relative to the robot
-     */
-    double camx = campos.getX();   // TODO finish this
-    double camy = campos.getY();
-    //double ang = campos.getRotation().getY();
-    double tagx = taglocations[targetid-1][0];
-    double tagy = taglocations[targetid-1][1];
-    double camlocationx = tagx + camx;
-    double camlocationy = tagy + camy;
-    double robotx = camlocationx + CamConstant.CameraLocationX;
-    double roboty = camlocationy + CamConstant.CameraLocationY;
+      Transform3d campos = target.getBestCameraToTarget();  // dimensions in meters
+      int targetid = getAprTag();
+      if (targetid<1)throw new NullPointerException("Tag id not found");
+      /*
+      * Assume for now the Pitch angle of the camera is zero
+      */
+      /* 0.Presuming we are facing the tag head on
+      * 1. Get a April tag id
+      * 2. Get the x and y of the apriltag
+      * 3. Get the x and y offset of the camera relative to the tag
+      * 4. the camera position is  the april tag + the offset 
+      * 5. The robot position is the camera position + the offset of the camera relative to the robot
+      */
+      double camx = campos.getX();
+      double camy = campos.getY();
+      //double ang = campos.getRotation().getY();
+      double tagx = Units.metersToInches(taglocations[targetid-1][0]);
+      double tagy = Units.metersToInches(taglocations[targetid-1][1]);
+      double camlocationx = tagx + ((targetid<4)?camx:(-camx));
+      double camlocationy = tagy + ((targetid<4)?camy:(-camy));
+      double robotx = camlocationx + CamConstant.CameraLocationX;
+      double roboty = camlocationy + CamConstant.CameraLocationY;
 
-
-      return new Pose2d(Units.metersToInches(robotx/100.),
-                        Units.metersToInches(roboty/100.), new Rotation2d(0.)); // Presumes we are facing the tag head on
+      return new Pose2d(Units.metersToInches(robotx),
+                        Units.metersToInches(roboty), new Rotation2d(0.)); // Presumes we are facing the tag head on
     }catch(NullPointerException e){
       return new Pose2d(-999.,-999., new Rotation2d(-999.));
     }
@@ -92,16 +90,15 @@ public class AprilTagCamera extends SubsystemBase {
     /* Look for an april tag */
     result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
-    SmartDashboard.putBoolean("hasTarget", hasTargets);
-    
+    SmartDashboard.putBoolean("hasTarget", hasTargets); 
   }
 
   private static final double taglocations[] [] = {
-    {610.77, 42.19, 18.22},
-    {610.77, 108.19, 18.22},
-    {610.77, 174.19, 18.22},
-    {636.96, 265.74, 27.38},
-    { 14.25, 265.74, 27.38}, 
+    {610.77, 42.19, 18.22},   // data relative to the right corner
+    {610.77, 108.19, 18.22},  // of the blue grid,
+    {610.77, 174.19, 18.22},  // x pointing from blue toward red
+    {636.96, 265.74, 27.38},  // y pointing toward red loading station,
+    { 14.25, 265.74, 27.38},  // inches
     { 40.45, 174.19, 18.22},
     { 40.45, 108.19, 18.22},
     { 40.45, 42.19, 18.22}

@@ -23,7 +23,8 @@ public class Arm extends SubsystemBase {
   private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
   private RelativeEncoder raiserEncoder;
-
+  double kp;
+  private boolean IamDone;
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
    * and retract to have the ability to reach futher up on the shelves and pegs  */
   public Arm() {
@@ -49,8 +50,21 @@ public class Arm extends SubsystemBase {
   public void lower() {
     raiserMotor.set(-0.1);
   } */
+  public boolean amIDone() {
+    return IamDone;
+  }
+
+  public void makeMeDone() {
+    IamDone = true;
+  }
+
+  public void pidCoefficient(double distance) {
+    kp = 1 * .4 / distance;
+    pidController.setP(kp);
+  }
 
   public void closedLoopController(double Target) {
+    IamDone = false;
     pidController.setReference(Target, ControlType.kPosition);
   }
 

@@ -74,11 +74,13 @@ public class RobotContainer {
         // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
-                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth1));
+                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth1,true));
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
-                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth2));
+                  onTrue(new ArmRun(arm,ArmConstants.cubeDepth2,true));
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
-                  onTrue(new ArmRun(arm,ArmConstants.retracto0));
+                  onTrue(new ArmRun(arm,ArmConstants.retracto0,true));
+                new JoystickButton(mechJoytick, OIConstants.kArmDone).
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()));
         
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
