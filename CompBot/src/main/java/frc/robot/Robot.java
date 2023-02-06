@@ -213,7 +213,7 @@ public class Robot extends TimedRobot {
         }
         xSpeed = smoothedXSpeed;
         ySpeed = smoothedYSpeed;
-        xSpeed = smoothedTurningSpeed;
+        turningSpeed = smoothedTurningSpeed;
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;

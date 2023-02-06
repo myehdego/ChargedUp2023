@@ -70,12 +70,17 @@ public class AprilTagCamera extends SubsystemBase {
       double camx = campos.getX();
       double camy = campos.getY();
       //double ang = campos.getRotation().getY();
-      double tagx = Units.metersToInches(taglocations[targetid-1][0]);
-      double tagy = Units.metersToInches(taglocations[targetid-1][1]);
-      double camlocationx = tagx + ((targetid>3)?camx:(-camx));
-      double camlocationy = tagy + ((targetid>3)?camy:(-camy));
+      double tagx = Units.inchesToMeters(taglocations[targetid-1][0]);
+      double tagy = Units.inchesToMeters(taglocations[targetid-1][1]);
+      double camlocationx = tagx + ((targetid>4)?camx:(-camx));
+      double camlocationy = tagy + ((targetid>4)?camy:(-camy));
       double robotx = camlocationx + CamConstant.CameraLocationX;
       double roboty = camlocationy + CamConstant.CameraLocationY;
+      SmartDashboard.putNumber("TagX", tagx);
+      SmartDashboard.putNumber("TagY", tagy);
+      SmartDashboard.putNumber("Camx", camx);
+      SmartDashboard.putNumber("CamY", camy);
+     
 
       return new Pose2d(Units.metersToInches(robotx),
                         Units.metersToInches(roboty), new Rotation2d(0.)); // Presumes we are facing the tag head on
@@ -83,6 +88,7 @@ public class AprilTagCamera extends SubsystemBase {
       return new Pose2d(-999.,-999., new Rotation2d(-999.));
     }
   }
+ 
 
   @Override
   public void periodic() {
