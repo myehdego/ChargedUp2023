@@ -197,6 +197,7 @@ public class Robot extends TimedRobot {
         //    System.out.println("X: " + String.format("%.3f", xSpeed) 
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
+
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) {
             if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
                 int err = pixyCam.getAverageValue();
@@ -209,6 +210,9 @@ public class Robot extends TimedRobot {
                 SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
             }
         }
+        xSpeed = smoothedXSpeed;
+        ySpeed = smoothedYSpeed;
+        turningSpeed = smoothedTurningSpeed;
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;
