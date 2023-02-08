@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonTargetSortMode;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -88,6 +89,15 @@ public class AprilTagCamera extends SubsystemBase {
       return new Pose2d(-999.,-999., new Rotation2d(-999.));
     }
   }
+
+  public double getDistanceToCargo() {
+    //Calculates the distance between the robot and the bottom left target on the field
+    Pose2d cargolocation = new Pose2d(264.45,36.19,new Rotation2d(0.));
+    double distancetoCargo = PhotonUtils.getDistanceToPose(getRobotPosition(),cargolocation);
+    SmartDashboard.putNumber("distancetocargo", distancetoCargo);
+    return distancetoCargo;
+  }
+  
  
 
   @Override
@@ -110,4 +120,8 @@ public class AprilTagCamera extends SubsystemBase {
     { 40.45, 42.19, 18.22}
     
   };
+  private static final double  cargolocations [] [] = {
+    {224.00,48.,0.}
+  };
+  
 }

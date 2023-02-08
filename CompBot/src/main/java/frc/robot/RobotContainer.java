@@ -25,6 +25,7 @@ import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
+import frc.robot.commands.GripperUpAndDown;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
@@ -95,6 +96,13 @@ public class RobotContainer {
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
                 new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
                   onTrue(new GripperOpenClose(gripper, true));
+                new JoystickButton(mechJoytick, OIConstants.kgripperclosebutton).
+                    onTrue(new GripperOpenClose(gripper, false));
+        
+                new JoystickButton(mechJoytick, OIConstants.kgripperliftbutton).
+                  onTrue(new GripperUpAndDown(gripper, true));
+                new JoystickButton(mechJoytick, OIConstants.kgripperdownbutton).
+                    onTrue(new GripperUpAndDown(gripper, false));
         }
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kgetRobotPositionButton).

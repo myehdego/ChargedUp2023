@@ -71,6 +71,7 @@ public class Arm extends SubsystemBase {
   public void extend() {
     retractorMotor.set(0.3);
   }
+  /** Extends if boolean "direction" is true, retracts if false */
   public void extend(boolean direction) {
     if(direction) extend();
     else retract();
@@ -97,6 +98,8 @@ public class Arm extends SubsystemBase {
     // raiserEncoder.setPosition(0);
   }
 
+
+  /** This runs open looped controller, will command for arm to extend or retract towards target */
   public CommandBase extensionCommand(double Target) {
     return runOnce(() -> {extend(retractorEncoder.getPosition() < Target);
                          SmartDashboard.putNumber("target", Target);}) 

@@ -5,16 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Gripper;
 
 public class GripperUpAndDown extends CommandBase {
-  /** Creates a new GripperUpAndDown. */
-  public GripperUpAndDown() {
+  /** makes the Gripper able to go up and down. */
+  private Gripper gripper;
+  private boolean up;
+  public GripperUpAndDown(Gripper gripper, boolean up) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.gripper = gripper;
+    addRequirements(gripper);
+    this.up = up;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (up) {
+      gripper.liftGripper();
+    }
+    else { 
+      gripper.lowerGripper();
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -27,6 +40,6 @@ public class GripperUpAndDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

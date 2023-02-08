@@ -209,10 +209,18 @@ public class SwerveSubsystem extends SubsystemBase {
      * in meters/sec
      * spinSpeed is the rotation rate in radians/sec counterclockwise
      */
-    public void driveit(double xhowfast, double yhowfast, double turnSpeed) {
+    public void driveit(double xhowfast, double yhowfast, double turnSpeed, boolean fieldoriented) {
         // Remember that xspeed is backwards on robot
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,
+        ChassisSpeeds chassisSpeeds;
+        if (fieldoriented){
+             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                xhowfast, yhowfast, turnSpeed, getRotation2d());
+        } 
+        else{
+            chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,
                                          turnSpeed);
+        }
+        
         SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
@@ -220,9 +228,10 @@ public class SwerveSubsystem extends SubsystemBase {
      * xhowfast and yhowfast are the components of the vector
      * in meters/sec
      * spinSpeed is set to zero
+     * fieldorientened is set to false
      */
     public void driveit(double xS, double yS) {
-        driveit(xS, yS, 0.);
+        driveit(xS, yS, 0., false);
     }
 
     /** driveMe just stops because it is essentially unimplemented */

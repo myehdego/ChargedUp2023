@@ -13,14 +13,16 @@ import frc.robot.subsystems.Arm;
 
 public class ArmRun extends CommandBase {
   Arm arm;
-  double Target; 
+  double Target;
   boolean Closed = false;
+
   /** open loop command move arm to a target */
   public ArmRun(Arm arm, double Target) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.Target = Target;
   }
+
   /** Able to change argument between closed and open */
   public ArmRun(Arm arm, double Target, boolean closed) {
     this(arm, Target);
@@ -33,9 +35,8 @@ public class ArmRun extends CommandBase {
     if (Closed) {
       arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()));
       arm.closedLoopController(Target);
-    }
-    else {
-    arm.extend(arm.getExtenderPos() < Target);
+    } else {
+      arm.extend(arm.getExtenderPos() < Target);
     }
     SmartDashboard.putNumber("target", Target);
   }
@@ -45,9 +46,10 @@ public class ArmRun extends CommandBase {
   public void execute() {
     if (Closed) {
       // arm.closedLoopController(Target);
-    }else {}
-    SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
-    && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
+    } else {
+    }
+    SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
+        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
   }
 
   // Called once the command ends or is interrupted.
@@ -60,8 +62,8 @@ public class ArmRun extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance 
-    && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
-    || arm.amIDone();
+    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
+        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
+        || arm.amIDone();
   }
 }

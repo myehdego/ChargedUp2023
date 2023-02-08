@@ -236,6 +236,9 @@ public final class Constants {
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
         
         public static final double kDeadband = 0.05;
+        public static final int kgripperliftbutton = 0;
+        public static final int kgripperclosebutton = 0;
+        public static final int kgripperdownbutton = 0;
         
 
     }
