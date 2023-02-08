@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
-import java.io.ObjectInputStream.GetField;
-import java.text.ChoiceFormat;
 
 import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
@@ -41,7 +39,6 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private RobotContainer m_robotContainer;
-    // CRG added stuff to drive in teleopPeriodic rather than defaultCommand {
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private SwerveSubsystem swerveSubsystem;
@@ -50,9 +47,7 @@ public class Robot extends TimedRobot {
 
     private PowerDistribution PDH;
     private AnalogInput pixyCam;
-    private AnalogInput systemChooser; // Value of a hard wired constant resistor to determine which robo
     private boolean choice;  // choose which robot to control, true is competion bot
-    // }
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -253,6 +248,9 @@ public class Robot extends TimedRobot {
 
         // 6. Output each module states to wheels
         swerveSubsystem.setModuleStates(moduleStates);
+        
+        // steps 4-6 should be accomplished by the swerve subsystem via a method such as
+        // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
         //}
     
         swerveSubsystem.reportStatesToSmartDashbd(moduleStates);

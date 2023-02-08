@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class GamePieceCam extends SubsystemBase {
   private AnalogInput pixyCam;
   private static final int center = 1600;
-  private static final int minval = 0;
   private static final int maxval = 3200;
   private static final double fov = 45; //degrees
   /** Use Pixy Camera to recognize a game piece
