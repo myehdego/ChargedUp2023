@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -23,7 +22,7 @@ public class RotToPiece extends PIDCommand {
   public RotToPiece(SwerveSubsystem drive, GamePieceCam camera) {
     super(
         // The controller that the command will use
-        new PIDController(.3/22., 0, 0),
+        new PIDController(.3/22., 0, 0),    // P = .3 * 1./(FOV/2)
         // This should return the measurement
         () -> camera.getYaw(),
         // This should return the setpoint (can also be a constant)
@@ -32,6 +31,7 @@ public class RotToPiece extends PIDCommand {
         output -> {
           // Use the output here
           drive.driveMe(output);
+          //drive.driveit(0.,0.,output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     

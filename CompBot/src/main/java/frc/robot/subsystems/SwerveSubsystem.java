@@ -216,6 +216,11 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
+    /**Drives only in robot coordinate system
+     * xhowfast and yhowfast are the components of the vector
+     * in meters/sec
+     * spinSpeed is set to zero
+     */
     public void driveit(double xS, double yS) {
         driveit(xS, yS, 0.);
     }
