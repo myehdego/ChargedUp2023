@@ -72,7 +72,6 @@ public class DriverStation extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveon.stopModules();
-
   }
 
   // Returns true when the robot has reached the desired end pose.
