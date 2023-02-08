@@ -130,6 +130,16 @@ public class SwerveSubsystem extends SubsystemBase {
         }    ,pose );
     }
 
+    public double[] returnEncode() {
+        double[] me = new double[] {
+            -frontLeft.getDrivePosition(), 
+            -frontRight.getDrivePosition(),
+            -backLeft.getDrivePosition(),
+            -backRight.getDrivePosition()
+        };
+        return me;
+    }
+
     @Override
     public void periodic() {
         odometer.update(new Rotation2d(-pigeon.getAngle()*Math.PI/180.), getModuleStates());
@@ -173,9 +183,9 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.smartDashreportState(desiredStates[2]);
         backRight.smartDashreportState(desiredStates[3]);
 
-//        SmartDashboard.putString("Gyro: ", String.format("%.3f", gyro.getAngle()));
+//       SmartDashboard.putString("Gyro: ", String.format("%.3f", gyro.getAngle()));
 
-        /*SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
+        SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
         SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
         SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
         SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
@@ -191,10 +201,26 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
         SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
         SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
-        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());*/
+        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
+    }
+    
+    /**Drives only in robot coordinate system
+     * xhowfast and yhowfast are the components of the vector
+     * in meters/sec
+     * spinSpeed is the rotation rate in radians/sec counterclockwise
+     */
+    public void driveit(double xhowfast, double yhowfast, double turnSpeed) {
+        // Remember that xspeed is backwards on robot
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,
+                                         turnSpeed);
+        SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
+        setModuleStates(moduleStates);
+    }
+    public void driveit(double xS, double yS) {
+        driveit(xS, yS, 0.);
     }
 
-    /** driveMe just stops because it is unimplemented */
+    /** driveMe just stops because it is essentially unimplemented */
     public CommandBase driveMe(double howfast){
         return runOnce(
             () -> stopModules()

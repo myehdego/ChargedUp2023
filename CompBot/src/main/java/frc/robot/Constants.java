@@ -31,7 +31,9 @@ public final class Constants {
       public static final double kWheelDiameterMeters_Comp = Units.inchesToMeters(3.75);
       public static final double kDriveMotorGearRatio_Comp = 1 / 6.75;
       public static final double kTurningMotorGearRatio_Comp = 1 / 12.8;
-      public static final double kDriveEncoderRot2Meter_Comp = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+     // public static final double kDriveEncoderRot2Meter_Comp = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
+     // Theoraticlly maybe; in practice from measurements
+      public static final double kDriveEncoderRot2Meter_Comp = Units.inchesToMeters(1)/41.2;
       public static final double kTurningEncoderRot2Rad_Comp = kTurningMotorGearRatio * 2 * Math.PI;
       public static final double kDriveEncoderRPM2MeterPerSec_Comp = kDriveEncoderRot2Meter / 42;
       public static final double kTurningEncoderRPM2RadPerSec_Comp = kTurningEncoderRot2Rad / 42;

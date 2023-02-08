@@ -48,7 +48,6 @@ public class Robot extends TimedRobot {
     private Arm arm;
     private WPI_Pigeon2 pigeon;
 
-    private PowerDistribution PDP;
     private PowerDistribution PDH;
     private AnalogInput pixyCam;
     private AnalogInput systemChooser; // Value of a hard wired constant resistor to determine which robo
@@ -73,15 +72,13 @@ public class Robot extends TimedRobot {
         if (choice) {
             PDH = new PowerDistribution(1, ModuleType.kRev);
         } else {
-            PDP = new PowerDistribution(1, ModuleType.kCTRE);
+            PDH = new PowerDistribution(1, ModuleType.kCTRE);
         }
        
-        System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
+        // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixyCam = new AnalogInput(0);
         m_robotContainer = new RobotContainer(!choice);
-        // TODO: Get Information about CompBot Swerve Modules
         pigeon = new WPI_Pigeon2(1);
-
     }
 
     /**
@@ -166,8 +163,8 @@ public class Robot extends TimedRobot {
                 System.out.println("Button Pressed");
             }
 
-        SmartDashboard.putNumber("BotA", pigeon.getAngle());
-        SmartDashboard.putNumber("BatV", PDP.getVoltage());
+        //SmartDashboard.putNumber("BotA", pigeon.getAngle());
+        SmartDashboard.putNumber("BatV", PDH.getVoltage());
 
         SmartDashboard.putNumber("Pitch", pigeon.getPitch());
         SmartDashboard.putNumber("Yaw", pigeon.getYaw());
@@ -180,6 +177,18 @@ public class Robot extends TimedRobot {
         double xSpeed = driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
         double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
         double turningSpeed =  -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
+
+        // 2. Apply deadband
+        xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
+        ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
+        turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+        //System.out.println("Deadband Applied");
+        //System.out.println("X: " + String.format("%.3f", xSpeed)
+        //                + " Y: " + String.format("%.3f", ySpeed)
+        //                + " R: " + String.format("%.3f", turningSpeed));
+        xSpeed*=1.-.8*driverJoytick.getRawAxis(2);
+        ySpeed*=1.-.8*driverJoytick.getRawAxis(2);
+        turningSpeed*=1.-.9*driverJoytick.getRawAxis(2);
         //    Smooth driver inputs
         smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
         smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
@@ -200,15 +209,6 @@ public class Robot extends TimedRobot {
                 SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
             }
         }
-
-        // 2. Apply deadband
-        xSpeed = Math.abs(smoothedXSpeed) > OIConstants.kDeadband ? smoothedXSpeed : 0.0;
-        ySpeed = Math.abs(smoothedYSpeed) > OIConstants.kDeadband ? smoothedYSpeed : 0.0;
-        turningSpeed = Math.abs(smoothedTurningSpeed) > OIConstants.kDeadband ? smoothedTurningSpeed : 0.0;
-        //System.out.println("Deadband Applied");
-        //System.out.println("X: " + String.format("%.3f", xSpeed)
-        //                + " Y: " + String.format("%.3f", ySpeed)
-        //                + " R: " + String.format("%.3f", turningSpeed));
 
         // 3. Make the driving smoother
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond;

@@ -23,12 +23,14 @@ public class DriverStation extends CommandBase {
   private Pose2d endPose;
   private Pose2d fred;
   private PIDController controller;
+  private double howfar = 1.13; // Charging station width/2 + cg
+  double encS;
   public DriverStation(SwerveSubsystem driveon) {
-    //
+    
     addRequirements(driveon);
     this.driveon = driveon;
 
-    controller = new PIDController(0.1/1.5, 0, 0);  // set robot speed relative to distance from goal
+    controller = new PIDController(0.3/Math.abs(howfar), 0, 0);  // set robot speed relative to distance from goal
   }
 
   /* Assuming robot has driven to the edge of the charging station
@@ -39,19 +41,24 @@ public class DriverStation extends CommandBase {
      */
   @Override
   public void initialize() {
-    endPose = driveon.getPose() 
+    endPose = driveon.getPose();
     // TODO next line need to be tranform into robot coordinate system
      // .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
-      .plus(new Transform2d(new Translation2d(-1.55, 0),
-            new Rotation2d(0)));
-            fred = driveon.getPose().relativeTo(endPose);
+     encS = driveon.returnEncode()[0];
+
+      
   }
 
   // set a drive speed in the robot frame
   @Override
   public void execute() {
     
-    controller.calculate(0, 0);
+    double john = controller.calculate(driveon.returnEncode()[0], encS+howfar);
+    System.out.println("Encoder and Target "+driveon.returnEncode()[0] +" " + (encS+howfar));
+    System.out.println("Speed "+ john);
+    driveon.driveit(john, 0);
+    
+    SmartDashboard.putNumber("DriveError" , controller.getPositionError());
 
    /*  ChassisSpeeds chassisSpeeds = 
           new ChassisSpeeds(-0.1, 0, 0);
@@ -65,14 +72,15 @@ public class DriverStation extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveon.stopModules();
+
   }
 
   // Returns true when the robot has reached the desired end pose.
   @Override
   public boolean isFinished() {
    // SmartDashboard.putNumber(endPose, 0);
-    Pose2d pose = driveon.getPose().relativeTo(endPose);
-   //  double size = pose.getX()*pose.getX() + pose.getY()*pose.getY(); 
-    return (pose.getX()*fred.getX() < 0.) && (pose.getY()*fred.getY() < .0);
+    
+   //  double size = pose.getX()*pose.getX() + pose.getY()*pose.getY();
+    return Math.abs(controller.getPositionError()) < Math.abs(0.03*howfar);
   }
 }
