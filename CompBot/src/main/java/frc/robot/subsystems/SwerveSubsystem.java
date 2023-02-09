@@ -130,6 +130,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }    ,pose );
     }
 
+    /** Returns position in meters */
     public double[] returnEncode() {
         double[] me = new double[] {
             -frontLeft.getDrivePosition(), 

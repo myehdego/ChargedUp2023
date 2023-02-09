@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.CancellationException;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   CANSparkMax retractorMotor;
+  CANSparkMax retractorMotorfollower;
   CANSparkMax raiserMotor;
   private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
@@ -29,11 +32,15 @@ public class Arm extends SubsystemBase {
    * and retract to have the ability to reach futher up on the shelves and pegs  */
   public Arm() {
     retractorMotor = new CANSparkMax(CANIDs.ArmRetractorMotor, MotorType.kBrushless);
+    retractorMotor.restoreFactoryDefaults();
+    retractorMotorfollower = new CANSparkMax(CANIDs.ArmRetractorMotorfollower, MotorType.kBrushless);
+    retractorMotorfollower.restoreFactoryDefaults();
     retractorMotor.setInverted(CANIDs.retractorMotorInverted);
+    retractorMotorfollower.follow(retractorMotor,true);
+    //retractorMotorfollower.setInverted(true);
     // raiserMotor = new CANSparkMax(CANIDs.ArmRaiserMotor, MotorType.kBrushless);
     // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
     retractorEncoder = retractorMotor.getEncoder();
-    retractorMotor.restoreFactoryDefaults();
     pidController = retractorMotor.getPIDController();
     // raiserEncoder = raiserMotor.getEncoder();
     retractorEncoder.setPositionConversionFactor(ArmConstants.RETRACTOR_METERSPERCOUNT);

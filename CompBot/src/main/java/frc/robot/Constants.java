@@ -7,11 +7,11 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public static final boolean GRIPPER_AVAILABLE = false;
-  public static final boolean ARM_AVAILABLE = true;
+  public static final boolean ARM_AVAILABLE = false;
   public static final boolean PHOTONVISION_AVAILABLE = true;
   public static final boolean PIXY_AVAILABLE = true;
   public static final boolean GRIPPER_AVAILABLE_Comp = false;
-  public static final boolean ARM_AVAILABLE_Comp = false;
+  public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
   public static final boolean PIXY_AVAILABLE_Comp = false;
   public static final int SYSTEMCHOOSER = 0;
@@ -176,11 +176,12 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int ArmRetractorMotor = 50;
-      public static final int ArmRaiserMotor = 42;
-      public static final boolean retractorMotorInverted = false;
+      public static final int ArmRetractorMotor         = 60;
+      public static final int ArmRetractorMotorfollower = 31;
+      public static final boolean retractorMotorInverted = true;
+      public static final int ArmRaiserMotor            = 42;
       public static final boolean ArmRaiserMotorInverted = false;
-      public static final int GripperRollerMotor = 0;
+      public static final int GripperRollerMotor        = 0;
     }
     // Relative to front of the grid 
     public static final class ArmConstants {
@@ -260,8 +261,12 @@ public final class Constants {
         public static final int wristDownChannel = 3; // gripper wrist down
     }
 
+    public static final class RobotConstants {
+      public static final double xcg = Units.inchesToMeters(0);
+    }
+
     public static final class FieldConstants {
-      public static final double chargingstationlength = Units.inchesToMeters(60.); // Width of the charging station.
+      public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
     }
 
     public static int COMPBOT;

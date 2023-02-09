@@ -11,22 +11,27 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DriverStation extends CommandBase {
-  /** Make the robot go up the ramp, go to the middle and balance */
+  /** presuming the robot is at the ramp, 
+   * drive up the ramp,
+   * go to the middle
+   * and than check for balance
+   * Based on the balance, go forwards or backwards */
   public SwerveSubsystem driveon;
   private Pose2d endPose;
   private Pose2d fred;
   private PIDController controller;
-  private double howfar = 1.13; // Charging station width/2 + cg
+  private double howfar = RobotConstants.xcg + FieldConstants.chargingstationwidth/2; // Charging station width/2 + xcg
   double encS;
   public DriverStation(SwerveSubsystem driveon) {
-    
     addRequirements(driveon);
     this.driveon = driveon;
 
@@ -44,9 +49,8 @@ public class DriverStation extends CommandBase {
     endPose = driveon.getPose();
     // TODO next line need to be tranform into robot coordinate system
      // .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
-     encS = driveon.returnEncode()[0];
-
-      
+    encS = driveon.returnEncode()[0];
+    
   }
 
   // set a drive speed in the robot frame

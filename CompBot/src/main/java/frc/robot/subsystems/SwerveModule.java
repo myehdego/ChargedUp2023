@@ -111,7 +111,9 @@ public class SwerveModule {
       return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
 
     } 
-    /** Return Drive Encoder Position */
+    /** Return Drive Encoder Position
+     * Returns position in meters
+     */
     public double getDrivePosition() {
         return driveEncoder.getPosition();
     }
