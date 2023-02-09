@@ -33,13 +33,16 @@ public class Arm extends SubsystemBase {
   public Arm() {
     retractorMotor = new CANSparkMax(CANIDs.ArmRetractorMotor, MotorType.kBrushless);
     retractorMotor.restoreFactoryDefaults();
+    retractorMotor.setInverted(CANIDs.retractorMotorInverted);
+
     retractorMotorfollower = new CANSparkMax(CANIDs.ArmRetractorMotorfollower, MotorType.kBrushless);
     retractorMotorfollower.restoreFactoryDefaults();
-    retractorMotor.setInverted(CANIDs.retractorMotorInverted);
     retractorMotorfollower.follow(retractorMotor,true);
-    //retractorMotorfollower.setInverted(true);
+
     // raiserMotor = new CANSparkMax(CANIDs.ArmRaiserMotor, MotorType.kBrushless);
+    // raiserMotor.restoreFactoryDefaults();
     // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
+
     retractorEncoder = retractorMotor.getEncoder();
     pidController = retractorMotor.getPIDController();
     retractorEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees

@@ -58,6 +58,11 @@ public class DriverStation extends CommandBase {
   public void execute() {
     
     double john = controller.calculate(driveon.returnEncode()[0], encS+howfar);
+    /* TODO: Ved, there is no law that requires us to use this result linearly.
+       Since the controller tends to get too slow near the destination, 
+       we could define a function that stays high until it is closer to zero,
+       ie, consider y(x) = 1 - x^2 for 0 < x < 1
+       */
     System.out.println("Encoder and Target "+driveon.returnEncode()[0] +" " + (encS+howfar));
     System.out.println("Speed "+ john);
     driveon.driveit(john, 0);

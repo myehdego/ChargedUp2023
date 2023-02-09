@@ -29,6 +29,7 @@ public class Gripper extends SubsystemBase {
     lifter = new DoubleSolenoid(PneumaticsModuleType.REVPH,
           Pneumatics.wristUpChannel, Pneumatics.wristDownChannel);
     roller.restoreFactoryDefaults();
+    roller.setInverted(CANIDs.GripperRollerMotorInverted);
   }
 
   /** turn on rollers */

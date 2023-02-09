@@ -205,10 +205,11 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
     }
     
-    /**Drives only in robot coordinate system
-     * xhowfast and yhowfast are the components of the vector
-     * in meters/sec
-     * spinSpeed is the rotation rate in radians/sec counterclockwise
+    /**Drives only in robot coordinate system.
+     * @xhowfast and 
+     * @yhowfast are the components of the vector
+     * in meters/sec,
+     * @turnSpeed is the rotation rate in radians/sec counterclockwise
      */
     public void driveit(double xhowfast, double yhowfast, double turnSpeed, boolean fieldoriented) {
         // Remember that xspeed is backwards on robot
@@ -225,11 +226,14 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
-    /**Drives only in robot coordinate system
-     * xhowfast and yhowfast are the components of the vector
+    /**
+     * Drives only in robot coordinate system <br>
+     * @xS and
+     * @yS are the components of the vector
      * in meters/sec
-     * spinSpeed is set to zero
-     * fieldorientened is set to false
+     * <br>
+     * turnSpeed is set to zero; <br>
+     * fieldoriented is set to false
      */
     public void driveit(double xS, double yS) {
         driveit(xS, yS, 0., false);

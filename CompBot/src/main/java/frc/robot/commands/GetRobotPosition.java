@@ -25,6 +25,7 @@ public class GetRobotPosition extends CommandBase {
     robotposition = camera.getRobotPosition();
     SmartDashboard.putString("Robot Positon", robotposition.toString());
     System.out.println("Robot pos from Apr Teg:"+robotposition.toString());
+    // TODO: do something useful with the info
   }
 
   // Called every time the scheduler runs while the command is scheduled.
