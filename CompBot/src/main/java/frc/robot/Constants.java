@@ -5,6 +5,20 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
+/* Table of Contents:
+ *    Availablility of Subsystems
+ *    ModuleConstants
+ *    DriveConstants
+ *    CANIDs
+ *    ArmConstants
+ *    AutoConstants
+ *    OIConstants
+ *    CamConstant
+ *    Pneumatics
+ *    RobotConstants
+ *    FieldConstants
+ */
+
 public final class Constants {
   public static final boolean GRIPPER_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
@@ -14,7 +28,7 @@ public final class Constants {
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
   public static final boolean PIXY_AVAILABLE_Comp = false;
-  public static final int SYSTEMCHOOSER = 0;
+  //public static final int SYSTEMCHOOSER = 0;
 
 
     public static final class ModuleConstants {
@@ -182,7 +196,9 @@ public final class Constants {
       public static final int ArmRaiserMotor            = 42;
       public static final boolean ArmRaiserMotorInverted = false;
       public static final int GripperRollerMotor        = 0;
+      public static final boolean GripperRollerMotorInverted = false;
     }
+
     // Relative to front of the grid 
     public static final class ArmConstants {
       public static final double retractorTolerance = 3.;  
@@ -237,11 +253,9 @@ public final class Constants {
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
         
         public static final double kDeadband = 0.05;
-        public static final int kgripperliftbutton = 0;
-        public static final int kgripperclosebutton = 0;
-        public static final int kgripperdownbutton = 0;
-        
-
+        public static final int kgripperliftbutton            = 0;
+        public static final int kgripperclosebutton           = 0;
+        public static final int kgripperdownbutton            = 0;
     }
 
     public static final class CamConstant {
@@ -254,7 +268,6 @@ public final class Constants {
         public static final double CameraLocationZ_COMP = 0.;
     }
     public static final class Pneumatics {
-
         public static final int openChannel = 0;      // the gripper channel to open
         public static final int closeChannel = 1;     // the gripper channel to close
         public static final int wristUpChannel = 2;   // gripper wrist up
