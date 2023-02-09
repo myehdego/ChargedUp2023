@@ -185,18 +185,19 @@ public final class Constants {
     }
     // Relative to front of the grid 
     public static final class ArmConstants {
+      public static final double retractorEncoderScale = 78./200.;  // degrees
       public static final double retractorTolerance = 3.;  
       public static final double raiserTolerance = 3.;  
       public static final double floorPosition = 0.;
-      public static final double coneHeight1 = 34.;
-      public static final double coneHeight2 = 46.;
-      public static final double cubeDepth1 = 175.2; // 22.75
-      public static final double cubeDepth2 = 405.6; // 39.75
-      public static final double cubeHeight1 = 23.5;
-      public static final double cubeHeight2 = 35.5;
+      public static final double coneHeight1 = 0.;
+      public static final double coneHeight2 = 0.;
+      public static final double cubeDepth1 = 0.;     // 175.2; unscaled on backup bot
+      public static final double cubeDepth2 = 0.;     // 405.6; unscaled on backup bot
+      public static final double cubeHeight1 = 0.;
+      public static final double cubeHeight2 = 0.;
       public static final double retracto0 = 0.;
-      public static final double coneDepth1 = 22.75;
-      public static final double coneDepth2 = 39.75;  // All in inches
+      public static final double coneDepth1 = 0.;
+      public static final double coneDepth2 = 0.;
       public static final double RETRACTOR_METERSPERCOUNT = 1;
     }
 

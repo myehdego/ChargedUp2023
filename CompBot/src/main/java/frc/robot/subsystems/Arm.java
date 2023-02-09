@@ -42,8 +42,9 @@ public class Arm extends SubsystemBase {
     // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
     retractorEncoder = retractorMotor.getEncoder();
     pidController = retractorMotor.getPIDController();
+    retractorEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     // raiserEncoder = raiserMotor.getEncoder();
-    retractorEncoder.setPositionConversionFactor(ArmConstants.RETRACTOR_METERSPERCOUNT);
+    // raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
   }
   
   /* public void raise() {
@@ -76,7 +77,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void extend() {
-    retractorMotor.set(0.3);
+    retractorMotor.set(0.5);
   }
   /** Extends if boolean "direction" is true, retracts if false */
   public void extend(boolean direction) {
@@ -85,7 +86,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void retract() {
-    retractorMotor.set(-0.3);
+    retractorMotor.set(-0.5);
   }
 
   public void stopRaise() {
@@ -142,4 +143,13 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
     SmartDashboard.putBoolean("am I done?", IamDone);
   }
+
+  public void healthStatus() {
+    SmartDashboard.putNumberArray("Arm Shoulder Motor", new double[] {
+          retractorMotor.getOutputCurrent(),
+          retractorMotor.getMotorTemperature(),
+          retractorEncoder.getVelocity()
+             });
+  }
+
 }

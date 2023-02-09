@@ -268,15 +268,21 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         if (driverJoytick.getRawButton(1)){  // A Button
             arm.extend();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (driverJoytick.getRawButton(4)){  // Y Button
             arm.retract();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (driverJoytick.getRawButton(2)){  // B Button
             arm.stopExtend();
+            System.out.println(arm.getExtenderPos());
         }
         if (driverJoytick.getRawButton(3)) {  // X button
             arm.resetEncoders();
+            System.out.println(arm.getExtenderPos());
         }
         
         SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
