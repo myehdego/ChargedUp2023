@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
 import com.revrobotics.CANSparkMax;
@@ -153,6 +154,14 @@ public class SwerveModule {
     }
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+    }
+
+    public void setcoastmode() {
+        driveMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void setbrakemode() {
+        driveMotor.setIdleMode(IdleMode.kBrake);
     }
 
     public void setDesiredState(SwerveModuleState state) {

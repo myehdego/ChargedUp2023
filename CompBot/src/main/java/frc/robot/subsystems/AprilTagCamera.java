@@ -118,7 +118,6 @@ public class AprilTagCamera extends SubsystemBase {
     { 40.45, 174.19, 18.22},
     { 40.45, 108.19, 18.22},
     { 40.45, 42.19, 18.22}
-    
   };
   private static final double  cargolocations [] [] = {
     {224.00,48.,0.}

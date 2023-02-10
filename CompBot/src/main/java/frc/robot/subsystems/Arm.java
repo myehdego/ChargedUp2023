@@ -25,6 +25,7 @@ public class Arm extends SubsystemBase {
   CANSparkMax raiserMotor;
   private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
+  private RelativeEncoder retractorfollowerEncoder;
   private RelativeEncoder raiserEncoder;
   double kp;
   private boolean IamDone;
@@ -44,8 +45,10 @@ public class Arm extends SubsystemBase {
     // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
 
     retractorEncoder = retractorMotor.getEncoder();
+    retractorfollowerEncoder = retractorMotorfollower.getEncoder();
     pidController = retractorMotor.getPIDController();
     retractorEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
+    retractorfollowerEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     // raiserEncoder = raiserMotor.getEncoder();
     // raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
   }
@@ -144,15 +147,17 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
+    SmartDashboard.putNumber("Arm extenderf position", retractorfollowerEncoder.getPosition());
     SmartDashboard.putBoolean("am I done?", IamDone);
   }
 
   public void healthStatus() {
-    SmartDashboard.putNumberArray("Arm Shoulder Motor", new double[] {
-          retractorMotor.getOutputCurrent(),
-          retractorMotor.getMotorTemperature(),
-          retractorEncoder.getVelocity()
-             });
+    SmartDashboard.putNumber("Shoulder Current", retractorMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Shoulder Temp", retractorMotor.getMotorTemperature());
+    SmartDashboard.putNumber("Shoulder RPM", retractorEncoder.getVelocity());
+    SmartDashboard.putNumber("ShoulderF Current", retractorMotorfollower.getOutputCurrent());
+    SmartDashboard.putNumber("ShoulderF Temp", retractorMotorfollower.getMotorTemperature());
+    SmartDashboard.putNumber("ShoulderF RPM", retractorfollowerEncoder.getVelocity());
   }
 
 }

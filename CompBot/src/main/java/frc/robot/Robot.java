@@ -284,6 +284,7 @@ public class Robot extends TimedRobot {
             arm.resetEncoders();
             System.out.println(arm.getExtenderPos());
         }
+        arm.healthStatus();
         
         SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
     }

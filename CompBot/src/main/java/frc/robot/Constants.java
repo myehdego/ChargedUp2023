@@ -257,6 +257,7 @@ public final class Constants {
         public static final int kgripperliftbutton            = 0;
         public static final int kgripperclosebutton           = 0;
         public static final int kgripperdownbutton            = 0;
+        public static final int kNudgeLeftButton = 4;  // driverJoytick button Y
     }
 
     public static final class CamConstant {

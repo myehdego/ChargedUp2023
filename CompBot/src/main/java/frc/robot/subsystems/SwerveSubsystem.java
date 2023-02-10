@@ -141,6 +141,20 @@ public class SwerveSubsystem extends SubsystemBase {
         return me;
     }
 
+    public void setbrakemode(){
+        frontLeft.setbrakemode();
+        frontRight.setbrakemode();
+        backLeft.setbrakemode();
+        backRight.setbrakemode();
+    }
+
+    public void setcoastmode(){
+        frontLeft.setcoastmode();
+        frontRight.setcoastmode();
+        backLeft.setcoastmode();
+        backRight.setcoastmode();
+    }
+
     @Override
     public void periodic() {
         odometer.update(new Rotation2d(-pigeon.getAngle()*Math.PI/180.), getModuleStates());

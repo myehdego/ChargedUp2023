@@ -26,6 +26,7 @@ import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
 import frc.robot.commands.GripperUpAndDown;
+import frc.robot.commands.NudgeDrive;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
@@ -73,6 +74,8 @@ public class RobotContainer {
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
         new JoystickButton(driverJoytick, OIConstants.kDrivertostationbutton).
                 onTrue(new DriverStation(swerveSubsystem));
+        new JoystickButton(driverJoytick, OIConstants.kNudgeLeftButton).
+                onTrue(new NudgeDrive(swerveSubsystem, 0, 0));
         // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
