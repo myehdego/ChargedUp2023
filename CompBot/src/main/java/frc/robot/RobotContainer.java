@@ -39,6 +39,7 @@ public class RobotContainer {
     private Arm arm;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick mechJoytick = new Joystick(OIConstants.kDRiverCOntrollerPort2);
+    private final Joystick mechJoytick2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
     private Gripper gripper;
     private AprilTagCamera camera;
     boolean old;  // true if original swerve constants

@@ -130,7 +130,9 @@ public class SwerveSubsystem extends SubsystemBase {
         }    ,pose );
     }
 
-    /** Returns position in meters */
+    /** Returns position in meters
+     *   of four swerve drive encoders
+     */
     public double[] returnEncode() {
         double[] me = new double[] {
             -frontLeft.getDrivePosition(), 
@@ -141,6 +143,19 @@ public class SwerveSubsystem extends SubsystemBase {
         return me;
     }
 
+    /** returns drive velocity in meters/sec
+     *   for four drive encoders
+     */
+    public double[] getVelocity() {
+        return new double[] {
+            frontLeft.getDriveVelocity(),
+            frontRight.getDriveVelocity(),
+            backLeft.getDriveVelocity(),
+            backRight.getDriveVelocity(),
+        };
+    }
+
+    /** sets drive motor idle mode to BRAKE */
     public void setbrakemode(){
         frontLeft.setbrakemode();
         frontRight.setbrakemode();
@@ -148,6 +163,7 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.setbrakemode();
     }
 
+    /** sets drive motor idle mode to COAST */
     public void setcoastmode(){
         frontLeft.setcoastmode();
         frontRight.setcoastmode();
@@ -240,6 +256,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
+
     /**
      * Drives only in robot coordinate system <br>
      * @xS and

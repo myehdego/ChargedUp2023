@@ -236,6 +236,7 @@ public final class Constants {
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0; // driverJoytick
         public static final int kDRiverCOntrollerPort2 = 1; // mechJoytick
+        public static final int kDRiverCOntrollerPort3 = 2; // mech stick2
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
         public static final int kDriverRotAxis = 4;

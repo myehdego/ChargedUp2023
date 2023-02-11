@@ -24,7 +24,8 @@ public class NudgeDrive extends CommandBase {
     this.nudger = nudger;
     this.forward = forward;
     this.right = right;
-    controller = new PIDController(0.3/Math.abs(Units.inchesToMeters(3.)), 0, 0);  // set robot speed relative to distance from goal
+    // PID controller to set robot speed relative to distance from goal
+    controller = new PIDController(0.2/Math.abs(Units.inchesToMeters(3.)), 0, 0);  
   }
 
   // Called when the command is initially scheduled.
@@ -47,7 +48,8 @@ public class NudgeDrive extends CommandBase {
       whereiam = whereiam + each * .25;
     }
     double speed = controller.calculate(whereiam, target);
-    nudger.driveit(0,speed);
+    speed = Math.min(Math.max(speed,-.2),.2);  // limit output
+    nudger.driveit(0,speed);  // TODO Make it directional
   }
 
   // Called once the command ends or is interrupted.

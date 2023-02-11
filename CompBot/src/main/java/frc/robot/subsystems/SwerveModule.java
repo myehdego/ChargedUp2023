@@ -107,13 +107,12 @@ public class SwerveModule {
 
         resetEncoders();
     }
-    public SwerveModulePosition getPosition() {
-      
-      return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
 
+    public SwerveModulePosition getPosition() {   
+      return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
     } 
-    /** Return Drive Encoder Position
-     * Returns position in meters
+
+    /** Returns drive position in meters
      */
     public double getDrivePosition() {
         return driveEncoder.getPosition();
@@ -121,6 +120,8 @@ public class SwerveModule {
     public double getTurningPosition() {
         return turningEncoder.getPosition();
     }
+
+    /** returns drive velocity in meters/sec */
     public double getDriveVelocity() {
         return driveEncoder.getVelocity();
     }
@@ -131,7 +132,6 @@ public class SwerveModule {
     {
         return absoluteEncoder.getAbsolutePosition();
     }
-
     
     public double getAbsoluteEncoderRad() {
         double angle = absoluteEncoder.getAbsolutePosition();    // [0 - 360]
@@ -156,10 +156,12 @@ public class SwerveModule {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
     }
 
+    /** sets drive motor idle mode to COAST */
     public void setcoastmode() {
         driveMotor.setIdleMode(IdleMode.kCoast);
     }
 
+    /** sets drive motor idle mode to BRAKE */
     public void setbrakemode() {
         driveMotor.setIdleMode(IdleMode.kBrake);
     }
