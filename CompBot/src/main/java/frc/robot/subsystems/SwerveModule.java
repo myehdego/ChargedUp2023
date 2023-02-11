@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.CANCoderStickyFaults;
-import com.ctre.phoenix.sensors.MagnetFieldStrength;
+//import com.ctre.phoenix.sensors.CANCoderConfiguration;
+//import com.ctre.phoenix.sensors.CANCoderFaults;
+//import com.ctre.phoenix.sensors.CANCoderStickyFaults;
+//import com.ctre.phoenix.sensors.MagnetFieldStrength;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import com.revrobotics.SparkMaxPIDController;
@@ -180,8 +180,8 @@ public class SwerveModule {
     }
 
     public void smartDashreportState(SwerveModuleState state) {
-  //      SmartDashboard.putNumber(reportName+ " ABS Encoder" ,absoluteEncoder.getAbsolutePosition());
-  //      SmartDashboard.putNumber(reportName+ " Encoder" ,turningEncoder.getPosition());
+        SmartDashboard.putNumber(reportName+ " ABS Encoder" ,absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber(reportName+ " Encoder" ,turningEncoder.getPosition());
     }
 
     public void stop() {

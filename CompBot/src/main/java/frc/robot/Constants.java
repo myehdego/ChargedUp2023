@@ -240,16 +240,16 @@ public final class Constants {
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
         public static final int kDriverRotAxis = 4;
-        public static final int kArmExtendPos0Button          = 1; // mechJoytick button A
-        public static final int kArmExtendPos1Button          = 2; // mechJoytick button B
-        public static final int kArmExtendPos2Button          = 3; // mechJoytick button X
-        public static final int kArmDone                      = 4; // mechJoytick button Y
-        public static final int kgetAprilTagButton            = 5; // mechJoytick button left-bumper
-        public static final int kgetRobotPositionButton       = 6; // mechJoystick button right-bumper
-        public static final int kgripperopenbutton            = 14;
+        public static final int kArmExtendPos0Button          = 0; // buttonBox1
+        public static final int kArmExtendPos1Button          = 0; // buttonBox1
+        public static final int kArmExtendPos2Button          = 0; // buttonBox1
+        public static final int kArmDone                      = 0; // buttonBox1
+        public static final int kgetAprilTagButton            = 0; // buttonBox1
+        public static final int kgetRobotPositionButton       = 0; // buttonBox1
+        public static final int kgripperopenbutton            = 0; // buttonBox1
 
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
-        public static final int kDrivertostationbutton        = 2; // driverJoytick button B
+        public static final int kDrivertostationbutton        = 0; // driverJoytick button B
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
@@ -258,7 +258,7 @@ public final class Constants {
         public static final int kgripperliftbutton            = 0;
         public static final int kgripperclosebutton           = 0;
         public static final int kgripperdownbutton            = 0;
-        public static final int kNudgeLeftButton = 4;  // driverJoytick button Y
+        public static final int kNudgeLeftButton              = 0;  // driverJoytick button Y
     }
 
     public static final class CamConstant {

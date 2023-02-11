@@ -4,7 +4,7 @@ package frc.robot.subsystems;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.ctre.phoenix.sensors.Pigeon2_Faults;
+//import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

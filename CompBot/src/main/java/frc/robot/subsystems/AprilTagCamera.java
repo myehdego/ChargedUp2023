@@ -51,7 +51,7 @@ public class AprilTagCamera extends SubsystemBase {
   /** determines the location on the field of the robot
    * from its orientation relative to a visible April Tag.
    * 
-   * /p returns a Pose2d, dimensions in meters relative to corner of blue grid
+   * <p> returns a Pose2d, dimensions in meters relative to corner of blue grid
    */
   public Pose2d getRobotPosition() {
     try {
