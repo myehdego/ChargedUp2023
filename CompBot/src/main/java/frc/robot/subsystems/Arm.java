@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
     retractorfollowerEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     // raiserEncoder = raiserMotor.getEncoder();
     // raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
-    retractorMotor.setSoftLimit(null, 0);  // TODO set me
+    // retractorMotor.setSoftLimit(null, 0);  // TODO set me
   }
   
   /* public void raise() {

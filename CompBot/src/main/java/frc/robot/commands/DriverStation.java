@@ -46,7 +46,6 @@ public class DriverStation extends CommandBase {
      */
   @Override
   public void initialize() {
-    endPose = driveon.getPose();
     // determine starting position
     encS = driveon.returnEncode()[0]; // use one of the four
   }

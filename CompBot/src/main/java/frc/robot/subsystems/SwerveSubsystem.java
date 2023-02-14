@@ -235,7 +235,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
     }
     
-    /**Drives only in robot coordinate system.
+    /**Drives in robot or field coordinate system.
      * @xhowfast and 
      * @yhowfast are the components of the vector
      * in meters/sec,
@@ -258,7 +258,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Drives only in robot coordinate system <br>
+     * Drives in only robot  coordinate system <br>
      * @xS and
      * @yS are the components of the vector
      * in meters/sec

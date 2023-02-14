@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,6 +22,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
@@ -38,8 +40,8 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem;
     private Arm arm;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
-    private final Joystick mechJoytick = new Joystick(OIConstants.kDRiverCOntrollerPort2);
-    private final Joystick mechJoytick2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
+    private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
+    private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
     private Gripper gripper;
     private AprilTagCamera camera;
     boolean old;  // true if original swerve constants
@@ -73,45 +75,53 @@ public class RobotContainer {
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
-        new JoystickButton(driverJoytick, OIConstants.kDrivertostationbutton).
+        new JoystickButton(buttonBox2, OIConstants.kDrivertostationbutton).
                 onTrue(new DriverStation(swerveSubsystem));
         new JoystickButton(driverJoytick, OIConstants.kNudgeLeftButton).
                 onTrue(new NudgeDrive(swerveSubsystem, 0, 0));
+
+        // Test commands for generic drive
+        new JoystickButton(buttonBox, OIConstants.kDriveGenericx).
+                onTrue(new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), 0));
+        new JoystickButton(buttonBox, OIConstants.kDriveGenericy).
+                onTrue(new DriveGeneric(swerveSubsystem, 0, Units.inchesToMeters(14)));
+        new JoystickButton(buttonBox, OIConstants.kDriveGenericxy).
+                onTrue(new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14)));
         // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos1Button).
+                new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth1,true)));
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos2Button).
+                new JoystickButton(buttonBox, OIConstants.kArmExtendPos2Button).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,true)));
-                new JoystickButton(mechJoytick, OIConstants.kArmExtendPos0Button).
+                new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.retracto0,true)));
-                new JoystickButton(mechJoytick, OIConstants.kArmDone).
+                new JoystickButton(buttonBox, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()));
         
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
         }
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
-                new JoystickButton(mechJoytick, OIConstants.kgripperopenbutton).
+                new JoystickButton(buttonBox, OIConstants.kgripperopenbutton).
                   onTrue(new GripperOpenClose(gripper, true));
-                new JoystickButton(mechJoytick, OIConstants.kgripperclosebutton).
+                new JoystickButton(buttonBox, OIConstants.kgripperclosebutton).
                     onTrue(new GripperOpenClose(gripper, false));
         
-                new JoystickButton(mechJoytick, OIConstants.kgripperliftbutton).
+                new JoystickButton(buttonBox, OIConstants.kgripperliftbutton).
                   onTrue(new GripperUpAndDown(gripper, true));
-                new JoystickButton(mechJoytick, OIConstants.kgripperdownbutton).
+                new JoystickButton(buttonBox, OIConstants.kgripperdownbutton).
                     onTrue(new GripperUpAndDown(gripper, false));
         }
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
-                new JoystickButton(mechJoytick, OIConstants.kgetRobotPositionButton).
+                new JoystickButton(buttonBox, OIConstants.kgetRobotPositionButton).
                         onTrue(new GetRobotPosition(camera));
-                new JoystickButton(mechJoytick, OIConstants.kgetAprilTagButton).
+                new JoystickButton(buttonBox, OIConstants.kgetAprilTagButton).
                         onTrue(new GetAprilTag(camera));
         }
      }

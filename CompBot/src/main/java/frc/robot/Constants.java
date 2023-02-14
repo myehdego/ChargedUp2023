@@ -235,30 +235,40 @@ public final class Constants {
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0; // driverJoytick
-        public static final int kDRiverCOntrollerPort2 = 1; // mechJoytick
-        public static final int kDRiverCOntrollerPort3 = 2; // mech stick2
+        public static final int kDRiverCOntrollerPort2 = 1; // buttonBox
+        public static final int kDRiverCOntrollerPort3 = 2; // buttonBox2
+
+        public static final int kArmExtendPos0Button          = 0; // buttonBox
+        public static final int kArmExtendPos1Button          = 0; // buttonBox
+        public static final int kArmExtendPos2Button          = 0; // buttonBox
+        public static final int kArmDone                      = 0; // buttonBox
+        public static final int kgetAprilTagButton            = 0; // buttonBox
+        public static final int kgetRobotPositionButton       = 0; // buttonBox
+        public static final int kgripperopenbutton            = 0; // buttonBox
+
+        public static final int kDriveGenericx                = 7; // buttonBox
+        public static final int kDriveGenericy                = 8; // buttonBox
+        public static final int kDriveGenericxy               = 9; // buttonBox
+
+        public static final int kgripperliftbutton            = 0;
+        public static final int kgripperclosebutton           = 0;
+        public static final int kgripperdownbutton            = 0;
+        public static final int kNudgeLeftButton              = 0;
+
+        public static final int kDrivertostationbutton        = 4; // buttonBox2
+
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
         public static final int kDriverRotAxis = 4;
-        public static final int kArmExtendPos0Button          = 0; // buttonBox1
-        public static final int kArmExtendPos1Button          = 0; // buttonBox1
-        public static final int kArmExtendPos2Button          = 0; // buttonBox1
-        public static final int kArmDone                      = 0; // buttonBox1
-        public static final int kgetAprilTagButton            = 0; // buttonBox1
-        public static final int kgetRobotPositionButton       = 0; // buttonBox1
-        public static final int kgripperopenbutton            = 0; // buttonBox1
-
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
-        public static final int kDrivertostationbutton        = 0; // driverJoytick button B
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
         
         public static final double kDeadband = 0.05;
-        public static final int kgripperliftbutton            = 0;
-        public static final int kgripperclosebutton           = 0;
-        public static final int kgripperdownbutton            = 0;
-        public static final int kNudgeLeftButton              = 0;  // driverJoytick button Y
+
+
+
     }
 
     public static final class CamConstant {

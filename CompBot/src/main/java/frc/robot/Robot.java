@@ -267,21 +267,21 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (buttonBox1.getRawButton(1)){  // A Button
+        if (buttonBox1.getRawButton(0)){  // A Button
             arm.extend();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButton(4)){  // Y Button
+        if (buttonBox1.getRawButton(0)){  // Y Button
             arm.retract();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButton(2)){  // B Button
+        if (buttonBox1.getRawButton(0)){  // B Button
             arm.stopExtend();
             System.out.println(arm.getExtenderPos());
         }
-        if (buttonBox1.getRawButton(3)) {  // X button
+        if (buttonBox1.getRawButton(0)) {  // X button
             arm.resetEncoders();
             System.out.println(arm.getExtenderPos());
         }
