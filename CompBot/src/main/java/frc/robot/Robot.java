@@ -268,31 +268,44 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (buttonBox2.getRawButton(OIConstants.armTestExtendButton)){  // 
+        // Arm Tests
+        if (buttonBox2.getRawButtonPressed(OIConstants.armSoftLimitSwitch) || 
+            buttonBox2.getRawButtonReleased(OIConstants.armSoftLimitSwitch)){
+            // arm.softLimitONOFF();
+            System.out.println("Soft limit is " + arm.softLimitONOFF());
+        }
+        if (buttonBox2.getRawButtonPressed(OIConstants.armTestExtendButton)){  // 
             arm.extend();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButton(OIConstants.armTestRetractButton)){  // 
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton)){  // 
             arm.retract();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox2.getRawButton(OIConstants.armTestStopRetractButton)){  // 
+        if (buttonBox2.getRawButtonReleased(OIConstants.armTestExtendButton) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestRetractButton)){  // 
             arm.stopExtend();
             System.out.println(arm.getExtenderPos());
         }
-        if (buttonBox2.getRawButton(OIConstants.armTestRaiseButton)){  // 
+        if (buttonBox1.getRawButton(OIConstants.armTestStopRetractButton)){  // 
+            arm.stopExtend();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        }
+        if (buttonBox2.getRawButtonPressed(OIConstants.armTestRaiseButton)){  // 
             arm.raise();
             System.out.println(arm.getRaiserPO());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButton(OIConstants.armTestLowerButton)){  // 
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton)){  // 
             arm.lower();
             System.out.println(arm.getRaiserPO());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox2.getRawButton(OIConstants.armTestStopLowerButton)){  // 
+        if (buttonBox2.getRawButtonReleased(OIConstants.armTestRaiseButton) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton)){  // 
             arm.stopRaise();
             System.out.println(arm.getRaiserPO());
         }

@@ -14,11 +14,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
+import java.util.Random;
 
 public class DriveGeneric extends CommandBase {
   /** Drive a given distance in any direction
    * In field coordinates
    */
+  Random rand = new Random();
+  int randomNumber;
   SwerveSubsystem driver;
   Pose2d startpose, targetpose;
   double xdist;
@@ -28,8 +31,10 @@ public class DriveGeneric extends CommandBase {
   double target, dist;
   double tol;
   boolean stopwhendone = true;
+  boolean iShouldStop = false;
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
     // Use addRequirements() here to declare subsystem dependencies.
+    randomNumber = rand.nextInt(1000);
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
@@ -42,20 +47,25 @@ public class DriveGeneric extends CommandBase {
     this(driveon, xdist, ydist, true);
   }
 
+  public void endDriveGeneric() {
+    iShouldStop = true;
+    System.out.println("I am " + randomNumber);
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    encS = driver.returnEncode()[2];
+    // encS = driver.returnEncode()[2];
     dist = Math.sqrt(xdist*xdist+ydist*ydist);
-    target = encS+dist;
+    // target = encS+dist;
     tol = 0.02*dist;
     controller.setP(.3/dist);
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
-    SmartDashboard.putString("Transform", transform.toString());
-    SmartDashboard.putString("TargetPose" , targetpose.toString());
-    SmartDashboard.putString("Start Pose", startpose.toString());
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));
+    SmartDashboard.putString("Transform", transform.toString());
+    SmartDashboard.putString("TargetPose", targetpose.toString());
+    SmartDashboard.putString("StartPose", startpose.toString());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,8 +73,8 @@ public class DriveGeneric extends CommandBase {
   public void execute() {
     Pose2d currentpose = driver.getPose();
     double whereiam = PhotonUtils.getDistanceToPose(currentpose, startpose);
-    double speed = controller.calculate(whereiam, target);
-    driver.driveit(speed*ydist/dist, speed*xdist/dist, 0, true);
+    double speed = controller.calculate(whereiam, dist);
+    driver.driveit(speed*xdist/dist, speed*ydist/dist, 0, true);
 
     SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
     SmartDashboard.putString("CurrentPose", currentpose.toString());
@@ -80,6 +90,7 @@ public class DriveGeneric extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError() < tol;
+    System.out.println("iShouldStop = " + iShouldStop);
+    return controller.getPositionError() < tol || iShouldStop;
   }
 }

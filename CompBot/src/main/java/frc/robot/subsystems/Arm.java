@@ -39,18 +39,22 @@ public class Arm extends SubsystemBase {
     retractorMotor = new CANSparkMax(CANIDs.ArmRetractorMotor, MotorType.kBrushless);
     retractorMotor.restoreFactoryDefaults();
     retractorMotor.setInverted(CANIDs.retractorMotorInverted);
+    retractorMotor.setIdleMode(IdleMode.kBrake);
 
     retractorMotorfollower = new CANSparkMax(CANIDs.ArmRetractorMotorfollower, MotorType.kBrushless);
     retractorMotorfollower.restoreFactoryDefaults();
     retractorMotorfollower.follow(retractorMotor,true);
+    retractorMotorfollower.setIdleMode(IdleMode.kBrake);
 
     raiserMotor = new CANSparkMax(CANIDs.ArmRaiserMotor, MotorType.kBrushless);
     raiserMotor.restoreFactoryDefaults();
     raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
+    raiserMotor.setIdleMode(IdleMode.kBrake);
 
     raiserMotorfollower = new CANSparkMax(CANIDs.ArmRaiserMotorfollower, MotorType.kBrushless);
     raiserMotorfollower.restoreFactoryDefaults();
     raiserMotorfollower.follow(raiserMotor,true);
+    raiserMotorfollower.setIdleMode(IdleMode.kBrake);
 
     retractorEncoder = retractorMotor.getEncoder();
     retractorfollowerEncoder = retractorMotorfollower.getEncoder();
@@ -61,12 +65,19 @@ public class Arm extends SubsystemBase {
     raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
     retractorMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.retractorForwardLimit);  // TODO set me
      retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
-     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     // raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
     // raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
     retractorMotor.setIdleMode(IdleMode.kCoast);
     retractorMotorfollower.setIdleMode(IdleMode.kCoast);
+  }
+
+  public boolean softLimitONOFF() {
+    if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) 
+      retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    else retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    return retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse);
   }
   
    public void raise() {
