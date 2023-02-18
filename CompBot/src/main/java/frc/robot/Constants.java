@@ -190,33 +190,39 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int ArmRetractorMotor         = 60;
-      public static final int ArmRetractorMotorfollower = 31;
-      public static final boolean retractorMotorInverted = true;
-      public static final int ArmRaiserMotor            = 42;
-      public static final boolean ArmRaiserMotorInverted = false;
-      public static final int GripperRollerMotor        = 0;
+      public static final int ArmRetractorMotor              = 60;
+      public static final int ArmRetractorMotorfollower      = 31;
+      public static final boolean retractorMotorInverted     = true;
+      public static final int ArmRaiserMotor                 = 51;
+      public static final int ArmRaiserMotorfollower         = 50;
+      public static final boolean ArmRaiserMotorInverted     = true;
+      public static final int GripperRollerMotor             = 0;
       public static final boolean GripperRollerMotorInverted = false;
     }
 
     // Relative to front of the grid 
     public static final class ArmConstants {
-      public static final double retractorEncoderScale = 78./200.;  // degrees
-      public static final double retractorTolerance = 3.;  
-      public static final double raiserTolerance = 3.;  
-      public static final double floorPosition = 0.;
-      public static final double coneHeight1 = 0.;
-      public static final double coneHeight2 = 0.;
-      public static final double cubeDepth1 = 0.;     // 175.2; unscaled on backup bot
-      public static final double cubeDepth2 = 0.;     // 405.6; unscaled on backup bot
-      public static final double cubeHeight1 = 0.;
-      public static final double cubeHeight2 = 0.;
-      public static final double retracto0 = 0.;
-      public static final double coneDepth1 = 0.;
-      public static final double coneDepth2 = 0.;
-      public static final double RETRACTOR_METERSPERCOUNT = 1;
+      public static final double retractorEncoderScale    = 56.16/180.;  // degrees
+      public static final double retractorTolerance       = 3.;  
+      public static final double raiserTolerance          = 3.;  
+      public static final double floorPosition            = 0.;
+      public static final double coneHeight1              = 0.;
+      public static final double coneHeight2              = 0.;
+      public static final double cubeDepth1               = 0.;     // 175.2; unscaled on backup bot
+      public static final double cubeDepth2               = 0.;     // 405.6; unscaled on backup bot
+      public static final double cubeHeight1              = 0.;
+      public static final double cubeHeight2              = 0.;
+      public static final double retracto0                = 0.;
+      public static final double coneDepth1               = 0.;
+      public static final double coneDepth2               = 0.;
+      public static final double RETRACTOR_METERSPERCOUNT = 1.;
+      public static final double raiserEncoderScale       = 0.;
+      public static final float raiserForwardLimit        = 10;   // TODO: Method Tested Values need set
+      public static final float raiserReverseLimit        = -10;  // TODO: Method Tested Values need set
+      public static final float retractorForwardLimit     = 10;   // TODO: Method Tested Values need to set
+      public static final float retractorReverseLimit     = -10;  // TODO: Method Tested Values need to beset
     }
-
+ 
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond/1 ;
         public static final double kMaxAngularSpeedRadiansPerSecond = 
@@ -243,12 +249,21 @@ public final class Constants {
         public static final int kArmExtendPos2Button          = 0; // buttonBox
         public static final int kArmDone                      = 0; // buttonBox
         public static final int kgetAprilTagButton            = 0; // buttonBox
-        public static final int kgetRobotPositionButton       = 0; // buttonBox
+        public static final int kgetRobotPositionButton       = 10; // buttonBox
         public static final int kgripperopenbutton            = 0; // buttonBox
 
         public static final int kDriveGenericx                = 7; // buttonBox
         public static final int kDriveGenericy                = 8; // buttonBox
         public static final int kDriveGenericxy               = 9; // buttonBox
+
+        // test mode buttonbox buttons
+        public static final int armTestExtendButton           = 8; // box2
+        public static final int armTestRetractButton          = 1; // box1 
+        public static final int armTestRaiseButton            = 7; // box2
+        public static final int armTestLowerButton            = 2; // box1
+        public static final int armTestStopRetractButton      = 6; // box2
+        public static final int armTestStopLowerButton        = 5; // box2
+        public static final int armTestResetButton            = 4; // box2
 
         public static final int kgripperliftbutton            = 0;
         public static final int kgripperclosebutton           = 0;

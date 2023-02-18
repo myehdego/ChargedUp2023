@@ -7,9 +7,12 @@ package frc.robot.subsystems;
 //import java.util.concurrent.CancellationException;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.ArmConstants;
@@ -23,6 +26,7 @@ public class Arm extends SubsystemBase {
   CANSparkMax retractorMotor;
   CANSparkMax retractorMotorfollower;
   CANSparkMax raiserMotor;
+  CANSparkMax raiserMotorfollower;
   private SparkMaxPIDController pidController;
   private RelativeEncoder retractorEncoder;
   private RelativeEncoder retractorfollowerEncoder;
@@ -40,21 +44,32 @@ public class Arm extends SubsystemBase {
     retractorMotorfollower.restoreFactoryDefaults();
     retractorMotorfollower.follow(retractorMotor,true);
 
-    // raiserMotor = new CANSparkMax(CANIDs.ArmRaiserMotor, MotorType.kBrushless);
-    // raiserMotor.restoreFactoryDefaults();
-    // raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
+    raiserMotor = new CANSparkMax(CANIDs.ArmRaiserMotor, MotorType.kBrushless);
+    raiserMotor.restoreFactoryDefaults();
+    raiserMotor.setInverted(CANIDs.ArmRaiserMotorInverted);
+
+    raiserMotorfollower = new CANSparkMax(CANIDs.ArmRaiserMotorfollower, MotorType.kBrushless);
+    raiserMotorfollower.restoreFactoryDefaults();
+    raiserMotorfollower.follow(raiserMotor,true);
 
     retractorEncoder = retractorMotor.getEncoder();
     retractorfollowerEncoder = retractorMotorfollower.getEncoder();
     pidController = retractorMotor.getPIDController();
     retractorEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     retractorfollowerEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
-    // raiserEncoder = raiserMotor.getEncoder();
-    // raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
-    // retractorMotor.setSoftLimit(null, 0);  // TODO set me
+    raiserEncoder = raiserMotor.getEncoder(); 
+    raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
+    retractorMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.retractorForwardLimit);  // TODO set me
+     retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
+     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    // raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
+    // raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
+    retractorMotor.setIdleMode(IdleMode.kCoast);
+    retractorMotorfollower.setIdleMode(IdleMode.kCoast);
   }
   
-  /* public void raise() {
+   public void raise() {
     raiserMotor.set(0.1);
   }
   public void raise(boolean direction) {
@@ -64,7 +79,8 @@ public class Arm extends SubsystemBase {
 
   public void lower() {
     raiserMotor.set(-0.1);
-  } */
+  } 
+
   public boolean amIDone() {
     return IamDone;
   }
@@ -99,20 +115,25 @@ public class Arm extends SubsystemBase {
   public void stopRaise() {
     raiserMotor.stopMotor();
   }
-
   public void stopExtend() {
     retractorMotor.stopMotor();
   }
 
+  public double getRaiserPO() {
+    return raiserEncoder.getPosition();
+  }
   public double getExtenderPos() {
     return retractorEncoder.getPosition();
+  }
+  public double getExtenderfPos() {
+    return retractorfollowerEncoder.getPosition();
   }
 
   public void resetEncoders() {
     retractorEncoder.setPosition(0);
-    // raiserEncoder.setPosition(0);
+    retractorfollowerEncoder.setPosition(0);
+    raiserEncoder.setPosition(0);
   }
-
 
   /** This runs open looped controller, will command for arm to extend or retract towards target */
   public CommandBase extensionCommand(double Target) {

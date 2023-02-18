@@ -35,7 +35,7 @@ public class DriveGeneric extends CommandBase {
     this.xdist = xdist;
     this.ydist = ydist;
     this.stopwhendone = stopwhendone;
-    controller = new PIDController(0, 0, 0);  // ste p in init
+    controller = new PIDController(0, 0, 0);  // set p in init
   }
 
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist) {
@@ -51,6 +51,10 @@ public class DriveGeneric extends CommandBase {
     tol = 0.02*dist;
     controller.setP(.3/dist);
     startpose = driver.getPose();
+    Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
+    SmartDashboard.putString("Transform", transform.toString());
+    SmartDashboard.putString("TargetPose" , targetpose.toString());
+    SmartDashboard.putString("Start Pose", startpose.toString());
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));
   }
 
@@ -63,7 +67,6 @@ public class DriveGeneric extends CommandBase {
     driver.driveit(speed*ydist/dist, speed*xdist/dist, 0, true);
 
     SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
-    SmartDashboard.putString("TargetPose" , targetpose.toString());
     SmartDashboard.putString("CurrentPose", currentpose.toString());
   }
 

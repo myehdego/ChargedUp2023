@@ -9,28 +9,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagCamera;
 
+
 public class GetRobotPosition extends CommandBase {
   AprilTagCamera camera;
   Pose2d robotposition;
-  /** Gets Robot position using the april tag camera  */
+  /** Gets Robot position using the april tag camera */
   public GetRobotPosition(AprilTagCamera camera) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.camera = camera;
+   
     addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    camera.getAprTag();
     robotposition = camera.getRobotPosition();
     SmartDashboard.putString("Robot Positon", robotposition.toString());
-    System.out.println("Robot pos from Apr Teg:"+robotposition.toString());
+    System.out.println("Robot pos from Apr Tag:"+robotposition.toString());
     // TODO: do something useful with the info
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+  
+  }
 
   // Called once the command ends or is interrupted.
   @Override

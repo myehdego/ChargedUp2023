@@ -82,7 +82,6 @@ public class AprilTagCamera extends SubsystemBase {
       SmartDashboard.putNumber("Camx", camx);
       SmartDashboard.putNumber("CamY", camy);
      
-
       return new Pose2d(Units.metersToInches(robotx),
                         Units.metersToInches(roboty), new Rotation2d(0.)); // TODO: Presumes we are facing the tag head on
     }catch(NullPointerException e){

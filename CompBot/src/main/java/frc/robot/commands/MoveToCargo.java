@@ -6,13 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class MoveToCargo extends CommandBase {
   /** Moves to the cargo position on the field */
   AprilTagCamera camera;
-  public MoveToCargo(AprilTagCamera camera) {
+  SwerveSubsystem swerveSubsystem;
+  public MoveToCargo(AprilTagCamera camera, SwerveSubsystem swerveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.camera = camera;
+    this.swerveSubsystem = swerveSubsystem;
     addRequirements(camera);
 
   }
@@ -24,7 +27,7 @@ public class MoveToCargo extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  camera.getDistanceToCargo();  // TODO who cares?
+  camera.getDistanceToCargo();  //TODO: move robot to cargo location
   
 
   }
