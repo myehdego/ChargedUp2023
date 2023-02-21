@@ -51,7 +51,7 @@ public class AprilTagCamera extends SubsystemBase {
   /** determines the location on the field of the robot
    * from its orientation relative to a visible April Tag.
    * 
-   * /p returns a Pose2d, dimensions in meters relative to corner of blue grid
+   * <p> returns a Pose2d, dimensions in meters relative to corner of blue grid
    */
   public Pose2d getRobotPosition() {
     try {
@@ -82,7 +82,6 @@ public class AprilTagCamera extends SubsystemBase {
       SmartDashboard.putNumber("Camx", camx);
       SmartDashboard.putNumber("CamY", camy);
      
-
       return new Pose2d(Units.metersToInches(robotx),
                         Units.metersToInches(roboty), new Rotation2d(0.)); // TODO: Presumes we are facing the tag head on
     }catch(NullPointerException e){
@@ -118,7 +117,6 @@ public class AprilTagCamera extends SubsystemBase {
     { 40.45, 174.19, 18.22},
     { 40.45, 108.19, 18.22},
     { 40.45, 42.19, 18.22}
-    
   };
   private static final double  cargolocations [] [] = {
     {224.00,48.,0.}

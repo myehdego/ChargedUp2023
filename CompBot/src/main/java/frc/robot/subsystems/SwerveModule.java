@@ -1,13 +1,14 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.CANCoderStickyFaults;
-import com.ctre.phoenix.sensors.MagnetFieldStrength;
+//import com.ctre.phoenix.sensors.CANCoderConfiguration;
+//import com.ctre.phoenix.sensors.CANCoderFaults;
+//import com.ctre.phoenix.sensors.CANCoderStickyFaults;
+//import com.ctre.phoenix.sensors.MagnetFieldStrength;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
 import com.revrobotics.CANSparkMax;
@@ -106,13 +107,12 @@ public class SwerveModule {
 
         resetEncoders();
     }
-    public SwerveModulePosition getPosition() {
-      
-      return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
 
+    public SwerveModulePosition getPosition() {   
+      return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
     } 
-    /** Return Drive Encoder Position
-     * Returns position in meters
+
+    /** Returns drive position in meters
      */
     public double getDrivePosition() {
         return driveEncoder.getPosition();
@@ -120,6 +120,8 @@ public class SwerveModule {
     public double getTurningPosition() {
         return turningEncoder.getPosition();
     }
+
+    /** returns drive velocity in meters/sec */
     public double getDriveVelocity() {
         return driveEncoder.getVelocity();
     }
@@ -130,7 +132,6 @@ public class SwerveModule {
     {
         return absoluteEncoder.getAbsolutePosition();
     }
-
     
     public double getAbsoluteEncoderRad() {
         double angle = absoluteEncoder.getAbsolutePosition();    // [0 - 360]
@@ -155,6 +156,16 @@ public class SwerveModule {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
     }
 
+    /** sets drive motor idle mode to COAST */
+    public void setcoastmode() {
+        driveMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    /** sets drive motor idle mode to BRAKE */
+    public void setbrakemode() {
+        driveMotor.setIdleMode(IdleMode.kBrake);
+    }
+
     public void setDesiredState(SwerveModuleState state) {
         if (Math.abs(state.speedMetersPerSecond) < 0.001) {
             stop();
@@ -169,8 +180,8 @@ public class SwerveModule {
     }
 
     public void smartDashreportState(SwerveModuleState state) {
-  //      SmartDashboard.putNumber(reportName+ " ABS Encoder" ,absoluteEncoder.getAbsolutePosition());
-  //      SmartDashboard.putNumber(reportName+ " Encoder" ,turningEncoder.getPosition());
+        SmartDashboard.putNumber(reportName+ " ABS Encoder" ,absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber(reportName+ " Encoder" ,turningEncoder.getPosition());
     }
 
     public void stop() {

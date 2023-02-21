@@ -190,32 +190,39 @@ public final class Constants {
     }
 
     public static final class CANIDs {
-      public static final int ArmRetractorMotor         = 60;
-      public static final int ArmRetractorMotorfollower = 31;
-      public static final boolean retractorMotorInverted = true;
-      public static final int ArmRaiserMotor            = 42;
-      public static final boolean ArmRaiserMotorInverted = false;
-      public static final int GripperRollerMotor        = 0;
+      public static final int ArmRetractorMotor              = 50;   // left side
+      public static final int ArmRetractorMotorfollower      = 51;
+      public static final boolean retractorMotorInverted     = false;
+      public static final int ArmRaiserMotor                 = 30;  // left side
+      public static final int ArmRaiserMotorfollower         = 31;
+      public static final boolean ArmRaiserMotorInverted     = true;
+      public static final int GripperRollerMotor             = 0;
       public static final boolean GripperRollerMotorInverted = false;
     }
 
     // Relative to front of the grid 
     public static final class ArmConstants {
-      public static final double retractorTolerance = 3.;  
-      public static final double raiserTolerance = 3.;  
-      public static final double floorPosition = 0.;
-      public static final double coneHeight1 = 34.;
-      public static final double coneHeight2 = 46.;
-      public static final double cubeDepth1 = 175.2; // 22.75
-      public static final double cubeDepth2 = 405.6; // 39.75
-      public static final double cubeHeight1 = 23.5;
-      public static final double cubeHeight2 = 35.5;
-      public static final double retracto0 = 0.;
-      public static final double coneDepth1 = 22.75;
-      public static final double coneDepth2 = 39.75;  // All in inches
-      public static final double RETRACTOR_METERSPERCOUNT = 1;
+      public static final double retractorEncoderScale    = 56.16/180.;  // degrees
+      public static final double retractorTolerance       = 3.;  
+      public static final double raiserTolerance          = 3.;  
+      public static final double floorPosition            = 0.;
+      public static final double coneHeight1              = 0.;
+      public static final double coneHeight2              = 0.;
+      public static final double cubeDepth1               = 0.;     // 175.2; unscaled on backup bot
+      public static final double cubeDepth2               = 0.;     // 405.6; unscaled on backup bot
+      public static final double cubeHeight1              = 0.;
+      public static final double cubeHeight2              = 0.;
+      public static final double retracto0                = 0.;
+      public static final double coneDepth1               = 0.;
+      public static final double coneDepth2               = 0.;
+      public static final double RETRACTOR_METERSPERCOUNT = 1.;
+      public static final double raiserEncoderScale       = 0.;
+      public static final float raiserForwardLimit        = -10;   // TODO: Method Tested Values need set
+      public static final float raiserReverseLimit        = 10;  // Tested, calibrated
+      public static final float retractorForwardLimit     = 180;   // Method Tested; values calibrated
+      public static final float retractorReverseLimit     = -5;  // Method Tested; values calibrated
     }
-
+ 
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond/1 ;
         public static final double kMaxAngularSpeedRadiansPerSecond = 
@@ -234,28 +241,51 @@ public final class Constants {
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 0; // driverJoytick
-        public static final int kDRiverCOntrollerPort2 = 1; // mechJoytick
+        public static final int kDRiverCOntrollerPort2 = 1; // buttonBox
+        public static final int kDRiverCOntrollerPort3 = 2; // buttonBox2
+
+        public static final int kArmExtendPos0Button          = 0; // buttonBox
+        public static final int kArmExtendPos1Button          = 0; // buttonBox
+        public static final int kArmExtendPos2Button          = 0; // buttonBox
+        public static final int kArmDone                      = 0; // buttonBox
+        public static final int kgetAprilTagButton            = 0; // buttonBox
+        public static final int kgripperopenbutton            = 0; // buttonBox
+        public static final int kEndDriveGeneric              = 6; // buttonBox
+        public static final int kDriveGenericx                = 7; // buttonBox
+        public static final int kDriveGenericy                = 8; // buttonBox
+        public static final int kDriveGenericxy               = 9; // buttonBox
+        public static final int kgetRobotPositionButton       = 10; // buttonBox
+
+        // test mode buttonbox buttons
+
+        public static final int armTestRetractButton          = 1; // box1 
+        public static final int armTestLowerButton            = 2; // box1
+        public static final int armSoftLimitSwitch            = 3; // box2
+        public static final int armTestResetButton            = 4; // box2
+        public static final int armTestStopLowerButton        = 5; // box2
+        public static final int armTestStopRetractButton      = 6; // box2
+        public static final int armTestRaiseButton            = 7; // box2
+        public static final int armTestExtendButton           = 8; // box2
+
+        public static final int kgripperliftbutton            = 0;
+        public static final int kgripperclosebutton           = 0;
+        public static final int kgripperdownbutton            = 0;
+        public static final int kNudgeLeftButton              = 0;
+
+        public static final int kDrivertostationbutton        = 4; // buttonBox2
+
         public static final int kDriverYAxis = 0;
         public static final int kDriverXAxis = 1;
         public static final int kDriverRotAxis = 4;
-        public static final int kArmExtendPos0Button          = 1; // mechJoytick button A
-        public static final int kArmExtendPos1Button          = 2; // mechJoytick button B
-        public static final int kArmExtendPos2Button          = 3; // mechJoytick button X
-        public static final int kArmDone                      = 4; // mechJoytick button Y
-        public static final int kgetAprilTagButton            = 5; // mechJoytick button left-bumper
-        public static final int kgetRobotPositionButton       = 6; // mechJoystick button right-bumper
-        public static final int kgripperopenbutton            = 14;
-
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
-        public static final int kDrivertostationbutton        = 2; // driverJoytick button B
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
         
         public static final double kDeadband = 0.05;
-        public static final int kgripperliftbutton            = 0;
-        public static final int kgripperclosebutton           = 0;
-        public static final int kgripperdownbutton            = 0;
+
+
+
     }
 
     public static final class CamConstant {

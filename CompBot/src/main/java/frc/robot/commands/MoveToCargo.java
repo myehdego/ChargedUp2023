@@ -6,14 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AprilTagCamera;
+import frc.robot.subsystems.SwerveSubsystem;
 
-public class GetAprilTag extends CommandBase {
+public class MoveToCargo extends CommandBase {
+  /** Moves to the cargo position on the field */
   AprilTagCamera camera;
-  /**Uses the PhotonVision subsystem to detect AprilTags and display the tag id */
-  public GetAprilTag(AprilTagCamera camera) {
+  SwerveSubsystem swerveSubsystem;
+  public MoveToCargo(AprilTagCamera camera, SwerveSubsystem swerveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(camera);
     this.camera = camera;
+    this.swerveSubsystem = swerveSubsystem;
+    addRequirements(camera);
+
   }
 
   // Called when the command is initially scheduled.
@@ -23,7 +27,9 @@ public class GetAprilTag extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    camera.getAprTag();  // TODO  who cares?
+  camera.getDistanceToCargo();  //TODO: move robot to cargo location
+  
+
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +39,6 @@ public class GetAprilTag extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

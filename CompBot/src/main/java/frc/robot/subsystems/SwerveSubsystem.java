@@ -4,7 +4,7 @@ package frc.robot.subsystems;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
-import com.ctre.phoenix.sensors.Pigeon2_Faults;
+//import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -130,7 +130,9 @@ public class SwerveSubsystem extends SubsystemBase {
         }    ,pose );
     }
 
-    /** Returns position in meters */
+    /** Returns position in meters
+     *   of four swerve drive encoders
+     */
     public double[] returnEncode() {
         double[] me = new double[] {
             -frontLeft.getDrivePosition(), 
@@ -139,6 +141,34 @@ public class SwerveSubsystem extends SubsystemBase {
             -backRight.getDrivePosition()
         };
         return me;
+    }
+
+    /** returns drive velocity in meters/sec
+     *   for four drive encoders
+     */
+    public double[] getVelocity() {
+        return new double[] {
+            frontLeft.getDriveVelocity(),
+            frontRight.getDriveVelocity(),
+            backLeft.getDriveVelocity(),
+            backRight.getDriveVelocity(),
+        };
+    }
+
+    /** sets drive motor idle mode to BRAKE */
+    public void setbrakemode(){
+        frontLeft.setbrakemode();
+        frontRight.setbrakemode();
+        backLeft.setbrakemode();
+        backRight.setbrakemode();
+    }
+
+    /** sets drive motor idle mode to COAST */
+    public void setcoastmode(){
+        frontLeft.setcoastmode();
+        frontRight.setcoastmode();
+        backLeft.setcoastmode();
+        backRight.setcoastmode();
     }
 
     @Override
@@ -205,7 +235,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
     }
     
-    /**Drives only in robot coordinate system.
+    /**Drives in robot or field coordinate system.
      * @xhowfast and 
      * @yhowfast are the components of the vector
      * in meters/sec,
@@ -226,8 +256,9 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates = chassis2ModuleStates(chassisSpeeds);
         setModuleStates(moduleStates);
     }
+
     /**
-     * Drives only in robot coordinate system <br>
+     * Drives in only robot  coordinate system <br>
      * @xS and
      * @yS are the components of the vector
      * in meters/sec

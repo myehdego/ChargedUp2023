@@ -9,8 +9,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+//import edu.wpi.first.math.geometry.Pose2d;
+//import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 
-import com.ctre.phoenix.sensors.Pigeon2_Faults;
+//import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
 // }
 
@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
     private RobotContainer m_robotContainer;
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
+    private final Joystick buttonBox1 = new Joystick(OIConstants.kDRiverCOntrollerPort2);
+    private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
     private SwerveSubsystem swerveSubsystem;
     private Arm arm;
     private WPI_Pigeon2 pigeon;
@@ -266,19 +268,56 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        if (driverJoytick.getRawButton(1)){  // A Button
+        // Arm Tests
+        if (buttonBox2.getRawButtonPressed(OIConstants.armSoftLimitSwitch) || 
+            buttonBox2.getRawButtonReleased(OIConstants.armSoftLimitSwitch)){
+            // arm.softLimitONOFF();
+            System.out.println("Soft limit is " + arm.softLimitONOFF());
+        }
+        if (buttonBox2.getRawButtonPressed(OIConstants.armTestExtendButton)){  // 
             arm.extend();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (driverJoytick.getRawButton(4)){  // Y Button
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton)){  // 
             arm.retract();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (driverJoytick.getRawButton(2)){  // B Button
+        if (buttonBox2.getRawButtonReleased(OIConstants.armTestExtendButton) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestRetractButton)){  // 
             arm.stopExtend();
+            System.out.println(arm.getExtenderPos());
         }
-        if (driverJoytick.getRawButton(3)) {  // X button
+        if (buttonBox1.getRawButton(OIConstants.armTestStopRetractButton)){  // 
+            arm.stopExtend();
+            System.out.println(arm.getExtenderPos());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        }
+        if (buttonBox2.getRawButtonPressed(OIConstants.armTestRaiseButton)){  // 
+            arm.raise();
+            System.out.println(arm.getRaiserPO());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        }
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton)){  // 
+            arm.lower();
+            System.out.println(arm.getRaiserPO());
+            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        }
+        if (buttonBox2.getRawButtonReleased(OIConstants.armTestRaiseButton) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton)){  // 
+            arm.stopRaise();
+            System.out.println(arm.getRaiserPO());
+        }
+        if (buttonBox2.getRawButton(OIConstants.armTestResetButton)) {  // 
             arm.resetEncoders();
+            System.out.println(arm.getExtenderPos());
+            System.out.println(arm.getRaiserPO());
         }
+
+        arm.healthStatus();
         
         SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        SmartDashboard.putNumber("Arm extenderf position", arm.getExtenderfPos());
     }
 }

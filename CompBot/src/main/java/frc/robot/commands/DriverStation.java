@@ -9,8 +9,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+//import edu.wpi.first.math.kinematics.ChassisSpeeds;
+//import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -46,11 +46,8 @@ public class DriverStation extends CommandBase {
      */
   @Override
   public void initialize() {
-    endPose = driveon.getPose();
-    // TODO next line need to be tranform into robot coordinate system
-     // .plus(new Transform2d(new Translation2d(FieldConstants.chargingstationlength, 0),
-    encS = driveon.returnEncode()[0];
-    
+    // determine starting position
+    encS = driveon.returnEncode()[0]; // use one of the four
   }
 
   // set a drive speed in the robot frame
@@ -68,13 +65,6 @@ public class DriverStation extends CommandBase {
     driveon.driveit(john, 0);
     
     SmartDashboard.putNumber("DriveError" , controller.getPositionError());
-
-   /*  ChassisSpeeds chassisSpeeds = 
-          new ChassisSpeeds(-0.1, 0, 0);
-    SwerveModuleState[] moduleStates = 
-          DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-          // TODO make this work for the comp bot, too
-    driveon.setModuleStates(moduleStates); */
   }
 
   // stop the robot.
