@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.List;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -58,6 +59,7 @@ public class RobotContainer {
         */
         this.old=Old;
         swerveSubsystem = new SwerveSubsystem(Old);
+        SmartDashboard.putData(swerveSubsystem);
         
         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
@@ -83,15 +85,20 @@ public class RobotContainer {
 
         // Test commands for generic drive
         new JoystickButton(buttonBox, OIConstants.kEndDriveGeneric).
-                onTrue(new InstantCommand(() -> driveGeneric.endDriveGeneric()));
+                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()));
         new JoystickButton(buttonBox, OIConstants.kDriveGenericx).
-                onTrue(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), 0));
+                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
+                andThen(new WaitCommand(.5)).
+                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), 0)));
         new JoystickButton(buttonBox, OIConstants.kDriveGenericy).
-                onTrue(driveGeneric = new DriveGeneric(swerveSubsystem, 0, Units.inchesToMeters(14)));
+                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
+                andThen(new WaitCommand(.5)).
+                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, 0, Units.inchesToMeters(14))));
         new JoystickButton(buttonBox, OIConstants.kDriveGenericxy).
-                onTrue(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14)));
+                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
+                andThen(new WaitCommand(.5)).
+                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14))));
         
-
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
                 new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).
@@ -213,5 +220,6 @@ public class RobotContainer {
                 return camera;
         } else return null;
     }
+
 
 }

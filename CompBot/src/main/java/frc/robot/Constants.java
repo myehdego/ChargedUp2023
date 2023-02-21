@@ -302,6 +302,8 @@ public final class Constants {
         public static final int closeChannel = 1;     // the gripper channel to close
         public static final int wristUpChannel = 2;   // gripper wrist up
         public static final int wristDownChannel = 3; // gripper wrist down
+        public static final double CUBEPRESSURE = 0;  // psi
+        public static final double CONEPRESSURE = 0;  // psi
     }
 
     public static final class RobotConstants {

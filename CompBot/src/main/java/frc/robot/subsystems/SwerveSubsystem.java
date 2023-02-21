@@ -216,10 +216,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
 //       SmartDashboard.putString("Gyro: ", String.format("%.3f", gyro.getAngle()));
 
-        SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
-        SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
-        SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
-        SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
+        //SmartDashboard.putNumber("FLabsA", frontLeft.getabsoluteEncoder());
+       // SmartDashboard.putNumber("FRabsA", frontRight.getabsoluteEncoder());
+       // SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
+       // SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
 
         SmartDashboard.putNumber("BotX", odometer.getPoseMeters().getX());
         SmartDashboard.putNumber("BotY", odometer.getPoseMeters().getY());
@@ -269,6 +269,21 @@ public class SwerveSubsystem extends SubsystemBase {
     public void driveit(double xS, double yS) {
         driveit(xS, yS, 0., false);
     }
+
+
+    boolean iShouldStop = false;
+
+    public boolean shouldistop() {
+        return iShouldStop;
+    }
+
+    public void makemefalse() {
+        iShouldStop = false;
+    }
+
+    public void makemestop() {
+        iShouldStop = true;
+    } 
 
     /** driveMe just stops because it is essentially unimplemented */
     public CommandBase driveMe(double howfast){

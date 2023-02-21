@@ -7,7 +7,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +20,10 @@ import frc.robot.Constants.Pneumatics;
 public class Gripper extends SubsystemBase {
   /** manipulates and grabs game objects.
    *  opening and closing with pneumatics.
+   *  TODO: change the grip strength for cones and blocks
    */
+  private PneumaticHub pch = new PneumaticHub(1);
+  private Compressor compressor = pch.makeCompressor();
   private DoubleSolenoid gripper; 
   private DoubleSolenoid lifter; 
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
@@ -30,6 +36,7 @@ public class Gripper extends SubsystemBase {
           Pneumatics.wristUpChannel, Pneumatics.wristDownChannel);
     roller.restoreFactoryDefaults();
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
+    pch.enableCompressorDigital();
   }
 
   /** turn on rollers */
@@ -39,6 +46,14 @@ public class Gripper extends SubsystemBase {
 
   public void rollersStop() {
     roller.stopMotor();
+  }
+
+  public void setCubeP() {
+    pch.enableCompressorAnalog(Pneumatics.CUBEPRESSURE-10., Pneumatics.CUBEPRESSURE);
+  }
+
+  public void setConeP() {
+    pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
   }
   
   public boolean opengripper() {

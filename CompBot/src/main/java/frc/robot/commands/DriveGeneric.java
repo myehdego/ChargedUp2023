@@ -20,8 +20,7 @@ public class DriveGeneric extends CommandBase {
   /** Drive a given distance in any direction
    * In field coordinates
    */
-  Random rand = new Random();
-  int randomNumber;
+  int randomNumber = Math.floorMod(System.currentTimeMillis(), 1000);
   SwerveSubsystem driver;
   Pose2d startpose, targetpose;
   double xdist;
@@ -34,7 +33,6 @@ public class DriveGeneric extends CommandBase {
   boolean iShouldStop = false;
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
     // Use addRequirements() here to declare subsystem dependencies.
-    randomNumber = rand.nextInt(1000);
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
@@ -49,12 +47,12 @@ public class DriveGeneric extends CommandBase {
 
   public void endDriveGeneric() {
     iShouldStop = true;
-    System.out.println("I am " + randomNumber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    driver.makemefalse();
     // encS = driver.returnEncode()[2];
     dist = Math.sqrt(xdist*xdist+ydist*ydist);
     // target = encS+dist;
@@ -90,7 +88,6 @@ public class DriveGeneric extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("iShouldStop = " + iShouldStop);
-    return controller.getPositionError() < tol || iShouldStop;
+    return controller.getPositionError() < tol || driver.shouldistop();
   }
 }
