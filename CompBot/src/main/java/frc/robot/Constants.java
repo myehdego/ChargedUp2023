@@ -196,7 +196,7 @@ public final class Constants {
       public static final int ArmRaiserMotor                 = 30;  // left side
       public static final int ArmRaiserMotorfollower         = 31;
       public static final boolean ArmRaiserMotorInverted     = true;
-      public static final int GripperRollerMotor             = 0;
+      public static final int GripperRollerMotor             = 60;
       public static final boolean GripperRollerMotorInverted = false;
     }
 
@@ -243,35 +243,25 @@ public final class Constants {
         public static final int kDriverControllerPort = 0; // driverJoytick
         public static final int kDRiverCOntrollerPort2 = 1; // buttonBox
         public static final int kDRiverCOntrollerPort3 = 2; // buttonBox2
+        public static final int kDriverControllerPort4 = 3; // ti launchpad
 
         public static final int kArmExtendPos0Button          = 0; // buttonBox
         public static final int kArmExtendPos1Button          = 0; // buttonBox
         public static final int kArmExtendPos2Button          = 0; // buttonBox
         public static final int kArmDone                      = 0; // buttonBox
         public static final int kgetAprilTagButton            = 0; // buttonBox
-        public static final int kgripperopenbutton            = 0; // buttonBox
+        public static final int kgripperclosebutton           = 4; // buttonBox
         public static final int kEndDriveGeneric              = 6; // buttonBox
         public static final int kDriveGenericx                = 7; // buttonBox
         public static final int kDriveGenericy                = 8; // buttonBox
         public static final int kDriveGenericxy               = 9; // buttonBox
-        public static final int kgetRobotPositionButton       = 10; // buttonBox
-
-        // test mode buttonbox buttons
-
-        public static final int armTestRetractButton          = 1; // box1 
-        public static final int armTestLowerButton            = 2; // box1
-        public static final int armSoftLimitSwitch            = 3; // box2
-        public static final int armTestResetButton            = 4; // box2
-        public static final int armTestStopLowerButton        = 5; // box2
-        public static final int armTestStopRetractButton      = 6; // box2
-        public static final int armTestRaiseButton            = 7; // box2
-        public static final int armTestExtendButton           = 8; // box2
-
+        public static final int PRESSURESwitch                = 10; // buttonbox
         public static final int kgripperliftbutton            = 0;
-        public static final int kgripperclosebutton           = 0;
         public static final int kgripperdownbutton            = 0;
         public static final int kNudgeLeftButton              = 0;
 
+        public static final int kgripperopenbutton            = 1;  // box2
+        public static final int kgetRobotPositionButton       = 3;  //box2
         public static final int kDrivertostationbutton        = 4; // buttonBox2
 
         public static final int kDriverYAxis = 0;
@@ -281,7 +271,23 @@ public final class Constants {
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
+
         
+        public static final int choiceswitch                  = 1; // ti launchpad
+        
+
+        // test mode buttonbox buttons
+
+        public static final int armTestRetractButton          = 1; // box1 
+        public static final int armTestLowerButton            = 2; // box1
+        public static final int armTestResetButton            = 4; // box2
+        public static final int armTestStopLowerButton        = 0; // box2
+        public static final int armTestStopRetractButton      = 0; // box2
+        public static final int armSoftLimitSwitchR            = 5; // box2
+        public static final int armSoftLimitSwitch            = 6; // box2
+        public static final int armTestRaiseButton            = 7; // box2
+        public static final int armTestExtendButton           = 8; // box2
+
         public static final double kDeadband = 0.05;
 
 

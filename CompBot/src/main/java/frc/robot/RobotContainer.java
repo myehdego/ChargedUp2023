@@ -41,6 +41,8 @@ public class RobotContainer {
     private final SwerveSubsystem swerveSubsystem;
     private DriveGeneric driveGeneric;
     private Arm arm;
+    private final Joystick switchBox =  new Joystick(OIConstants.kDriverControllerPort4);
+    
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
     private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
@@ -82,7 +84,7 @@ public class RobotContainer {
                 onTrue(new DriverStation(swerveSubsystem));
         /* new JoystickButton(driverJoytick, OIConstants.kNudgeLeftButton).
                 onTrue(new NudgeDrive(swerveSubsystem, 0, 0)); */
-
+        
         // Test commands for generic drive
         new JoystickButton(buttonBox, OIConstants.kEndDriveGeneric).
                 onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()));
@@ -125,10 +127,10 @@ public class RobotContainer {
                 new JoystickButton(buttonBox, OIConstants.kgripperclosebutton).
                     onTrue(new GripperOpenClose(gripper, false));
         
-                new JoystickButton(buttonBox, OIConstants.kgripperliftbutton).
-                  onTrue(new GripperUpAndDown(gripper, true));
-                new JoystickButton(buttonBox, OIConstants.kgripperdownbutton).
-                    onTrue(new GripperUpAndDown(gripper, false));
+                new JoystickButton(buttonBox, OIConstants.PRESSURESwitch).
+                    onTrue(new InstantCommand(() -> gripper.setCubeP()));
+                new JoystickButton(buttonBox, OIConstants.PRESSURESwitch).
+                    onFalse(new InstantCommand(() -> gripper.setConeP()));
         }
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 new JoystickButton(buttonBox, OIConstants.kgetRobotPositionButton).
@@ -138,8 +140,21 @@ public class RobotContainer {
         }
      }
     
+     public Command getAutonomousCommand() {
+        /* 1. goes stright forward to leave the Community
+         * 2. place a game piece on a node.
+         * 3. retriving a game piece.
+         * 4. docking on the charge station.
+         * 5. 2 followed by 1
+         * 6. 2 followed by 4
+         * 7. 1 followed by 4
+         * 8.
+         */
+        double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
+        return new DriveGeneric(swerveSubsystem, 0, 0);
+     }
 
-    public Command getAutonomousCommand() {
+    public Command getAutonomousCommand_old() {
         // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,

@@ -69,14 +69,6 @@ public class Gripper extends SubsystemBase {
     return false;
   } 
 
-  public void liftGripper() {
-    lifter.set(Value.kForward);
-  }
-
-  public void lowerGripper() {
-    lifter.set(Value.kReverse);
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

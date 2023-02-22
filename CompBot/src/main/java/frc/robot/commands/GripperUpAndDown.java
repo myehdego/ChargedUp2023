@@ -20,14 +20,7 @@ public class GripperUpAndDown extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    if (up) {
-      gripper.liftGripper();
-    }
-    else { 
-      gripper.lowerGripper();
-    }
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
