@@ -141,7 +141,9 @@ public class RobotContainer {
      }
     
      public Command getAutonomousCommand() {
-        /* 1. goes stright forward to leave the Community
+        /* 
+         * Autonomous selector dial selects command group to follow:
+         * 1. goes stright forward to leave the Community
          * 2. place a game piece on a node.
          * 3. retriving a game piece.
          * 4. docking on the charge station.
@@ -149,8 +151,21 @@ public class RobotContainer {
          * 6. 2 followed by 4
          * 7. 1 followed by 4
          * 8.
+         * 
+         * Presuming one step is to play a game piece, 
+         * there is a selector for wihich location
+         * 1. floor
+         * 2. mid
+         * 3. high
+         * 
+         * Presuming we want to allow alliance partner(s) to get
+         * out of the way before we drive, there is a selector
+         * to choose the delay time, 0 -> 5 seconds
          */
         double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
+        double level = switchBox.getRawAxis(OIConstants.levelSwitch);
+        double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
+
         return new DriveGeneric(swerveSubsystem, 0, 0);
      }
 
@@ -235,6 +250,5 @@ public class RobotContainer {
                 return camera;
         } else return null;
     }
-
 
 }

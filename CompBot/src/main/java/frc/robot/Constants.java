@@ -272,9 +272,9 @@ public final class Constants {
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
 
-        
-        public static final int choiceswitch                  = 1; // ti launchpad
-        
+        public static final int choiceswitch                  = 1; // ti launchpad axis
+        public static final int delaySwitch                   = 0; // ti launchpad axis
+        public static final int levelSwitch                   = 0; // ti launchpad axis
 
         // test mode buttonbox buttons
 
