@@ -162,11 +162,23 @@ public class RobotContainer {
          * out of the way before we drive, there is a selector
          * to choose the delay time, 0 -> 5 seconds
          */
+        /*  TODO: convert axis output from [-1, 1] to:
+            command set choice [1,N]
+            level choice [floor, mid, high]
+            delay [0,5]
+        */
+
+        /* TODO: Do any of our comptations or decisions depend on which color we are?
+            Answer is Yes
+        */
+
+        /* TODO: What is our location in the GRID? */
+        
         double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
-        return new DriveGeneric(swerveSubsystem, 0, 0);
+        return new DriveGeneric(swerveSubsystem, 0, 0);  // TODO where to go?
      }
 
     public Command getAutonomousCommand_old() {

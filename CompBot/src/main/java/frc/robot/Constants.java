@@ -218,7 +218,7 @@ public final class Constants {
       public static final double RETRACTOR_METERSPERCOUNT = 1.;
       public static final double raiserEncoderScale       = 0.;
       public static final float raiserForwardLimit        = -10;   // TODO: Method Tested Values need set
-      public static final float raiserReverseLimit        = 10;  // Tested, calibrated
+      public static final float raiserReverseLimit        = 10;
       public static final float retractorForwardLimit     = 180;   // Method Tested; values calibrated
       public static final float retractorReverseLimit     = -5;  // Method Tested; values calibrated
     }
