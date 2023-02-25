@@ -126,11 +126,14 @@ public class RobotContainer {
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
         }
+
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
                 new JoystickButton(buttonBox, OIConstants.kgripperopenbutton).
                   onTrue(new GripperOpenClose(gripper, true));
                 new JoystickButton(buttonBox, OIConstants.kgripperclosebutton).
                     onTrue(new GripperOpenClose(gripper, false));
+                // TODO: open requires high pressure
+                // TODO: need to bleed pressure when switching from high to low
         
                 new JoystickButton(buttonBox, OIConstants.PRESSURESwitch).
                     onTrue(new InstantCommand(() -> gripper.setCubeP()));
