@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -25,27 +26,32 @@ public class Gripper extends SubsystemBase {
   private PneumaticHub pch = new PneumaticHub(1);
   private Compressor compressor = pch.makeCompressor();
   private DoubleSolenoid gripper; 
-  private DoubleSolenoid lifter; 
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
 
   
   public Gripper() {
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
            Pneumatics.openChannel, Pneumatics.closeChannel);
-    lifter = new DoubleSolenoid(PneumaticsModuleType.REVPH,
-          Pneumatics.wristUpChannel, Pneumatics.wristDownChannel);
+/*     lifter = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+          Pneumatics.wristUpChannel, Pneumatics.wristDownChannel); */
     roller.restoreFactoryDefaults();
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
+    roller.setIdleMode(IdleMode.kBrake);
     pch.enableCompressorDigital();
   }
 
-  /** turn on rollers */
+  /** turn on rollers to input a game piece*/
   public void rollersGo() {
     roller.set(1.);
   }
 
   public void rollersStop() {
     roller.stopMotor();
+  }
+
+  /** turn on rollers to expel */
+  public void rollerSpit() {
+    roller.set(-1.);
   }
 
   public void setCubeP() {

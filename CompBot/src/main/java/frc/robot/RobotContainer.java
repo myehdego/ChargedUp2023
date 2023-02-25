@@ -102,7 +102,8 @@ public class RobotContainer {
                 andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14))));
         
                 // mechJoytick Buttons
-         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) {
+         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
+                // TODO: Add button for substation
                 new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
@@ -115,8 +116,12 @@ public class RobotContainer {
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.retracto0,true)));
-                new JoystickButton(buttonBox, OIConstants.kArmDone).
+                new JoystickButton(buttonBox2, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()));
+                new JoystickButton(buttonBox2, OIConstants.targetExtendNudge).
+                  onTrue(new InstantCommand(() -> arm.retargetRetract(1.)));
+                new JoystickButton(buttonBox, OIConstants.targetRetractNudge).
+                  onTrue(new InstantCommand(() -> arm.retargetRetract(-1.)));
         
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
@@ -173,7 +178,7 @@ public class RobotContainer {
         */
 
         /* TODO: What is our location in the GRID? */
-        
+
         double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);

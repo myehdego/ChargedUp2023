@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
-import java.util.Random;
 
 public class DriveGeneric extends CommandBase {
   /** Drive a given distance in any direction
@@ -45,6 +44,7 @@ public class DriveGeneric extends CommandBase {
     this(driveon, xdist, ydist, true);
   }
 
+  /** stop DriveGeneric Command whether accomplished or not */
   public void endDriveGeneric() {
     iShouldStop = true;
   }
@@ -88,6 +88,8 @@ public class DriveGeneric extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError() < tol || driver.shouldistop();
+    return controller.getPositionError() < tol ||
+    //iShouldStop;
+    driver.shouldistop();
   }
 }

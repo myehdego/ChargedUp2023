@@ -28,6 +28,7 @@ public class GripperOpenClose extends CommandBase {
     else {
       gripper.closegripper();
       gripper.rollersStop();
+      // TODO: Make it spit when playing game pieces
     }
   }
 

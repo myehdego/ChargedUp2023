@@ -32,7 +32,8 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder retractorfollowerEncoder;
   private RelativeEncoder raiserEncoder;
   double kp;
-  private boolean IamDone;
+  private boolean IamDone;  // mechanism to interrupt a Command using the arm
+  // TODO IamDone interrupts the retractor motor controller; need a separate one for raiser?
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
    * and retract to have the ability to reach futher up on the shelves and pegs  */
   public Arm() {
@@ -63,16 +64,21 @@ public class Arm extends SubsystemBase {
     retractorfollowerEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     raiserEncoder = raiserMotor.getEncoder(); 
     raiserEncoder.setPositionConversionFactor(ArmConstants.raiserEncoderScale);  //  degrees
+
     retractorMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.retractorForwardLimit);
-     retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
-     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
+    retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     // raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
     // raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
-    retractorMotor.setIdleMode(IdleMode.kCoast);
-    retractorMotorfollower.setIdleMode(IdleMode.kCoast);
+    // raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    // raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
   }
 
+  /** disable soft limit for the reverse direction of the retractor motor
+   * ( for use during set up -- during test mode )
+   */
+  // TODO: does raiser motor need softlimit disabled?
   public boolean softLimitONOFF() {
     if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) 
       retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
@@ -80,36 +86,62 @@ public class Arm extends SubsystemBase {
     return retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse);
   }
   
-   public void raise() {
+  /** raise forarm */
+  public void raise() {
     raiserMotor.set(0.1);
   }
+  /** raise forarm on true,
+   *  lower on false
+  */
   public void raise(boolean direction) {
     if(direction) raise();
     else lower();
   }
 
+  /** lower forarm */
   public void lower() {
     raiserMotor.set(-0.1);
   } 
 
+  /** report status of Arm Commands */
   public boolean amIDone() {
     return IamDone;
   }
 
+  /* enforce completion of Arm Commands */
   public void makeMeDone() {
     IamDone = true;
   }
 
+  /** update P parameter for retractor motor closed loop controller. */
   public void pidCoefficient(double distance) {
     kp = 1 * .4 / distance;
     pidController.setP(kp);
   }
 
+  double latestTargetE;  // target position for retractor
+  double latestTargetR;  // target position for raiser
+  /** run retractor motor closed loop controller */
   public void closedLoopController(double Target) {
+    // TODO: do the raiser and retractor use the same PID controller?
     IamDone = false;
+    latestTargetE = Target;
     pidController.setReference(Target, ControlType.kPosition);
   }
 
+  /**  Adjusts the target for the retractor pidcontroller */
+  public void retargetRetract(double Adjustment) {
+    latestTargetE += Adjustment;
+    pidController.setReference(latestTargetE, ControlType.kPosition);
+  }
+
+  /** Adjust the target for the raiser pidcontroller */
+  public void retargetRaise(double Adjustment) {
+    latestTargetR += Adjustment;
+    pidController.setReference(latestTargetR, ControlType.kPosition);
+  }
+
+  /** extend the upper arm  */
   public void extend() {
     retractorMotor.set(0.5);
   }
@@ -119,6 +151,7 @@ public class Arm extends SubsystemBase {
     else retract();
   }
 
+  /** retract the upper arm */
   public void retract() {
     retractorMotor.set(-0.5);
   }
@@ -184,6 +217,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putBoolean("am I done?", IamDone);
   }
 
+  /** Display arm motors' parameters on SmartDashBoard */
   public void healthStatus() {
     SmartDashboard.putNumber("Shoulder Current", retractorMotor.getOutputCurrent());
     SmartDashboard.putNumber("Shoulder Temp", retractorMotor.getMotorTemperature());

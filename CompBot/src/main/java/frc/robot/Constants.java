@@ -24,10 +24,10 @@ public final class Constants {
   public static final boolean ARM_AVAILABLE = false;
   public static final boolean PHOTONVISION_AVAILABLE = true;
   public static final boolean PIXY_AVAILABLE = true;
-  public static final boolean GRIPPER_AVAILABLE_Comp = false;
+  public static final boolean GRIPPER_AVAILABLE_Comp = true;
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
-  public static final boolean PIXY_AVAILABLE_Comp = false;
+  public static final boolean PIXY_AVAILABLE_Comp = true;
   //public static final int SYSTEMCHOOSER = 0;
 
 
@@ -212,7 +212,7 @@ public final class Constants {
       public static final double cubeDepth2               = 0.;     // 405.6; unscaled on backup bot
       public static final double cubeHeight1              = 0.;
       public static final double cubeHeight2              = 0.;
-      public static final double retracto0                = 0.;
+      public static final double retracto0                = 15.;
       public static final double coneDepth1               = 0.;
       public static final double coneDepth2               = 0.;
       public static final double RETRACTOR_METERSPERCOUNT = 1.;
@@ -245,28 +245,30 @@ public final class Constants {
         public static final int kDRiverCOntrollerPort3 = 2; // buttonBox2
         public static final int kDriverControllerPort4 = 3; // ti launchpad
 
-        public static final int kArmExtendPos0Button          = 0; // buttonBox
         public static final int kArmExtendPos1Button          = 0; // buttonBox
         public static final int kArmExtendPos2Button          = 0; // buttonBox
-        public static final int kArmDone                      = 0; // buttonBox
         public static final int kgetAprilTagButton            = 0; // buttonBox
+        public static final int kArmExtendPos0Button          = 1; // buttonBox
+        public static final int targetRetractNudge            = 3; // buttonBox
         public static final int kgripperclosebutton           = 4; // buttonBox
         public static final int kEndDriveGeneric              = 6; // buttonBox
         public static final int kDriveGenericx                = 7; // buttonBox
         public static final int kDriveGenericy                = 8; // buttonBox
         public static final int kDriveGenericxy               = 9; // buttonBox
-        public static final int PRESSURESwitch                = 10; // buttonbox
+        public static final int PRESSURESwitch                = 10;// buttonbox
         public static final int kgripperliftbutton            = 0;
         public static final int kgripperdownbutton            = 0;
         public static final int kNudgeLeftButton              = 0;
 
-        public static final int kgripperopenbutton            = 1;  // box2
-        public static final int kgetRobotPositionButton       = 3;  //box2
-        public static final int kDrivertostationbutton        = 4; // buttonBox2
+        public static final int kgripperopenbutton            = 1; // box2
+        public static final int targetExtendNudge             = 2; // box2
+        public static final int kgetRobotPositionButton       = 3; // box2
+        public static final int kDrivertostationbutton        = 4; // box2
+        public static final int kArmDone                      = 6; // box2
 
-        public static final int kDriverYAxis = 0;
-        public static final int kDriverXAxis = 1;
-        public static final int kDriverRotAxis = 4;
+        public static final int kDriverYAxis                  = 0;
+        public static final int kDriverXAxis                  = 1;
+        public static final int kDriverRotAxis                = 4;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
@@ -280,13 +282,16 @@ public final class Constants {
 
         public static final int armTestRetractButton          = 1; // box1 
         public static final int armTestLowerButton            = 2; // box1
+        public static final int gripRollerTestButton          = 4; // box1
         public static final int armTestResetButton            = 4; // box2
         public static final int armTestStopLowerButton        = 0; // box2
         public static final int armTestStopRetractButton      = 0; // box2
-        public static final int armSoftLimitSwitchR            = 5; // box2
+        public static final int armSoftLimitSwitchR           = 5; // box2
         public static final int armSoftLimitSwitch            = 6; // box2
         public static final int armTestRaiseButton            = 7; // box2
         public static final int armTestExtendButton           = 8; // box2
+        public static final int gripOpenTest                  = 0;
+        public static final int gripCloseTest                 = 0;
 
         public static final double kDeadband = 0.05;
 

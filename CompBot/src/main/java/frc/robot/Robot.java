@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 //import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,6 +47,7 @@ public class Robot extends TimedRobot {
     private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
     private SwerveSubsystem swerveSubsystem;
     private Arm arm;
+    Gripper gripper;
     private WPI_Pigeon2 pigeon;
 
     private PowerDistribution PDH;
@@ -76,6 +79,7 @@ public class Robot extends TimedRobot {
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixyCam = new AnalogInput(0);
         m_robotContainer = new RobotContainer(!choice);
         pigeon = new WPI_Pigeon2(1);
+        CameraServer.startAutomaticCapture();
     }
 
     /**
@@ -143,9 +147,10 @@ public class Robot extends TimedRobot {
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
+        // }
         arm = m_robotContainer.getarmSS();
         // arm.resetEncoders();
-        // }
+        gripper = m_robotContainer.getGripperSS();
     }
 
     double smoothedXSpeed = 0.;
@@ -268,7 +273,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        // Arm Tests
+        // Arm Tests/ setup
         if (buttonBox2.getRawButtonPressed(OIConstants.armSoftLimitSwitch) || 
             buttonBox2.getRawButtonReleased(OIConstants.armSoftLimitSwitch)){
             // arm.softLimitONOFF();
@@ -314,10 +319,28 @@ public class Robot extends TimedRobot {
             System.out.println(arm.getExtenderPos());
             System.out.println(arm.getRaiserPO());
         }
-
         arm.healthStatus();
         
         SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         SmartDashboard.putNumber("Arm extenderf position", arm.getExtenderfPos());
+
+        /* Gripper test/set up functions:
+           run rollers
+           cycle solenoids
+           toggle pressure
+        */
+        if (buttonBox1.getRawButtonPressed(OIConstants.gripRollerTestButton)) {
+            gripper.rollersGo();
+        }
+        if (buttonBox1.getRawButtonReleased(OIConstants.gripRollerTestButton)) {
+            gripper.rollersStop();
+        }
+        if (buttonBox1.getRawButton(OIConstants.gripOpenTest)){
+            gripper.opengripper();
+        }
+        if (buttonBox1.getRawButton(OIConstants.gripCloseTest)){
+            gripper.closegripper();
+        }
+        // TODO: finish the gripper test/set-up utilities
     }
 }
