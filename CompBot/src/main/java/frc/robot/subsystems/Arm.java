@@ -27,11 +27,13 @@ public class Arm extends SubsystemBase {
   CANSparkMax retractorMotorfollower;
   CANSparkMax raiserMotor;
   CANSparkMax raiserMotorfollower;
-  private SparkMaxPIDController pidController;
+  private SparkMaxPIDController retractorPidController;
+  private SparkMaxPIDController raiserPidController;
   private RelativeEncoder retractorEncoder;
   private RelativeEncoder retractorfollowerEncoder;
   private RelativeEncoder raiserEncoder;
   double kp;
+  double rkp;
   private boolean IamDone;  // mechanism to interrupt a Command using the arm
   // TODO IamDone interrupts the retractor motor controller; need a separate one for raiser?
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
@@ -59,7 +61,8 @@ public class Arm extends SubsystemBase {
 
     retractorEncoder = retractorMotor.getEncoder();
     retractorfollowerEncoder = retractorMotorfollower.getEncoder();
-    pidController = retractorMotor.getPIDController();
+    retractorPidController = retractorMotor.getPIDController();
+    raiserPidController = raiserMotor.getPIDController();
     retractorEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     retractorfollowerEncoder.setPositionConversionFactor(ArmConstants.retractorEncoderScale);  //  degrees
     raiserEncoder = raiserMotor.getEncoder(); 
@@ -88,7 +91,7 @@ public class Arm extends SubsystemBase {
   
   /** raise forarm */
   public void raise() {
-    raiserMotor.set(0.1);
+    raiserMotor.set(0.5);
   }
   /** raise forarm on true,
    *  lower on false
@@ -100,7 +103,7 @@ public class Arm extends SubsystemBase {
 
   /** lower forarm */
   public void lower() {
-    raiserMotor.set(-0.1);
+    raiserMotor.set(-0.5);
   } 
 
   /** report status of Arm Commands */
@@ -114,31 +117,35 @@ public class Arm extends SubsystemBase {
   }
 
   /** update P parameter for retractor motor closed loop controller. */
-  public void pidCoefficient(double distance) {
+  public void pidCoefficient(double distance, double raiserdistance) {
     kp = 1 * .4 / distance;
-    pidController.setP(kp);
+    rkp = 1 * .4 / distance;
+    retractorPidController.setP(kp);
+    raiserPidController.setP(rkp);
   }
 
   double latestTargetE;  // target position for retractor
   double latestTargetR;  // target position for raiser
   /** run retractor motor closed loop controller */
-  public void closedLoopController(double Target) {
+  public void closedLoopController(double Target, double RaiserTarget) {
     // TODO: do the raiser and retractor use the same PID controller?
     IamDone = false;
     latestTargetE = Target;
-    pidController.setReference(Target, ControlType.kPosition);
+    latestTargetR = RaiserTarget;
+    retractorPidController.setReference(Target, ControlType.kPosition);
+    raiserPidController.setReference(RaiserTarget, ControlType.kPosition);
   }
 
   /**  Adjusts the target for the retractor pidcontroller */
   public void retargetRetract(double Adjustment) {
     latestTargetE += Adjustment;
-    pidController.setReference(latestTargetE, ControlType.kPosition);
+    retractorPidController.setReference(latestTargetE, ControlType.kPosition);
   }
 
   /** Adjust the target for the raiser pidcontroller */
   public void retargetRaise(double Adjustment) {
     latestTargetR += Adjustment;
-    pidController.setReference(latestTargetR, ControlType.kPosition);
+    retractorPidController.setReference(latestTargetR, ControlType.kPosition);
   }
 
   /** extend the upper arm  */
@@ -163,7 +170,7 @@ public class Arm extends SubsystemBase {
     retractorMotor.stopMotor();
   }
 
-  public double getRaiserPO() {
+  public double getRaiserPos() {
     return raiserEncoder.getPosition();
   }
   public double getExtenderPos() {
@@ -199,7 +206,7 @@ public class Arm extends SubsystemBase {
       ;
   }
 
-  /* public CommandBase raisingComand(double Target) {
+  /*  public CommandBase raisingComand(double Target) {
     return runOnce(() -> raise(raiserEncoder.getPosition() < Target))
 
     .until(() -> raiserEncoder.getPosition() >= Target - ArmConstants.raiserTolerance 
@@ -213,7 +220,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
-    SmartDashboard.putNumber("Arm extenderf position", retractorfollowerEncoder.getPosition());
+    //SmartDashboard.putNumber("Arm extenderf position", retractorfollowerEncoder.getPosition());
     SmartDashboard.putBoolean("am I done?", IamDone);
   }
 

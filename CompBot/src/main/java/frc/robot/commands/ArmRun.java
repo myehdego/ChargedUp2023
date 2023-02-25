@@ -14,18 +14,21 @@ import frc.robot.subsystems.Arm;
 public class ArmRun extends CommandBase {
   Arm arm;
   double Target;
+  double RaiserTarget;
   boolean Closed = false;
 
   /** open loop command move arm to a target */
-  public ArmRun(Arm arm, double Target) {
+  public ArmRun(Arm arm, double Target, double RaiserTarget) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.Target = Target;
+    this.RaiserTarget = RaiserTarget;
+    System.out.println("RaiserTarget " + RaiserTarget);
   }
 
   /** Able to change argument between closed and open */
-  public ArmRun(Arm arm, double Target, boolean closed) {
-    this(arm, Target);
+  public ArmRun(Arm arm, double Target, double RaiserTarget, boolean closed) {
+    this(arm, Target, RaiserTarget);
     this.Closed = closed;
   }
 
@@ -33,12 +36,13 @@ public class ArmRun extends CommandBase {
   @Override
   public void initialize() {
     if (Closed) {
-      arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()));
-      arm.closedLoopController(Target);
+      arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()), Math.abs(RaiserTarget - arm.getRaiserPos()));
+      arm.closedLoopController(Target, RaiserTarget);
     } else {
       arm.extend(arm.getExtenderPos() < Target);
     }
     SmartDashboard.putNumber("target", Target);
+    SmartDashboard.putNumber("raiserTarget", RaiserTarget);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,6 +54,7 @@ public class ArmRun extends CommandBase {
     }
     SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
         && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
+    //SmartDashboard.putString("RiserIssue", "target, pos: " + RaiserTarget + " " + arm.getRaiserPos());
   }
 
   // Called once the command ends or is interrupted.

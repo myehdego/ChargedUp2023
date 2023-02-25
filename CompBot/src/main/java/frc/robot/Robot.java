@@ -15,6 +15,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 //import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -79,7 +80,7 @@ public class Robot extends TimedRobot {
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixyCam = new AnalogInput(0);
         m_robotContainer = new RobotContainer(!choice);
         pigeon = new WPI_Pigeon2(1);
-        CameraServer.startAutomaticCapture();
+        PortForwarder.add(1182, "photonvision.local",5800 );
     }
 
     /**
@@ -178,7 +179,7 @@ public class Robot extends TimedRobot {
         // 1. Get real-time joystick inputs
         double xSpeed = driverJoytick.getRawAxis(OIConstants.kDriverXAxis); // Negative values go forward
         double ySpeed = -driverJoytick.getRawAxis(OIConstants.kDriverYAxis);
-        double turningSpeed =  -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
+        double turningSpeed = -driverJoytick.getRawAxis(OIConstants.kDriverRotAxis);
 
         // 2. Apply deadband
         xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
@@ -188,9 +189,9 @@ public class Robot extends TimedRobot {
         //System.out.println("X: " + String.format("%.3f", xSpeed)
         //                + " Y: " + String.format("%.3f", ySpeed)
         //                + " R: " + String.format("%.3f", turningSpeed));
-        xSpeed*=1.-.8*driverJoytick.getRawAxis(2);
-        ySpeed*=1.-.8*driverJoytick.getRawAxis(2);
-        turningSpeed*=1.-.9*driverJoytick.getRawAxis(2);
+        xSpeed*=1.-.8*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+        ySpeed*=1.-.8*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
+        turningSpeed*=1.-.9*driverJoytick.getRawAxis(OIConstants.fineControlAxis);
         //    Smooth driver inputs
         smoothedXSpeed = smoothedXSpeed + (xSpeed - smoothedXSpeed) * .08;
         smoothedYSpeed = smoothedYSpeed + (ySpeed - smoothedYSpeed) * .08;
@@ -301,28 +302,28 @@ public class Robot extends TimedRobot {
         }
         if (buttonBox2.getRawButtonPressed(OIConstants.armTestRaiseButton)){  // 
             arm.raise();
-            System.out.println(arm.getRaiserPO());
+            System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton)){  // 
             arm.lower();
-            System.out.println(arm.getRaiserPO());
+            System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (buttonBox2.getRawButtonReleased(OIConstants.armTestRaiseButton) || 
             buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton)){  // 
             arm.stopRaise();
-            System.out.println(arm.getRaiserPO());
+            System.out.println(arm.getRaiserPos());
         }
         if (buttonBox2.getRawButton(OIConstants.armTestResetButton)) {  // 
             arm.resetEncoders();
             System.out.println(arm.getExtenderPos());
-            System.out.println(arm.getRaiserPO());
+            System.out.println(arm.getRaiserPos());
         }
-        arm.healthStatus();
+       // arm.healthStatus();
         
         SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        SmartDashboard.putNumber("Arm extenderf position", arm.getExtenderfPos());
+        SmartDashboard.putNumber("Arm raiser position", arm.getRaiserPos());
 
         /* Gripper test/set up functions:
            run rollers

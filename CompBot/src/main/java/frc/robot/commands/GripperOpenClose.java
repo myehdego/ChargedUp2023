@@ -11,11 +11,12 @@ public class GripperOpenClose extends CommandBase {
   /** Open and closes the gripper. */
   private Gripper gripper;
   private boolean open;
+  private boolean expel;
   public GripperOpenClose(Gripper gripper, boolean open) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
     addRequirements(gripper);
-     this.open = open;
+    this.open = open;
   }
 
   // Called when the command is initially scheduled.
@@ -23,12 +24,17 @@ public class GripperOpenClose extends CommandBase {
   public void initialize() {
     if (open) {
       gripper.opengripper();
-      gripper.rollersGo();
+      if (gripper.expel()) 
+      {
+        gripper.rollersGo();
+      }
+      else {
+        gripper.rollerSpit();
+      }
     }
     else {
       gripper.closegripper();
       gripper.rollersStop();
-      // TODO: Make it spit when playing game pieces
     }
   }
 

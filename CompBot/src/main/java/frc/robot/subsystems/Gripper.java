@@ -26,9 +26,9 @@ public class Gripper extends SubsystemBase {
   private PneumaticHub pch = new PneumaticHub(1);
   private Compressor compressor = pch.makeCompressor();
   private DoubleSolenoid gripper; 
+  private boolean inOrSpit;
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
 
-  
   public Gripper() {
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
            Pneumatics.openChannel, Pneumatics.closeChannel);
@@ -37,7 +37,8 @@ public class Gripper extends SubsystemBase {
     roller.restoreFactoryDefaults();
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
     roller.setIdleMode(IdleMode.kBrake);
-    pch.enableCompressorDigital();
+    pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10, Pneumatics.CONEPRESSURE);
+    inOrSpit = true;
   }
 
   /** turn on rollers to input a game piece*/
@@ -52,6 +53,13 @@ public class Gripper extends SubsystemBase {
   /** turn on rollers to expel */
   public void rollerSpit() {
     roller.set(-1.);
+  }
+
+  // false is spit, true is in
+  public boolean expel() {
+    if (inOrSpit == true) {inOrSpit = false;}
+    else inOrSpit = true;
+    return inOrSpit;
   }
 
   public void setCubeP() {

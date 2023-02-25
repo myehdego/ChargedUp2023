@@ -104,18 +104,26 @@ public class RobotContainer {
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
                 // TODO: Add button for substation
-                new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).
+                new JoystickButton(buttonBox2, OIConstants.kArmfloorButton).   //floor level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
-                  andThen(new ArmRun(arm,ArmConstants.cubeDepth1,true)));
-                new JoystickButton(buttonBox, OIConstants.kArmExtendPos2Button).
+                  andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));
+                new JoystickButton(buttonBox2, OIConstants.kArmsubstationButton).   //substation 
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
-                  andThen(new ArmRun(arm,ArmConstants.cubeDepth2,true)));
-                new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).
+                  andThen(new ArmRun(arm,ArmConstants.substation,ArmConstants.substationR,true)));
+                new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).   //mid level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
-                  andThen(new ArmRun(arm,ArmConstants.retracto0,true)));
+                  andThen(new ArmRun(arm,ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R,true)));
+                new JoystickButton(buttonBox2, OIConstants.kArmExtendPos2Button).     //high level
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  andThen(new WaitCommand(.5)).
+                  andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
+                new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).     //retract
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  andThen(new WaitCommand(.5)).
+                  andThen(new ArmRun(arm,ArmConstants.retracto0,ArmConstants.retracto0R,true)));
                 new JoystickButton(buttonBox2, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()));
                 new JoystickButton(buttonBox2, OIConstants.targetExtendNudge).
@@ -128,7 +136,7 @@ public class RobotContainer {
         }
 
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
-                new JoystickButton(buttonBox, OIConstants.kgripperopenbutton).
+                new JoystickButton(buttonBox2, OIConstants.kgripperopenbutton).
                   onTrue(new GripperOpenClose(gripper, true));
                 new JoystickButton(buttonBox, OIConstants.kgripperclosebutton).
                     onTrue(new GripperOpenClose(gripper, false));
