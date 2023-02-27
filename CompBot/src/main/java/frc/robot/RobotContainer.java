@@ -28,11 +28,10 @@ import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
-import frc.robot.commands.GripperUpAndDown;
-import frc.robot.commands.NudgeDrive;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.AprilTagCamera;
 
@@ -49,6 +48,7 @@ public class RobotContainer {
     private Gripper gripper;
     private AprilTagCamera camera;
     boolean old;  // true if original swerve constants
+    private GamePieceCam pixycam;
     
     public RobotContainer(boolean Old) {
         /*  swapped out to put drive function in teleopPeriodic
@@ -66,6 +66,7 @@ public class RobotContainer {
         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new AprilTagCamera();
+        if (old?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixycam = new GamePieceCam();
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -103,7 +104,7 @@ public class RobotContainer {
         
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
-                // TODO: Add button for substation
+                // TODO: protect againt movement directly from floor to retracted
                 new JoystickButton(buttonBox2, OIConstants.kArmfloorButton).   //floor level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
@@ -130,6 +131,10 @@ public class RobotContainer {
                   onTrue(new InstantCommand(() -> arm.retargetRetract(1.)));
                 new JoystickButton(buttonBox, OIConstants.targetRetractNudge).
                   onTrue(new InstantCommand(() -> arm.retargetRetract(-1.)));
+                new JoystickButton(buttonBox2, OIConstants.targetcRaiseNudge).
+                  onTrue(new InstantCommand(() -> arm.retargetRaise(1.)));
+                new JoystickButton(buttonBox, OIConstants.targetLowerNudge).
+                  onTrue(new InstantCommand(() -> arm.retargetRaise(-1.)));
         
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
@@ -279,4 +284,11 @@ public class RobotContainer {
         } else return null;
     }
 
+    public GamePieceCam getGamePieceCam() {
+        return pixycam;
+    }
+
+    public void displayGameCamSuccess(boolean lightIt) {
+        switchBox.setOutput(OIConstants.gameObjectLight, lightIt);
+    }
 }

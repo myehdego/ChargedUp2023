@@ -5,16 +5,16 @@
 package frc.robot.subsystems;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonTargetSortMode;
+//import org.photonvision.PhotonTargetSortMode;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
+//import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
+//import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -97,6 +97,9 @@ public class AprilTagCamera extends SubsystemBase {
     return distancetoCargo;
   }
   
+  public boolean seesTarget() {
+    return camera.getLatestResult().hasTargets();
+  }
  
 
   @Override

@@ -260,30 +260,29 @@ public final class Constants {
         public static final int kDriverControllerPort4 = 3; // ti launchpad
 
 
-        public static final int kgetAprilTagButton            = 0; // buttonBox
         public static final int kArmExtendPos0Button          = 1; // buttonBox
         public static final int kArmExtendPos1Button          = 2; // buttonBox
         public static final int targetRetractNudge            = 3; // buttonBox
         public static final int kgripperclosebutton           = 4; // buttonBox
-        public static final int kEndDriveGeneric              = 6; // buttonBox
-        public static final int kDriveGenericx                = 7; // buttonBox
-        public static final int kDriveGenericy                = 8; // buttonBox
-        public static final int kDriveGenericxy               = 9; // buttonBox
+        public static final int kEndDriveGeneric              = 0; // buttonBox
+        public static final int kDriveGenericx                = 0; // buttonBox
+        public static final int kDriveGenericy                = 0; // buttonBox
+        public static final int kDriveGenericxy               = 0; // buttonBox
         public static final int PRESSURESwitch                = 10;// buttonbox
-        public static final int kgripperliftbutton            = 0;
-        public static final int kgripperdownbutton            = 0;
-        public static final int kNudgeLeftButton              = 0;
+        public static final int targetcRaiseNudge             = 0;
+        public static final int targetLowerNudge              = 0;
+        public static final int kgetAprilTagButton            = 0; // buttonBox
         
         
 
         public static final int kgripperopenbutton            = 1; // box2
         public static final int targetExtendNudge             = 2; // box2
         public static final int kgetRobotPositionButton       = 3; // box2
+        public static final int kArmsubstationButton          = 4;
         public static final int kArmExtendPos2Button          = 5; // bux2
         public static final int kArmDone                      = 6; // box2
         public static final int kArmfloorButton               = 7; // box2
         public static final int kDrivertostationbutton        = 0; // box2
-        public static final int kArmsubstationButton          = 4;
 
         public static final int kDriverYAxis                  = 0;
         public static final int kDriverXAxis                  = 1;
@@ -295,8 +294,10 @@ public final class Constants {
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
 
         public static final int choiceswitch                  = 1; // ti launchpad axis
-        public static final int delaySwitch                   = 0; // ti launchpad axis
-        public static final int levelSwitch                   = 0; // ti launchpad axis
+        public static final int delaySwitch                   = 2; // ti launchpad axis
+        public static final int levelSwitch                   = 3; // ti launchpad axis
+        public static final int aprilTagLight                 = 1; // TI launchpad output
+        public static final int gameObjectLight               = 2; // TI launchpad output
 
         // test mode buttonbox buttons
 
