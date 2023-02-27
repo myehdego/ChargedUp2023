@@ -124,6 +124,7 @@ public class RobotContainer {
                 new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
+                  //andThen(new PreRetract(arm, ArmConstants.floorPosition, ArmConstants.cubeDepth1R)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.retracto0,ArmConstants.retracto0R,true)));
                 new JoystickButton(buttonBox2, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone()));
