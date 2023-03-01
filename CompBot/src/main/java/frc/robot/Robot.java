@@ -44,8 +44,8 @@ public class Robot extends TimedRobot {
     private RobotContainer m_robotContainer;
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
-    private final Joystick buttonBox1 = new Joystick(OIConstants.kDRiverCOntrollerPort2);
-    private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
+    private final Joystick buttonBox0 = new Joystick(OIConstants.kButtonBoxPort_0);
+    private final Joystick buttonBox1 = new Joystick(OIConstants.kButtonBoxPort_1);
     private SwerveSubsystem swerveSubsystem;
     private Arm arm;
     Gripper gripper;
@@ -275,47 +275,47 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         // Arm Tests/ setup
-        if (buttonBox2.getRawButtonPressed(OIConstants.armSoftLimitSwitch) || 
-            buttonBox2.getRawButtonReleased(OIConstants.armSoftLimitSwitch)){
+        if (buttonBox0.getRawButtonPressed(OIConstants.armSoftLimitSwitch_BB0) || 
+            buttonBox0.getRawButtonReleased(OIConstants.armSoftLimitSwitch_BB0)){
             // arm.softLimitONOFF();
             System.out.println("Soft limit is " + arm.softLimitONOFF());
         }
-        if (buttonBox2.getRawButtonPressed(OIConstants.armTestExtendButton)){  // 
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestExtendButton_BB1)){  // 
             arm.extend();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton)){  // 
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton_BB1)){  // 
             arm.retract();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox2.getRawButtonReleased(OIConstants.armTestExtendButton) || 
-            buttonBox1.getRawButtonReleased(OIConstants.armTestRetractButton)){  // 
+        if (buttonBox1.getRawButtonReleased(OIConstants.armTestExtendButton_BB1) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestRetractButton_BB1)){  // 
             arm.stopExtend();
             System.out.println(arm.getExtenderPos());
         }
-        if (buttonBox1.getRawButton(OIConstants.armTestStopRetractButton)){  // 
+       /*  if (buttonBox0.getRawButton(OIConstants.armTestStopRetractButton)){  // 
             arm.stopExtend();
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        }
-        if (buttonBox2.getRawButtonPressed(OIConstants.armTestRaiseButton)){  // 
+        } */
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRaiseButton_BB1)){  // 
             arm.raise();
             System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton)){  // 
+        if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton_BB1)){  // 
             arm.lower();
             System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
-        if (buttonBox2.getRawButtonReleased(OIConstants.armTestRaiseButton) || 
-            buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton)){  // 
+        if (buttonBox1.getRawButtonReleased(OIConstants.armTestRaiseButton_BB1) || 
+            buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton_BB1)){  // 
             arm.stopRaise();
             System.out.println(arm.getRaiserPos());
         }
-        if (buttonBox2.getRawButton(OIConstants.armTestResetButton)) {  // 
+        if (buttonBox0.getRawButton(OIConstants.armTestResetButton_BB0)) {  // 
             arm.resetEncoders();
             System.out.println(arm.getExtenderPos());
             System.out.println(arm.getRaiserPos());
@@ -330,16 +330,16 @@ public class Robot extends TimedRobot {
            cycle solenoids
            toggle pressure
         */
-        if (buttonBox1.getRawButtonPressed(OIConstants.gripRollerTestButton)) {
+        if (buttonBox0.getRawButtonPressed(OIConstants.gripRollerTestButton)) {
             gripper.rollersGo();
         }
-        if (buttonBox1.getRawButtonReleased(OIConstants.gripRollerTestButton)) {
+        if (buttonBox0.getRawButtonReleased(OIConstants.gripRollerTestButton)) {
             gripper.rollersStop();
         }
-        if (buttonBox1.getRawButton(OIConstants.gripOpenTest)){
+        if (buttonBox0.getRawButton(OIConstants.gripOpenTest)){
             gripper.opengripper();
         }
-        if (buttonBox1.getRawButton(OIConstants.gripCloseTest)){
+        if (buttonBox0.getRawButton(OIConstants.gripCloseTest)){
             gripper.closegripper();
         }
         // TODO: finish the gripper test/set-up utilities

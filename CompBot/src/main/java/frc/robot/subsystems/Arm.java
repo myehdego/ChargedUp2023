@@ -83,10 +83,16 @@ public class Arm extends SubsystemBase {
    */
   // TODO: does raiser motor need softlimit disabled?
   public boolean softLimitONOFF() {
-    if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) 
+    if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) {
       retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-    else retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+      retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, false); 
+    }
+    else { 
+      retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); 
+     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true); 
+    }
     return retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse);
+    
   }
   
   /** raise forarm */
@@ -118,8 +124,8 @@ public class Arm extends SubsystemBase {
 
   /** update P parameter for retractor motor closed loop controller. */
   public void pidCoefficient(double distance, double raiserdistance) {
-    kp = 1 * .4 / distance;
-    rkp = 1 * .4 / distance;
+    kp = 1 * ArmConstants.RetractorP / distance;
+    rkp = 1 * ArmConstants.RaiserP / distance;
     retractorPidController.setP(kp);
     raiserPidController.setP(rkp);
   }
@@ -145,7 +151,18 @@ public class Arm extends SubsystemBase {
   /** Adjust the target for the raiser pidcontroller */
   public void retargetRaise(double Adjustment) {
     latestTargetR += Adjustment;
-    retractorPidController.setReference(latestTargetR, ControlType.kPosition);
+    raiserPidController.setReference(latestTargetR, ControlType.kPosition);
+  }
+  
+  boolean Floor;   //true if its on the floor
+  /** sets whether the arm is in floor position */
+  public void setFloor(boolean Floor) 
+  {
+    this.Floor = Floor;
+  }
+
+  public boolean getFloor() {
+    return Floor;
   }
 
   /** extend the upper arm  */
@@ -220,6 +237,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
+    SmartDashboard.putNumber("Arm raiser position", raiserEncoder.getPosition());
     //SmartDashboard.putNumber("Arm extenderf position", retractorfollowerEncoder.getPosition());
     SmartDashboard.putBoolean("am I done?", IamDone);
   }
