@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 //import java.util.concurrent.CancellationException;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
+//import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -134,7 +134,6 @@ public class Arm extends SubsystemBase {
   double latestTargetR;  // target position for raiser
   /** run retractor motor closed loop controller */
   public void closedLoopController(double Target, double RaiserTarget) {
-    // TODO: do the raiser and retractor use the same PID controller?
     IamDone = false;
     latestTargetE = Target;
     latestTargetR = RaiserTarget;

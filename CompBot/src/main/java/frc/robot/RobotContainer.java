@@ -28,11 +28,10 @@ import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
-import frc.robot.commands.GripperUpAndDown;
-import frc.robot.commands.NudgeDrive;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.AprilTagCamera;
 
@@ -55,6 +54,7 @@ public class RobotContainer {
     private Gripper gripper;
     private AprilTagCamera camera;
     boolean old;  // true if original swerve constants
+    private GamePieceCam pixycam;
     
     public RobotContainer(boolean Old) {
         /*  swapped out to put drive function in teleopPeriodic
@@ -72,6 +72,7 @@ public class RobotContainer {
         if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new AprilTagCamera();
+        if (old?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixycam = new GamePieceCam();
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -134,6 +135,7 @@ public class RobotContainer {
                 new JoystickButton(buttonBox0, OIConstants.kRetractPos_BB0).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
+                  //andThen(new PreRetract(arm, ArmConstants.floorPosition, ArmConstants.cubeDepth1R)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.retracto0,ArmConstants.retracto0R,true)));
 /*                 new JoystickButton(buttonBox1, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone())); */
@@ -294,4 +296,11 @@ public class RobotContainer {
         } else return null;
     }
 
+    public GamePieceCam getGamePieceCam() {
+        return pixycam;
+    }
+
+    public void displayGameCamSuccess(boolean lightIt) {
+        switchBox.setOutput(OIConstants.gameObjectLight, lightIt);
+    }
 }

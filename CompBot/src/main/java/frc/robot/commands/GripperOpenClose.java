@@ -11,7 +11,7 @@ public class GripperOpenClose extends CommandBase {
   /** Open and closes the gripper. */
   private Gripper gripper;
   private boolean open;
-  private boolean expel;
+  //private boolean expel;
   public GripperOpenClose(Gripper gripper, boolean open) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;

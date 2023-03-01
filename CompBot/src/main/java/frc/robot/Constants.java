@@ -308,8 +308,10 @@ public final class Constants {
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
 
         public static final int choiceswitch                  = 1; // ti launchpad axis
-        public static final int delaySwitch                   = 0; // ti launchpad axis
-        public static final int levelSwitch                   = 0; // ti launchpad axis
+        public static final int delaySwitch                   = 2; // ti launchpad axis
+        public static final int levelSwitch                   = 3; // ti launchpad axis
+        public static final int aprilTagLight                 = 1; // TI launchpad output
+        public static final int gameObjectLight               = 2; // TI launchpad output
 
         // test mode buttonbox buttons
 

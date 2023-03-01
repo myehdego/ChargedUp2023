@@ -4,31 +4,23 @@
 
 package frc.robot.commands;
 
-//import java.lang.annotation.Target;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
-public class ArmRun extends CommandBase {
+public class PreRetract extends CommandBase {
   Arm arm;
   double Target;
   double RaiserTarget;
   boolean Closed = false;
-
-  /** open loop command move arm to a target */
-  public ArmRun(Arm arm, double Target, double RaiserTarget) {
+  /** Move the arm much like ArmRun
+   * but with low finishing tolerance
+   * to aid in avoiding calamity when retracting */
+  public PreRetract(Arm arm, double Target, double RaiserTarget, boolean closed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm;
     this.Target = Target;
     this.RaiserTarget = RaiserTarget;
-    System.out.println("RaiserTarget " + RaiserTarget);
-  }
-
-  /** Able to change argument between closed and open */
-  public ArmRun(Arm arm, double Target, double RaiserTarget, boolean closed) {
-    this(arm, Target, RaiserTarget);
     this.Closed = closed;
   }
 
@@ -41,34 +33,26 @@ public class ArmRun extends CommandBase {
     } else {
       arm.extend(arm.getExtenderPos() < Target);
     }
-    SmartDashboard.putNumber("target", Target);
-    SmartDashboard.putNumber("raiserTarget", RaiserTarget);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Closed) {
-      // arm.closedLoopController(Target);
-    } else {
-    }
-    SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
-        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
-    //SmartDashboard.putString("RiserIssue", "target, pos: " + RaiserTarget + " " + arm.getRaiserPos());
+    // probably no need to stop motors if ArmRun
+    // immediately succeeds this command
+    arm.stopExtend();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    arm.stopExtend();
-    SmartDashboard.putString("target", "quit");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
-        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
+    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance*3
+        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance*3
         // TODO: is check on raiser position required?
         || arm.amIDone();
   }
