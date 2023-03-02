@@ -39,7 +39,7 @@ public class GripperOpenClose extends CommandBase {
       }
     }
     else {
-      waitTime=0.75;
+      waitTime=1.;
       gripper.closegripper();
       //gripper.rollersStop();
     }
@@ -60,6 +60,7 @@ public class GripperOpenClose extends CommandBase {
   public boolean isFinished() {
     if (timer.hasElapsed(waitTime)){
       timer.stop();
+      timer.reset();
         return true;
     }else {
       //timer.stop();

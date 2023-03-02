@@ -233,7 +233,7 @@ public final class Constants {
       //public static final double coneDepth2R               = 0.;
       public static final float raiserForwardLimit        = -10;   // TODO: Method Tested Values need set
       public static final float raiserReverseLimit        = 10;
-      public static final float retractorForwardLimit     = 180;   // Method Tested; values calibrated
+      public static final float retractorForwardLimit     = 174;   // Method Tested; values calibrated
       public static final float retractorReverseLimit     = -5;  // Method Tested; values calibrated
       public static final double targetRaiseNudgeamount     = 20;
       public static final double targetRetractorNudgeamount = 4;
