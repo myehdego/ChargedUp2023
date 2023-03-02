@@ -76,12 +76,12 @@ public class Robot extends TimedRobot {
             PDH = new PowerDistribution(1, ModuleType.kCTRE);
         }
        
+        m_robotContainer = new RobotContainer(!choice);
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp){
             pixyCam = new AnalogInput(0);
             //gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
         } 
-        m_robotContainer = new RobotContainer(!choice);
         pigeon = new WPI_Pigeon2(1);
         PortForwarder.add(1182, "photonvision.local",5800 );
 

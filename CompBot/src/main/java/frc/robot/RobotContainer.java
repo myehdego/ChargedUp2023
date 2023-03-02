@@ -72,10 +72,19 @@ public class RobotContainer {
         swerveSubsystem = new SwerveSubsystem(Old);
         SmartDashboard.putData(swerveSubsystem);
         
-        if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) arm = new Arm();
-        if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp) gripper = new Gripper();
-        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) camera = new AprilTagCamera();
-        if (old?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) pixycam = new GamePieceCam();
+        if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp){
+                arm = new Arm();
+                SmartDashboard.putData(arm);
+        }
+        if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
+                gripper = new Gripper();
+        }
+        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp){
+                camera = new AprilTagCamera();
+        }
+        if (old?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp){
+                pixycam = new GamePieceCam();
+        }
         configureButtonBindings();
     }
     public RobotContainer() {
@@ -116,34 +125,40 @@ public class RobotContainer {
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
                 new JoystickButton(buttonBox0, OIConstants.kFloorPos_BB0).   //floor level
-                  onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  onTrue(new InstantCommand(() -> arm.makeMeDone()).    // end any currently running PICcontroller 
                   //andThen(new InstantCommand(() -> arm.setFloor(true))).
-                  andThen(new WaitCommand(.5)).
-                  andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));
+                  andThen(new WaitCommand(.5)).                 // wait long enough to end it
+                  andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));  // actually make it go
+                
                 new JoystickButton(buttonBox0, OIConstants.kSubStationPos_BB0).   //substation 
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.substation,ArmConstants.substationR,true)));
+                
                 new JoystickButton(buttonBox0, OIConstants.kMidGridPos_BB0).   //mid level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R,true)));
+                
                 new JoystickButton(buttonBox0, OIConstants.kHighGridPos_BB0).     //high level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new PreRetract(arm, ArmConstants.cubeDepth2, ArmConstants.cubeDepth1R, false)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
-                // TODO: protect againt movement directly from floor to retracted
+                
+                  // TODO: protect againt movement directly from floor to retracted
                 new JoystickButton(buttonBox0, OIConstants.kRetractPos_BB0).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   //andThen(new PreRetract(arm, ArmConstants.floorPosition, ArmConstants.cubeDepth1R)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.retracto0,ArmConstants.retracto0R,true)));
-/*                 new JoystickButton(buttonBox1, OIConstants.kArmDone).
+
+                /*new JoystickButton(buttonBox1, OIConstants.kArmDone).
                   onTrue(new InstantCommand(() -> arm.makeMeDone())); */
+                
                 new JoystickButton(buttonBox1, OIConstants.targetExtendNudge_BB1).
                   onTrue(new InstantCommand(() -> arm.retargetRetract(ArmConstants.targetRetractorNudgeamount)));
                 new JoystickButton(buttonBox1, OIConstants.targetRetractNudge_BB1).
