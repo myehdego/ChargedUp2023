@@ -21,8 +21,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.AutoPlaceNMove;
 import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
@@ -214,7 +216,9 @@ public class RobotContainer {
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
-        return new DriveGeneric(swerveSubsystem, Math.abs(Units.inchesToMeters(48)), 0);  // TODO where to go?
+        return new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0);  // the simplest command
+        //return new DriveGeneric(swerveSubsystem, Units.inchesToMeters(48), 0);  // for testing
+        //return new AutoPlaceNMove(arm, swerveSubsystem, gripper);       // TODO need mechanism to select this (after testing)
      }
 
     public Command getAutonomousCommand_old() {

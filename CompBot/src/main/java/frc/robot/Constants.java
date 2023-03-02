@@ -358,6 +358,7 @@ public final class Constants {
 
     public static final class FieldConstants {
       public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
+      public static final double leaveCommunityDist = Units.feetToMeters(16.);  // distance from Grid to farthest edge of Community
     }
 
     public static int COMPBOT;

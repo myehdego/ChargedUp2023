@@ -117,7 +117,7 @@ public class Arm extends SubsystemBase {
     return IamDone;
   }
 
-  /* enforce completion of Arm Commands */
+  /** enforce completion of Arm Commands */
   public void makeMeDone() {
     IamDone = true;
   }
