@@ -246,7 +246,7 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds chassisSpeeds;
         if (fieldoriented){
              chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                xhowfast, yhowfast, turnSpeed, getRotation2d());
+                -xhowfast, yhowfast, turnSpeed, getRotation2d());
         } 
         else{
             chassisSpeeds = new ChassisSpeeds(-xhowfast, yhowfast,

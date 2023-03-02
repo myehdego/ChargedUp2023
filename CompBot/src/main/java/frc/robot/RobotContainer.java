@@ -28,6 +28,7 @@ import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
+import frc.robot.commands.PreRetract;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
@@ -114,23 +115,24 @@ public class RobotContainer {
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
                 new JoystickButton(buttonBox0, OIConstants.kFloorPos_BB0).   //floor level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
-                  andThen(new InstantCommand(() -> arm.setFloor(true))).
+                  //andThen(new InstantCommand(() -> arm.setFloor(true))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));
                 new JoystickButton(buttonBox0, OIConstants.kSubStationPos_BB0).   //substation 
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
-                  andThen(new InstantCommand(() -> arm.setFloor(false))).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.substation,ArmConstants.substationR,true)));
                 new JoystickButton(buttonBox0, OIConstants.kMidGridPos_BB0).   //mid level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
-                  andThen(new InstantCommand(() -> arm.setFloor(false))).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R,true)));
                 new JoystickButton(buttonBox0, OIConstants.kHighGridPos_BB0).     //high level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
-                  andThen(new InstantCommand(() -> arm.setFloor(false))).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
+                  andThen(new PreRetract(arm, ArmConstants.cubeDepth2, ArmConstants.cubeDepth1R, true)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
                 new JoystickButton(buttonBox0, OIConstants.kRetractPos_BB0).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
@@ -211,7 +213,7 @@ public class RobotContainer {
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
-        return new DriveGeneric(swerveSubsystem, 0, 0);  // TODO where to go?
+        return new DriveGeneric(swerveSubsystem, Math.abs(Units.inchesToMeters(48)), 0);  // TODO where to go?
      }
 
     public Command getAutonomousCommand_old() {

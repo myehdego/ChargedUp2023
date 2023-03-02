@@ -22,12 +22,12 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final boolean GRIPPER_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
-  public static final boolean PHOTONVISION_AVAILABLE = true;
-  public static final boolean PIXY_AVAILABLE = true;
+  public static final boolean PHOTONVISION_AVAILABLE = false;
+  public static final boolean PIXY_AVAILABLE = false;
   public static final boolean GRIPPER_AVAILABLE_Comp = true;
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
-  public static final boolean PIXY_AVAILABLE_Comp = true;
+  public static final boolean PIXY_AVAILABLE_Comp = false;
   //public static final int SYSTEMCHOOSER = 0;
 
 
@@ -220,15 +220,15 @@ public final class Constants {
       public static final double RETRACTOR_METERSPERCOUNT = 1.;
       public static final double raiserEncoderScale       = 0.; 
       // raiser positions
-      public static final double floorPositionR            = -230.;
+      public static final double floorPositionR            = -348.;
       //public static final double coneHeight1R              = 0.;
       //public static final double coneHeight2R              = 0.;
       public static final double cubeDepth1R               = 180.;     // 175.2; unscaled on backup bot
-      public static final double cubeDepth2R               = -81.;     // 405.6; unscaled on backup bot
+      public static final double cubeDepth2R               = -156.;     // 405.6; unscaled on backup bot
       //public static final double cubeHeight1R              = 0.;
       //public static final double cubeHeight2R              = 0.;
       public static final double retracto0R                = 0.;
-      public static final double substationR               = -158.;
+      public static final double substationR               = -276.;
       //public static final double coneDepth1R               = 0.;
       //public static final double coneDepth2R               = 0.;
       public static final float raiserForwardLimit        = -10;   // TODO: Method Tested Values need set
