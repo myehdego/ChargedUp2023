@@ -26,7 +26,7 @@ public class GetRobotPosition extends CommandBase {
   public void initialize() {
     camera.getAprTag();
     robotposition = camera.getRobotPosition();
-    SmartDashboard.putString("Robot Positon", robotposition.toString());
+    //SmartDashboard.putString("Robot Positon", robotposition.toString());
     System.out.println("Robot pos from Apr Tag:"+robotposition.toString());
     // TODO: do something useful with the info
     

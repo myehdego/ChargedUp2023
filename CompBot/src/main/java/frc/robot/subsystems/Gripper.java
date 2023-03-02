@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDs;
+import frc.robot.Constants.GripperConstants;
 import frc.robot.Constants.Pneumatics;
 
 public class Gripper extends SubsystemBase {
@@ -42,7 +43,7 @@ public class Gripper extends SubsystemBase {
 
   /** turn on rollers to input a game piece*/
   public void rollersGo() {
-    roller.set(1.);
+    roller.set(GripperConstants.rollerspeed);
   }
 
   public void rollersStop() {
@@ -51,7 +52,7 @@ public class Gripper extends SubsystemBase {
 
   /** turn on rollers to expel */
   public void rollerSpit() {
-    roller.set(-1.);
+    roller.set(-GripperConstants.rollerspeed);
   }
 
   /**  toggles direction of roller motor
@@ -62,6 +63,10 @@ public class Gripper extends SubsystemBase {
     if (inOrSpit == true) {inOrSpit = false;}
     else inOrSpit = true;
     return inOrSpit;
+  }
+  
+  public void setexpel(boolean spit) {
+    inOrSpit = spit;
   }
 
   public void setCubeP() {

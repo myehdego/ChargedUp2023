@@ -61,9 +61,9 @@ public class DriveGeneric extends CommandBase {
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));
-    SmartDashboard.putString("Transform", transform.toString());
-    SmartDashboard.putString("TargetPose", targetpose.toString());
-    SmartDashboard.putString("StartPose", startpose.toString());
+    //SmartDashboard.putString("Transform", transform.toString());
+    //SmartDashboard.putString("TargetPose", targetpose.toString());
+    //SmartDashboard.putString("StartPose", startpose.toString());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -74,8 +74,8 @@ public class DriveGeneric extends CommandBase {
     double speed = controller.calculate(whereiam, dist);
     driver.driveit(speed*xdist/dist, speed*ydist/dist, 0, true);
 
-    SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
-    SmartDashboard.putString("CurrentPose", currentpose.toString());
+    //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
+    //SmartDashboard.putString("CurrentPose", currentpose.toString());
   }
 
   // Called once the command ends or is interrupted.

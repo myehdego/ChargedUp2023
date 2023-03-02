@@ -32,13 +32,16 @@ public class AutoPlaceNMove extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
-                    new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R),  // step 1
-                    new WaitCommand(3))   // cant wait forever to get in position
+                    new ArmRun(arm, ArmConstants.cubeDepth1*1.1,ArmConstants.cubeDepth1R-10, true),  // step 1
+                    new WaitCommand(5))   // cant wait forever to get in position
                 ,new GripperOpenClose(gripper, true)  //  step 2
+                ,new WaitCommand(2)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
-                    new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
-                    new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.floorPosition,ArmConstants.floorPositionR)))  // step 4
+                //new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
+                new DriveGeneric(drive, Units.inchesToMeters(36),0),   // step 3
+                new GripperOpenClose(gripper, false), //  step 2.5
+                    new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R)))  // step 4
     );
   }
 }

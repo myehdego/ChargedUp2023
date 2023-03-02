@@ -129,6 +129,8 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         pigeon.setYaw(180);
+        gripper = m_robotContainer.getGripperSS();
+        gripper.setexpel(false);
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();

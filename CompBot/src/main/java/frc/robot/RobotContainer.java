@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.List;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -55,7 +56,7 @@ public class RobotContainer {
     private final Joystick buttonBox0 = new Joystick(OIConstants.kButtonBoxPort_0);
     private final Joystick buttonBox1 = new Joystick(OIConstants.kButtonBoxPort_1);
     private final Joystick switchBox = new Joystick(OIConstants.kDriverControllerPort4);
-
+    SendableChooser<Command> m_chooser;
 
     boolean old;  // true if original swerve constants
     
@@ -86,7 +87,14 @@ public class RobotContainer {
                 pixycam = new GamePieceCam();
         }
         configureButtonBindings();
-    }
+
+        m_chooser = new SendableChooser<>();
+        m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
+        m_chooser.addOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper));
+        m_chooser.setDefaultOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        SmartDashboard.putData(m_chooser);
+   }
+
     public RobotContainer() {
         this(true);
     }
@@ -146,7 +154,7 @@ public class RobotContainer {
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
-                  andThen(new PreRetract(arm, ArmConstants.cubeDepth2, ArmConstants.cubeDepth1R, false)).  // TODO might this work?
+                  //andThen(new PreRetract(arm, 151, 60, false)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
                 
                   // TODO: protect againt movement directly from floor to retracted
@@ -186,10 +194,10 @@ public class RobotContainer {
                     onFalse(new InstantCommand(() -> gripper.setConeP()));
         } 
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
-                new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
-                        onTrue(new GetRobotPosition(camera));
-                new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
-                        onTrue(new GetAprilTag(camera));
+                //new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
+                        //onTrue(new GetRobotPosition(camera));
+                //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
+                        //onTrue(new GetAprilTag(camera));
         }
      }
     
@@ -231,9 +239,10 @@ public class RobotContainer {
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
-        return new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0);  // the simplest command
+        //return new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0);  // the simplest command
         //return new DriveGeneric(swerveSubsystem, Units.inchesToMeters(48), 0);  // for testing
         //return new AutoPlaceNMove(arm, swerveSubsystem, gripper);       // TODO need mechanism to select this (after testing)
+        return m_chooser.getSelected();
      }
 
     public Command getAutonomousCommand_old() {

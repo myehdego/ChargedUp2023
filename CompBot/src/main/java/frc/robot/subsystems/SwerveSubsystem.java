@@ -221,18 +221,18 @@ public class SwerveSubsystem extends SubsystemBase {
        // SmartDashboard.putNumber("BLabsA", backLeft.getabsoluteEncoder());
        // SmartDashboard.putNumber("BRabsA", backRight.getabsoluteEncoder());
 
-        SmartDashboard.putNumber("BotX", odometer.getPoseMeters().getX());
-        SmartDashboard.putNumber("BotY", odometer.getPoseMeters().getY());
+        // SmartDashboard.putNumber("BotX", odometer.getPoseMeters().getX());
+        // SmartDashboard.putNumber("BotY", odometer.getPoseMeters().getY());
 
-        SmartDashboard.putNumber("FLPos", frontLeft.getDrivePosition());
-        SmartDashboard.putNumber("FRPos", frontRight.getDrivePosition());
-        SmartDashboard.putNumber("BLPos", backLeft.getDrivePosition());
-        SmartDashboard.putNumber("BRPos", backRight.getDrivePosition());
+        // SmartDashboard.putNumber("FLPos", frontLeft.getDrivePosition());
+        // SmartDashboard.putNumber("FRPos", frontRight.getDrivePosition());
+        // SmartDashboard.putNumber("BLPos", backLeft.getDrivePosition());
+        // SmartDashboard.putNumber("BRPos", backRight.getDrivePosition());
 
-        SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
-        SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
-        SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
-        SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
+        // SmartDashboard.putNumber("FLTrn", frontLeft.getTurningPosition());
+        // SmartDashboard.putNumber("FRTrn", frontRight.getTurningPosition());
+        // SmartDashboard.putNumber("BLTrn", backLeft.getTurningPosition());
+        // SmartDashboard.putNumber("BRTrn", backRight.getTurningPosition());
     }
     
     /**Drives in robot or field coordinate system.

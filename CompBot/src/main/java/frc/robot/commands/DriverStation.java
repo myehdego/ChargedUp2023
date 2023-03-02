@@ -64,7 +64,7 @@ public class DriverStation extends CommandBase {
     System.out.println("Speed "+ john);
     driveon.driveit(john, 0);
     
-    SmartDashboard.putNumber("DriveError" , controller.getPositionError());
+    //SmartDashboard.putNumber("DriveError" , controller.getPositionError());
   }
 
   // stop the robot.

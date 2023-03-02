@@ -40,6 +40,7 @@ public class ArmRun extends CommandBase {
       arm.closedLoopController(Target, RaiserTarget);
     } else {
       arm.extend(arm.getExtenderPos() < Target);
+      arm.raise(arm.getRaiserPos() < RaiserTarget);
     }
     SmartDashboard.putNumber("target", Target);
     SmartDashboard.putNumber("raiserTarget", RaiserTarget);
@@ -61,7 +62,8 @@ public class ArmRun extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     arm.stopExtend();
-    SmartDashboard.putString("target", "quit");
+    arm.stopRaise();
+    //SmartDashboard.putString("target", "quit");
   }
 
   // Returns true when the command should end.
@@ -69,6 +71,8 @@ public class ArmRun extends CommandBase {
   public boolean isFinished() {
     return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
         && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
+        && arm.getRaiserPos() >= Target - ArmConstants.raiserTolerance
+        && arm.getRaiserPos() <= Target + ArmConstants.raiserTolerance
         // TODO: is check on raiser position required?
         || arm.amIDone();
   }

@@ -72,10 +72,10 @@ public class Arm extends SubsystemBase {
     retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    // raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
-    // raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
-    // raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    // raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+     raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
+     raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
+     raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+     raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
   }
 
   /** disable soft limit for the reverse direction of the retractor motor
@@ -86,10 +86,14 @@ public class Arm extends SubsystemBase {
     if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) {
       retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
       retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, false); 
+      raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+      raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, false); 
     }
     else { 
       retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); 
      retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true); 
+     raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); 
+     raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true); 
     }
     return retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse);
     
@@ -120,6 +124,10 @@ public class Arm extends SubsystemBase {
   /** enforce completion of Arm Commands */
   public void makeMeDone() {
     IamDone = true;
+  }
+
+  public void makeMeUndone() {
+    IamDone = false;
   }
 
   /** update P parameter for retractor motor closed loop controller. */
@@ -206,13 +214,13 @@ public class Arm extends SubsystemBase {
   public CommandBase extensionCommand(double Target) {
     return runOnce(() -> {
               extend(retractorEncoder.getPosition() < Target);
-              SmartDashboard.putNumber("target", Target);
+              //SmartDashboard.putNumber("target", Target);
         }) 
       .andThen(() -> {
         //extend();
-              SmartDashboard.putBoolean("currentPosTest", 
+              /* SmartDashboard.putBoolean("currentPosTest", 
               retractorEncoder.getPosition() >= Target - ArmConstants.retractorTolerance 
-           && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance);
+           && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance); */
         })
       .until(() -> (retractorEncoder.getPosition() >= Target - ArmConstants.retractorTolerance
                  && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance))
@@ -234,10 +242,10 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
-    SmartDashboard.putNumber("Arm raiser position", raiserEncoder.getPosition());
+    //SmartDashboard.putNumber("Arm extender position", retractorEncoder.getPosition());
+    //SmartDashboard.putNumber("Arm raiser position", raiserEncoder.getPosition());
     //SmartDashboard.putNumber("Arm extenderf position", retractorfollowerEncoder.getPosition());
-    SmartDashboard.putBoolean("am I done?", IamDone);
+    //SmartDashboard.putBoolean("am I done?", IamDone);
   }
 
   /** Display arm motors' parameters on SmartDashBoard */

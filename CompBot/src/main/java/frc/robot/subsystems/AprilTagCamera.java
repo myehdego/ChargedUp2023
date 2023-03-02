@@ -42,7 +42,7 @@ public class AprilTagCamera extends SubsystemBase {
       return 998;
       }
       int id = target.getFiducialId();
-      SmartDashboard.putNumber("aprTag#",id);
+      //SmartDashboard.putNumber("aprTag#",id);
       return id;
     }
     return 999;
@@ -77,10 +77,10 @@ public class AprilTagCamera extends SubsystemBase {
       double camlocationy = tagy + ((targetid>4)?camy:(-camy));
       double robotx = camlocationx + CamConstant.CameraLocationX;
       double roboty = camlocationy + CamConstant.CameraLocationY;
-      SmartDashboard.putNumber("TagX", tagx);
-      SmartDashboard.putNumber("TagY", tagy);
-      SmartDashboard.putNumber("Camx", camx);
-      SmartDashboard.putNumber("CamY", camy);
+      //SmartDashboard.putNumber("TagX", tagx);
+      //SmartDashboard.putNumber("TagY", tagy);
+      //SmartDashboard.putNumber("Camx", camx);
+      //SmartDashboard.putNumber("CamY", camy);
      
       return new Pose2d(Units.metersToInches(robotx),
                         Units.metersToInches(roboty), new Rotation2d(0.)); // TODO: Presumes we are facing the tag head on
@@ -93,7 +93,7 @@ public class AprilTagCamera extends SubsystemBase {
     //Calculates the distance between the robot and the bottom left target on the field
     Pose2d cargolocation = new Pose2d(264.45,36.19,new Rotation2d(0.));
     double distancetoCargo = PhotonUtils.getDistanceToPose(getRobotPosition(),cargolocation);
-    SmartDashboard.putNumber("distancetocargo", distancetoCargo);
+    //SmartDashboard.putNumber("distancetocargo", distancetoCargo);
     return distancetoCargo;
   }
   
