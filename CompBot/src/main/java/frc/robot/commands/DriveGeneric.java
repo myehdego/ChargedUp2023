@@ -56,7 +56,7 @@ public class DriveGeneric extends CommandBase {
     // encS = driver.returnEncode()[2];
     dist = Math.sqrt(xdist*xdist+ydist*ydist);
     // target = encS+dist;
-    tol = 0.02*dist;
+    tol = 0.04*dist;
     controller.setP(.3/dist);
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Gripper;
 
@@ -11,18 +12,23 @@ public class GripperOpenClose extends CommandBase {
   /** Open and closes the gripper. */
   private Gripper gripper;
   private boolean open;
+  private Timer timer;
+  private double waitTime;
   //private boolean expel;
   public GripperOpenClose(Gripper gripper, boolean open) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
     addRequirements(gripper);
     this.open = open;
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
     if (open) {
+      waitTime=0;
       gripper.opengripper();
       if (gripper.expel()) 
       {
@@ -33,8 +39,9 @@ public class GripperOpenClose extends CommandBase {
       }
     }
     else {
+      waitTime=1.;
       gripper.closegripper();
-      gripper.rollersStop();
+      //gripper.rollersStop();
     }
   }
 
@@ -44,11 +51,20 @@ public class GripperOpenClose extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (!open)gripper.rollersStop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if (timer.hasElapsed(waitTime)){
+      timer.stop();
+      timer.reset();
+        return true;
+    }else {
+      //timer.stop();
+      return false;
+    }
   }
 }

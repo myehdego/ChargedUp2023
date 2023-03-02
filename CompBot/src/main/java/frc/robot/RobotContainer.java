@@ -28,6 +28,7 @@ import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
 import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
+import frc.robot.commands.PreRetract;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
@@ -45,9 +46,15 @@ public class RobotContainer {
     private DriveGeneric driveGeneric;
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
-    private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
-    private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
-    private final Joystick switchBox =  new Joystick(OIConstants.kDriverControllerPort4);
+  //  private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
+  //  private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
+
+    
+    private final Joystick buttonBox0 = new Joystick(OIConstants.kButtonBoxPort_0);
+    private final Joystick buttonBox1 = new Joystick(OIConstants.kButtonBoxPort_1);
+    private final Joystick switchBox = new Joystick(OIConstants.kDriverControllerPort4);
+
+
     boolean old;  // true if original swerve constants
     
     public RobotContainer(boolean Old) {
@@ -81,12 +88,14 @@ public class RobotContainer {
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
-        new JoystickButton(buttonBox2, OIConstants.kDrivertostationbutton).
-                onTrue(new DriverStation(swerveSubsystem));
+        // TODO test this drive stuff
+        /* new JoystickButton(buttonBox1, OIConstants.kDrivertostationbutton).
+                onTrue(new DriverStation(swerveSubsystem)); */
         /* new JoystickButton(driverJoytick, OIConstants.kNudgeLeftButton).
                 onTrue(new NudgeDrive(swerveSubsystem, 0, 0)); */
         
         // Test commands for generic drive
+  /* 
         new JoystickButton(buttonBox, OIConstants.kEndDriveGeneric).
                 onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()));
         new JoystickButton(buttonBox, OIConstants.kDriveGenericx).
@@ -101,63 +110,68 @@ public class RobotContainer {
                 onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
                 andThen(new WaitCommand(.5)).
                 andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14))));
-        
+ */       
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
-                new JoystickButton(buttonBox2, OIConstants.kArmfloorButton).   //floor level
+                new JoystickButton(buttonBox0, OIConstants.kFloorPos_BB0).   //floor level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  //andThen(new InstantCommand(() -> arm.setFloor(true))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));
-                new JoystickButton(buttonBox2, OIConstants.kArmsubstationButton).   //substation 
+                new JoystickButton(buttonBox0, OIConstants.kSubStationPos_BB0).   //substation 
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.substation,ArmConstants.substationR,true)));
-                new JoystickButton(buttonBox, OIConstants.kArmExtendPos1Button).   //mid level
+                new JoystickButton(buttonBox0, OIConstants.kMidGridPos_BB0).   //mid level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R,true)));
-                new JoystickButton(buttonBox2, OIConstants.kArmExtendPos2Button).     //high level
+                new JoystickButton(buttonBox0, OIConstants.kHighGridPos_BB0).     //high level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
+                  //andThen(new InstantCommand(() -> arm.setFloor(false))).
                   andThen(new WaitCommand(.5)).
+                  andThen(new PreRetract(arm, ArmConstants.cubeDepth2, ArmConstants.cubeDepth1R, false)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
                 // TODO: protect againt movement directly from floor to retracted
-                new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).     //retract
+                new JoystickButton(buttonBox0, OIConstants.kRetractPos_BB0).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   //andThen(new PreRetract(arm, ArmConstants.floorPosition, ArmConstants.cubeDepth1R)).  // TODO might this work?
                   andThen(new ArmRun(arm,ArmConstants.retracto0,ArmConstants.retracto0R,true)));
-                new JoystickButton(buttonBox2, OIConstants.kArmDone).
-                  onTrue(new InstantCommand(() -> arm.makeMeDone()));
-                new JoystickButton(buttonBox2, OIConstants.targetExtendNudge).
-                  onTrue(new InstantCommand(() -> arm.retargetRetract(1.)));
-                new JoystickButton(buttonBox, OIConstants.targetRetractNudge).
-                  onTrue(new InstantCommand(() -> arm.retargetRetract(-1.)));
-                new JoystickButton(buttonBox2, OIConstants.targetcRaiseNudge).
-                  onTrue(new InstantCommand(() -> arm.retargetRaise(1.)));
-                new JoystickButton(buttonBox, OIConstants.targetLowerNudge).
-                  onTrue(new InstantCommand(() -> arm.retargetRaise(-1.)));
+/*                 new JoystickButton(buttonBox1, OIConstants.kArmDone).
+                  onTrue(new InstantCommand(() -> arm.makeMeDone())); */
+                new JoystickButton(buttonBox1, OIConstants.targetExtendNudge_BB1).
+                  onTrue(new InstantCommand(() -> arm.retargetRetract(ArmConstants.targetRetractorNudgeamount)));
+                new JoystickButton(buttonBox1, OIConstants.targetRetractNudge_BB1).
+                  onTrue(new InstantCommand(() -> arm.retargetRetract(-ArmConstants.targetRetractorNudgeamount)));
+                new JoystickButton(buttonBox1, OIConstants.targetRaiseNudge_BB1).
+                  onTrue(new InstantCommand(() -> arm.retargetRaise(ArmConstants.targetRaiseNudgeamount)));
+                new JoystickButton(buttonBox1, OIConstants.targetLowerNudge_BB1).
+                  onTrue(new InstantCommand(() -> arm.retargetRaise(-ArmConstants.targetRaiseNudgeamount)));
         
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
         }
 
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
-                new JoystickButton(buttonBox2, OIConstants.kgripperopenbutton).
+                new JoystickButton(buttonBox1, OIConstants.kgripperopenbutton_BB1).
                   onTrue(new GripperOpenClose(gripper, true));
-                new JoystickButton(buttonBox, OIConstants.kgripperclosebutton).
+                new JoystickButton(buttonBox1, OIConstants.kgripperclosebutton_BB1).
                     onTrue(new GripperOpenClose(gripper, false));
                 // TODO: open requires high pressure
                 // TODO: need to bleed pressure when switching from high to low
         
-                new JoystickButton(buttonBox, OIConstants.PRESSURESwitch).
+                new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
                     onTrue(new InstantCommand(() -> gripper.setCubeP()));
-                new JoystickButton(buttonBox, OIConstants.PRESSURESwitch).
+                new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
                     onFalse(new InstantCommand(() -> gripper.setConeP()));
-        }
+        } 
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
-                new JoystickButton(buttonBox, OIConstants.kgetRobotPositionButton).
+                new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
                         onTrue(new GetRobotPosition(camera));
-                new JoystickButton(buttonBox, OIConstants.kgetAprilTagButton).
+                new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
                         onTrue(new GetAprilTag(camera));
         }
      }
@@ -200,7 +214,7 @@ public class RobotContainer {
         double level = switchBox.getRawAxis(OIConstants.levelSwitch);
         double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
-        return new DriveGeneric(swerveSubsystem, 0, 0);  // TODO where to go?
+        return new DriveGeneric(swerveSubsystem, Math.abs(Units.inchesToMeters(48)), 0);  // TODO where to go?
      }
 
     public Command getAutonomousCommand_old() {

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
@@ -33,6 +34,8 @@ public class PreRetract extends CommandBase {
     } else {
       arm.extend(arm.getExtenderPos() < Target);
     }
+    SmartDashboard.putNumber("target", Target);
+    SmartDashboard.putNumber("raiserTarget", RaiserTarget);
 
   }
 
@@ -46,13 +49,15 @@ public class PreRetract extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    arm.makeMeDone();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance*3
-        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance*3
+    return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance*5
+        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance*5
         // TODO: is check on raiser position required?
         || arm.amIDone();
   }
