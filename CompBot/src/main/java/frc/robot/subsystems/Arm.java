@@ -185,22 +185,21 @@ public class Arm extends SubsystemBase {
     raiserEncoder.setPosition(0);
   }
 
-  /** This runs open looped controller, will command for arm to extend or retract towards target */
+  /** This runs open-loop controller, to extend or retract towards target */
   public CommandBase extensionCommand(double Target) {
-    return runOnce(() -> {extend(retractorEncoder.getPosition() < Target);
-                         SmartDashboard.putNumber("target", Target);}) 
-
+    return runOnce(() -> {
+              extend(retractorEncoder.getPosition() < Target);
+              SmartDashboard.putNumber("target", Target);
+        }) 
       .andThen(() -> {
         //extend();
-        SmartDashboard.putBoolean("currentPosTest", retractorEncoder.getPosition() >= Target - ArmConstants.retractorTolerance 
-        && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance);
-      })
-
+              SmartDashboard.putBoolean("currentPosTest", 
+              retractorEncoder.getPosition() >= Target - ArmConstants.retractorTolerance 
+           && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance);
+        })
       .until(() -> (retractorEncoder.getPosition() >= Target - ArmConstants.retractorTolerance
-                    && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance))
-
+                 && retractorEncoder.getPosition() <= Target + ArmConstants.retractorTolerance))
      // .andThen(() -> stopExtend())
-
       .finallyDo(interrupt -> stopExtend())
       ;
   }

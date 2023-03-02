@@ -38,17 +38,17 @@ import frc.robot.subsystems.AprilTagCamera;
 public class RobotContainer {
 
     private final SwerveSubsystem swerveSubsystem;
-    private DriveGeneric driveGeneric;
     private Arm arm;
-    private final Joystick switchBox =  new Joystick(OIConstants.kDriverControllerPort4);
+    private Gripper gripper;
+    private GamePieceCam pixycam;
+    private AprilTagCamera camera;
+    private DriveGeneric driveGeneric;
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
     private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
     private final Joystick buttonBox2 = new Joystick(OIConstants.kDRiverCOntrollerPort3);
-    private Gripper gripper;
-    private AprilTagCamera camera;
+    private final Joystick switchBox =  new Joystick(OIConstants.kDriverControllerPort4);
     boolean old;  // true if original swerve constants
-    private GamePieceCam pixycam;
     
     public RobotContainer(boolean Old) {
         /*  swapped out to put drive function in teleopPeriodic
@@ -104,7 +104,6 @@ public class RobotContainer {
         
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
-                // TODO: protect againt movement directly from floor to retracted
                 new JoystickButton(buttonBox2, OIConstants.kArmfloorButton).   //floor level
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
@@ -121,6 +120,7 @@ public class RobotContainer {
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).
                   andThen(new ArmRun(arm,ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R,true)));
+                // TODO: protect againt movement directly from floor to retracted
                 new JoystickButton(buttonBox, OIConstants.kArmExtendPos0Button).     //retract
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
                   andThen(new WaitCommand(.5)).

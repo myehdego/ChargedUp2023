@@ -28,8 +28,6 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
 
-// }
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
