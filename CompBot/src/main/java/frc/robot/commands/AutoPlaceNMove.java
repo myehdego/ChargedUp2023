@@ -39,7 +39,7 @@ public class AutoPlaceNMove extends SequentialCommandGroup {
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
                 //new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
-                new DriveGeneric(drive, Units.inchesToMeters(36),0),   // step 3
+                new DriveGeneric(drive, Units.feetToMeters(16),0),   // step 3
                 new GripperOpenClose(gripper, false), //  step 2.5
                     new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R)))  // step 4
     );
