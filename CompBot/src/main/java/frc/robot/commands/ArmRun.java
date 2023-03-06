@@ -53,8 +53,8 @@ public class ArmRun extends CommandBase {
       // arm.closedLoopController(Target);
     } else {
     }
-    SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
-        && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
+    //SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
+      //  && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
     //SmartDashboard.putString("RiserIssue", "target, pos: " + RaiserTarget + " " + arm.getRaiserPos());
   }
 

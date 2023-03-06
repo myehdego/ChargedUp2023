@@ -23,6 +23,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+
+import edu.wpi.first.wpilibj.Timer;
+
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 
@@ -54,7 +57,7 @@ public class Robot extends TimedRobot {
     private AnalogInput pixyCam;
     private GamePieceCam gamepieceCam;
     private boolean choice;  // choose which robot to control, true is competion bot
-
+    // private Timer timer = new Timer();
     /**
      * This function is run when the robot is first started up and should be used
      * for any
@@ -156,6 +159,7 @@ public class Robot extends TimedRobot {
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
+        this.swerveSubsystem.setCoastMode();
         // }
         arm = m_robotContainer.getarmSS();
         // arm.resetEncoders();
@@ -220,7 +224,7 @@ public class Robot extends TimedRobot {
                                 (err-1600)*-3.e-4  )); 
                                 //errY/22. )); 
                 smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
-                SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
+                //SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
             }
         }
         xSpeed = smoothedXSpeed;
@@ -272,6 +276,11 @@ public class Robot extends TimedRobot {
         //}
     
        // swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
+
+       if (Timer.getMatchTime() < 5.) {
+        swerveSubsystem.setBrakeMode();
+        SmartDashboard.putNumber("Match time", Timer.getMatchTime());
+       }
     }
 
     @Override
@@ -332,8 +341,8 @@ public class Robot extends TimedRobot {
         }
        // arm.healthStatus();
         
-        SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        SmartDashboard.putNumber("Arm raiser position", arm.getRaiserPos());
+        //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
+        //SmartDashboard.putNumber("Arm raiser position", arm.getRaiserPos());
 
         /* Gripper test/set up functions:
            run rollers

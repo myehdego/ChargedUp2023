@@ -26,6 +26,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoPlaceNMove;
+import frc.robot.commands.AutoPlacenMoveontostation;
 import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
@@ -89,9 +90,10 @@ public class RobotContainer {
         configureButtonBindings();
 
         m_chooser = new SendableChooser<>();
-        m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
-        m_chooser.addOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper));
-        m_chooser.setDefaultOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+       // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
+        m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper));
+        m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper));
         SmartDashboard.putData(m_chooser);
    }
 

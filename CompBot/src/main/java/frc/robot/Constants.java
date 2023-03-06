@@ -238,8 +238,8 @@ public final class Constants {
       public static final float retractorReverseLimit     = -5;  // Method Tested; values calibrated
       public static final double targetRaiseNudgeamount     = 20;
       public static final double targetRetractorNudgeamount = 4;
-      public static final double RetractorP = .9;
-      public static final double RaiserP = .6;
+      public static final double RetractorP = 2.3;  //1.1
+      public static final double RaiserP = 2.0;  //.8
 
     }
  
@@ -301,7 +301,7 @@ public final class Constants {
 
         public static final int kDriverYAxis                  = 0;
         public static final int kDriverXAxis                  = 1;
-        public static final int kDriverRotAxis                = 3;
+        public static final int kDriverRotAxis                = 4;
         public static final int fineControlAxis               = 2;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
@@ -359,7 +359,8 @@ public final class Constants {
 
     public static final class FieldConstants {
       public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
-      public static final double leaveCommunityDist = Units.feetToMeters(16.);  // distance from Grid to farthest edge of Community
+      public static final double leaveCommunityDist = Units.feetToMeters(18.);  // distance from Grid to farthest edge of Community
+      public static final double Halflength = Units.feetToMeters(11);
     }
 
     public static int COMPBOT;

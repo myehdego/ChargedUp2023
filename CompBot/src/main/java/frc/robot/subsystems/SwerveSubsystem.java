@@ -270,6 +270,19 @@ public class SwerveSubsystem extends SubsystemBase {
         driveit(xS, yS, 0., false);
     }
 
+    public void setBrakeMode() {
+        frontLeft.setbrakemode();
+        frontRight.setbrakemode();
+        backLeft.setbrakemode();
+        backRight.setbrakemode();
+    }
+
+    public void setCoastMode() {
+        frontLeft.setcoastmode();
+        frontRight.setcoastmode();
+        backLeft.setcoastmode();
+        backRight.setcoastmode();
+    }
 
     boolean iShouldStop = false;
 
