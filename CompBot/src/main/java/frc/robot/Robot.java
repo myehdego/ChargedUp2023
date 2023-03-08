@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Arm;
@@ -88,7 +89,7 @@ public class Robot extends TimedRobot {
         } 
         pigeon = new WPI_Pigeon2(1);
         PortForwarder.add(1182, "photonvision.local",5800 );
-        //DataLogManager.start();
+        DataLogManager.start();
     }
 
     /**
@@ -228,6 +229,11 @@ public class Robot extends TimedRobot {
                 //SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
             }
         }
+        if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
+            double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
+            System.out.println(augment);
+            smoothedXSpeed+=augment*.036;
+        }
         xSpeed = smoothedXSpeed;
         ySpeed = smoothedYSpeed;
         turningSpeed = smoothedTurningSpeed;
@@ -301,12 +307,12 @@ public class Robot extends TimedRobot {
             System.out.println("Soft limit is " + arm.softLimitONOFF());
         }
         if (buttonBox1.getRawButtonPressed(OIConstants.armTestExtendButton_BB1)){  // 
-            arm.extend();
+            arm.extend(ArmConstants.TEST_SPEED);
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton_BB1)){  // 
-            arm.retract();
+            arm.retract(ArmConstants.TEST_SPEED);
             System.out.println(arm.getExtenderPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
@@ -321,12 +327,12 @@ public class Robot extends TimedRobot {
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         } */
         if (buttonBox1.getRawButtonPressed(OIConstants.armTestRaiseButton_BB1)){  // 
-            arm.raise();
+            arm.raise(ArmConstants.TEST_SPEED);
             System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }
         if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton_BB1)){  // 
-            arm.lower();
+            arm.lower(ArmConstants.TEST_SPEED);
             System.out.println(arm.getRaiserPos());
             //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
         }

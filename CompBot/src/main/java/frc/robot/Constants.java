@@ -208,38 +208,27 @@ public final class Constants {
       public static final double raiserTolerance          = 3.;  
       // retractor positions
       public static final double floorPosition            = 71.;
-      //public static final double coneHeight1              = 0.;
-      //public static final double coneHeight2              = 0.;
       public static final double cubeDepth1               = 115.;     // 175.2; unscaled on backup bot
       public static final double cubeDepth2               = 178.;     // 405.6; unscaled on backup bot
-      //public static final double cubeHeight1              = 0.;
-      //public static final double cubeHeight2              = 0.;
       public static final double retracto0                = 0.;
       public static final double substation               = 175.;
-      //public static final double coneDepth1               = 0.;
-      //public static final double coneDepth2               = 0.;
       public static final double RETRACTOR_METERSPERCOUNT = 1.;
       public static final double raiserEncoderScale       = 0.; 
       // raiser positions
       public static final double floorPositionR            = -348.;
-      //public static final double coneHeight1R              = 0.;
-      //public static final double coneHeight2R              = 0.;
       public static final double cubeDepth1R               = 170.;     // 175.2; unscaled on backup bot
       public static final double cubeDepth2R               = -170.;     // 405.6; unscaled on backup bot
-      //public static final double cubeHeight1R              = 0.;
-      //public static final double cubeHeight2R              = 0.;
       public static final double retracto0R                = 0.;
       public static final double substationR               = -250.;
-      //public static final double coneDepth1R               = 0.;
-      //public static final double coneDepth2R               = 0.;
-      public static final float raiserForwardLimit        = 200;   // TODO: Method Tested Values need set
+      public static final float raiserForwardLimit        = 200;   // Method Tested Values need set
       public static final float raiserReverseLimit        = -400;
       public static final float retractorForwardLimit     = 174;   // Method Tested; values calibrated
       public static final float retractorReverseLimit     = -5;  // Method Tested; values calibrated
       public static final double targetRaiseNudgeamount     = 20;
       public static final double targetRetractorNudgeamount = 4;
-      public static final double RetractorP = 2.3;  //1.1
-      public static final double RaiserP = 2.0;  //.8
+      public static final double RetractorP               = 3.9;  //1.1  Sun 2.3
+      public static final double RaiserP                  = 3.6;  //.8  Sun 2.0
+      public static final double TEST_SPEED               = .5;
 
     }
  
@@ -305,6 +294,7 @@ public final class Constants {
         public static final int fineControlAxis               = 2;
         public static final int kDriverResetGyroButtonIdx     = 1; // driverJoytick button A
         public static final int kDriverResetOdometryButtonIdx = 3; // driverJoytick button X
+        public static final int BALANCE_AUGMENTER             = 4; //  driver stick Y button
         public static final int kDriverFieldOrientedButtonIdx = 5; // driverJoytick button left-bumper
         public static final int PixyFollowButton              = 6; // driverJoytick button right-bumper
 

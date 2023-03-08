@@ -52,8 +52,10 @@ public class ArmRun extends CommandBase {
     if (Closed) {
       // arm.closedLoopController(Target);
     } else {
-      // TODO: watch raiser and retractor independently to turn off if one target is met before the other
-      double fred = 1./0.;  // will die to ensure this step is done
+      if (arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
+       && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance) arm.stopExtend();
+      if (arm.getRaiserPos() >= Target - ArmConstants.raiserTolerance
+       && arm.getRaiserPos() <= Target + ArmConstants.raiserTolerance) arm.stopRaise();
     }
     //SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
       //  && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);

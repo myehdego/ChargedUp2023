@@ -35,6 +35,8 @@ public class Arm extends SubsystemBase {
   double kp;
   double rkp;
   private boolean IamDone;  // mechanism to interrupt a Command using the arm
+  private boolean closed = false;
+  private boolean closedR = false;
   // TODO IamDone interrupts the retractor motor controller; need a separate one for raiser?
   /** The arm will be able to have a range of motion cosisting of going up, down, extend, 
    * and retract to have the ability to reach futher up on the shelves and pegs  */
@@ -100,7 +102,7 @@ public class Arm extends SubsystemBase {
   
   /** raise forarm */
   public void raise() {
-    raiserMotor.set(0.5);
+    raiserMotor.set(ArmConstants.TEST_SPEED);
   }
   /** raise forarm on true,
    *  lower on false
@@ -121,6 +123,10 @@ public class Arm extends SubsystemBase {
     raiserMotor.set(-0.5);
   } 
 
+  public void lower(double speed){
+    raiserMotor.set(-speed);
+  }
+
   /** report status of Arm Commands */
   public boolean amIDone() {
     return IamDone;
@@ -129,6 +135,8 @@ public class Arm extends SubsystemBase {
   /** enforce completion of Arm Commands */
   public void makeMeDone() {
     IamDone = true;
+    closed = false;
+    closedR = false;
   }
 
   public void makeMeUndone() {
@@ -148,6 +156,8 @@ public class Arm extends SubsystemBase {
   /** run retractor motor closed loop controller */
   public void closedLoopController(double Target, double RaiserTarget) {
     IamDone = false;
+    closed = true;
+    closedR = true;
     latestTargetE = Target;
     latestTargetR = RaiserTarget;
     retractorPidController.setReference(Target, ControlType.kPosition);
@@ -156,14 +166,22 @@ public class Arm extends SubsystemBase {
 
   /**  Adjusts the target for the retractor pidcontroller */
   public void retargetRetract(double Adjustment) {
-    latestTargetE += Adjustment;
-    retractorPidController.setReference(latestTargetE, ControlType.kPosition);
+    if (closed) {
+      latestTargetE += Adjustment;
+      retractorPidController.setReference(latestTargetE, ControlType.kPosition);
+    } else {
+      extend(Adjustment>0.);
+    }
   }
 
   /** Adjust the target for the raiser pidcontroller */
   public void retargetRaise(double Adjustment) {
-    latestTargetR += Adjustment;
-    raiserPidController.setReference(latestTargetR, ControlType.kPosition);
+    if (closedR) {
+      latestTargetR += Adjustment;
+      raiserPidController.setReference(latestTargetR, ControlType.kPosition);
+    } else {
+      raise(Adjustment>0.);
+    }
   }
   
   boolean Floor;   //true if its on the floor
@@ -179,7 +197,7 @@ public class Arm extends SubsystemBase {
 
   /** extend the upper arm  */
   public void extend() {
-    retractorMotor.set(0.5);
+    retractorMotor.set(ArmConstants.TEST_SPEED);
   }
   /** Extends if boolean "direction" is true, retracts if false */
   public void extend(boolean direction) {
@@ -196,6 +214,9 @@ public class Arm extends SubsystemBase {
   /** retract the upper arm */
   public void retract() {
     retractorMotor.set(-0.5);
+  }
+  public void retract(double speed) {
+    retractorMotor.set(-speed);
   }
 
   public void stopRaise() {
