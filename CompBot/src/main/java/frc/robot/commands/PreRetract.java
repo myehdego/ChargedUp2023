@@ -38,7 +38,7 @@ public class PreRetract extends CommandBase {
     }
     //SmartDashboard.putNumber("target", Target);
     //SmartDashboard.putNumber("raiserTarget", RaiserTarget);
-    System.out.println("init preretract");
+    //System.out.println("init preretract");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +47,10 @@ public class PreRetract extends CommandBase {
     // probably no need to stop motors if ArmRun
     // immediately succeeds this command
     //arm.stopExtend();
+    if (!Closed){
+      // TODO: watch raiser and retractor independently to turn off if one target is met before the other
+      double fred = 1./0.;  // will die to ensure this step is done
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -55,7 +59,7 @@ public class PreRetract extends CommandBase {
     arm.makeMeDone();
     arm.stopExtend();
     arm.stopRaise();
-    System.out.println("end preretract");
+    //System.out.println("end preretract");
   }
 
   // Returns true when the command should end.
@@ -63,9 +67,8 @@ public class PreRetract extends CommandBase {
   public boolean isFinished() {
     return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance*3
         && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance*3
-        && arm.getRaiserPos() >= Target - ArmConstants.raiserTolerance*3
-        && arm.getRaiserPos() <= Target + ArmConstants.raiserTolerance*3
-        // TODO: is check on raiser position required?
+        && arm.getRaiserPos() >= RaiserTarget - ArmConstants.raiserTolerance*3
+        && arm.getRaiserPos() <= RaiserTarget + ArmConstants.raiserTolerance*3
         || arm.amIDone();
   }
 }

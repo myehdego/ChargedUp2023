@@ -26,7 +26,7 @@ public class ArmRun extends CommandBase {
     System.out.println("RaiserTarget " + RaiserTarget);
   }
 
-  /** Able to change argument between closed and open */
+  /** command move arm to a target */
   public ArmRun(Arm arm, double Target, double RaiserTarget, boolean closed) {
     this(arm, Target, RaiserTarget);
     this.Closed = closed;
@@ -42,8 +42,8 @@ public class ArmRun extends CommandBase {
       arm.extend(arm.getExtenderPos() < Target);
       arm.raise(arm.getRaiserPos() < RaiserTarget);
     }
-    SmartDashboard.putNumber("target", Target);
-    SmartDashboard.putNumber("raiserTarget", RaiserTarget);
+    //SmartDashboard.putNumber("target", Target);
+    //SmartDashboard.putNumber("raiserTarget", RaiserTarget);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,6 +52,8 @@ public class ArmRun extends CommandBase {
     if (Closed) {
       // arm.closedLoopController(Target);
     } else {
+      // TODO: watch raiser and retractor independently to turn off if one target is met before the other
+      double fred = 1./0.;  // will die to ensure this step is done
     }
     //SmartDashboard.putBoolean("currentPosTest", arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
       //  && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance);
@@ -71,9 +73,9 @@ public class ArmRun extends CommandBase {
   public boolean isFinished() {
     return arm.getExtenderPos() >= Target - ArmConstants.retractorTolerance
         && arm.getExtenderPos() <= Target + ArmConstants.retractorTolerance
+        // TODO: OK for closed loop, but bad for open loop
         && arm.getRaiserPos() >= Target - ArmConstants.raiserTolerance
         && arm.getRaiserPos() <= Target + ArmConstants.raiserTolerance
-        // TODO: is check on raiser position required?
         || arm.amIDone();
   }
 }

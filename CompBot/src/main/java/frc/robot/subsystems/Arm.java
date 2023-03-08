@@ -72,16 +72,15 @@ public class Arm extends SubsystemBase {
     retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-     raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
-     raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
-     raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-     raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
+    raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
+    raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
   }
 
   /** disable soft limit for the reverse direction of the retractor motor
    * ( for use during set up -- during test mode )
    */
-  // TODO: does raiser motor need softlimit disabled?
   public boolean softLimitONOFF() {
     if (retractorMotor.isSoftLimitEnabled(SoftLimitDirection.kReverse)) {
       retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
@@ -109,6 +108,12 @@ public class Arm extends SubsystemBase {
   public void raise(boolean direction) {
     if(direction) raise();
     else lower();
+  }
+  /** raise forarm at desired power 
+   *  at a specified power - positive extends, negative retracts
+   */
+  public void raise(double speed) {
+    raiserMotor.set(speed);
   }
 
   /** lower forarm */
@@ -180,6 +185,12 @@ public class Arm extends SubsystemBase {
   public void extend(boolean direction) {
     if(direction) extend();
     else retract();
+  }
+  /** Extend the arm
+   *  at a specified power - positive extends, negative retracts
+   */
+  public void extend(double speed){
+    retractorMotor.set(speed);
   }
 
   /** retract the upper arm */
