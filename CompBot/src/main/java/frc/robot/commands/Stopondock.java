@@ -8,14 +8,18 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Stopondock extends SequentialCommandGroup {
-  /** Creates a new Stopondock. */
+  /** drive from grid, over the Charging Station
+   *  drive back on charging station 
+   *  balance
+   */
   public Stopondock(SwerveSubsystem drive) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new Docked(drive), new DriveGeneric(drive, FieldConstants.Halflength, 0, true));
+    addCommands(
+      new DriveGeneric(drive, FieldConstants.chargingstationwidth/2, 0, true),
+      new Docked(drive), 
+      new DriveGeneric(drive, FieldConstants.Halflength, 0, true)
+    );
   }
 }

@@ -24,6 +24,7 @@ public class Balancer extends CommandBase {
     addRequirements(drive);
     this.drive=drive;
     this.pigeon = gyro;
+    controller = new PIDController(0, 0, 0);
     //controller =   // TODO finish me
   }
 
@@ -41,6 +42,7 @@ public class Balancer extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //y is to the left
     zero = pigeon.getPitch();   // who cares?
   }
 

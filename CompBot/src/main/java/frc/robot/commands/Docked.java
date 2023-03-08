@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class Docked extends CommandBase {
-  /** Creates a new Docked. */
+  /** set the drive system to brake mode */
   SwerveSubsystem docked;
 
   public Docked(SwerveSubsystem docked) {
