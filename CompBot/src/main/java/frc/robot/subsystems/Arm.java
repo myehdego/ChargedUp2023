@@ -164,24 +164,48 @@ public class Arm extends SubsystemBase {
     raiserPidController.setReference(RaiserTarget, ControlType.kPosition);
   }
 
-  /**  Adjusts the target for the retractor pidcontroller */
-  public void retargetRetract(double Adjustment) {
+  /**  Adjusts the target for the retractor pidcontroller
+   *     or runs the retractor.
+   *   off stops it
+   */
+  public void retargetRetract(double Adjustment, boolean off) {
     if (closed) {
       latestTargetE += Adjustment;
       retractorPidController.setReference(latestTargetE, ControlType.kPosition);
     } else {
-      extend(Adjustment>0.);
+      if (off){
+         extend(0.);
+      }else {
+        //extend(Adjustment>0.);
+      }
     }
   }
+  public void retargetRetract(double Adjustment) {
+    retargetRetract(Adjustment,false);
+  }
 
-  /** Adjust the target for the raiser pidcontroller */
-  public void retargetRaise(double Adjustment) {
+  /** Adjust the target for the raiser pidcontroller
+   *   or
+   * runs the raiser when in open loop-mode.
+   *   off stops it
+   */
+  public void retargetRaise(double Adjustment, boolean off) {
     if (closedR) {
       latestTargetR += Adjustment;
       raiserPidController.setReference(latestTargetR, ControlType.kPosition);
     } else {
-      raise(Adjustment>0.);
+      if (off){
+        raise(0.);
+        System.out.println("de nudge");
+      }else {
+        //raise(Adjustment>0.);
+        System.out.println("nudge");
+      }
     }
+  }
+  /** Adjust the target for the raiser pidcontroller */
+  public void retargetRaise(double Adjustment) {
+    retargetRaise(Adjustment,false);
   }
   
   boolean Floor;   //true if its on the floor

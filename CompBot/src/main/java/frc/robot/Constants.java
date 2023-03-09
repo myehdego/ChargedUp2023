@@ -337,10 +337,10 @@ public final class Constants {
     public static final class Pneumatics {
         public static final int openChannel = 0;      // the gripper channel to open
         public static final int closeChannel = 1;     // the gripper channel to close
-        public static final int wristUpChannel = 2;   // gripper wrist up
-        public static final int wristDownChannel = 3; // gripper wrist down
         public static final double CUBEPRESSURE = 20;  // psi
         public static final double CONEPRESSURE = 50;  // psi
+        public static final int BLEED_CHANNEL_BLEED = 2;    // bleed channel bleed
+        public static final int BLEED_CHANNEL_CLOSE = 3;    // bleed channel close
     }
 
     public static final class RobotConstants {
@@ -357,6 +357,18 @@ public final class Constants {
 
     public static final class GripperConstants {
       public static final double rollerspeed = .5;
+      public static final int CUBE = 0;
+      public static final int CONE = 1;
+    }
+
+    public static final class Lights {
+      public static final int CHANNEL = 9;
+      public static final double GREEN = .77;
+      public static final double RED = .61;
+      public static final double CONE_COLOR = .69;
+      public static final double CUBE_COLOR = .91;
+      public static final double BLUE = .87;
+      public static final double CELEBRATE = -.79;
     }
 }
 

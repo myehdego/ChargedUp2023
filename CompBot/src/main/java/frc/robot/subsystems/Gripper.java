@@ -22,11 +22,14 @@ import frc.robot.Constants.Pneumatics;
 public class Gripper extends SubsystemBase {
   /** manipulates and grabs game objects.
    *  opening and closing with pneumatics.
+   *  bleeding and closing the pressure switch
    */
   private PneumaticHub pch = new PneumaticHub(1);
   //private Compressor compressor = pch.makeCompressor();
   private DoubleSolenoid gripper; 
+  private DoubleSolenoid bleeder;
   private boolean inOrSpit;
+  private int pieceType;
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
 
   public Gripper() {
@@ -38,7 +41,11 @@ public class Gripper extends SubsystemBase {
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
     roller.setIdleMode(IdleMode.kBrake);
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10, Pneumatics.CONEPRESSURE);
+    pieceType=GripperConstants.CONE;  // TODO get this info from pressure switch
+    bleeder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
+          Pneumatics.BLEED_CHANNEL_BLEED, Pneumatics.BLEED_CHANNEL_CLOSE);
     inOrSpit = true;
+    deBleed();
   }
 
   /** turn on rollers to input a game piece*/
@@ -71,10 +78,29 @@ public class Gripper extends SubsystemBase {
 
   public void setCubeP() {
     pch.enableCompressorAnalog(Pneumatics.CUBEPRESSURE-10., Pneumatics.CUBEPRESSURE);
+    pieceType = GripperConstants.CUBE;
+  }
+
+  public void bleed() {
+    bleeder.set(Value.kForward);
+  }
+
+  public void deBleed() {
+    bleeder.set(Value.kReverse);
   }
 
   public void setConeP() {
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
+    pieceType = GripperConstants.CONE;
+  }
+
+  /** report the type of game piece that is desired.
+   * 
+   * @return 
+   */
+  public int getPieceType()
+  {
+    return pieceType;
   }
   
   public boolean opengripper() {

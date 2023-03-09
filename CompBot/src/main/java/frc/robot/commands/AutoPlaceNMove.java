@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,19 +29,19 @@ public class AutoPlaceNMove extends SequentialCommandGroup {
        *  Step 1 is a race between the ArmRun command and a Wait command. 
        *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
        */
-  public AutoPlaceNMove(Arm arm, SwerveSubsystem drive, Gripper gripper) {
+  public AutoPlaceNMove(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
                     new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R-50, true),  // step 1
                     new WaitCommand(5))   // cant wait forever to get in position
-                ,new GripperOpenClose(gripper, true)  //  step 2
+                ,new GripperOpenClose(gripper, true, lights)  //  step 2
                 ,new WaitCommand(2)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
                 new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
                 //new DriveGeneric(drive, Units.feetToMeters(0),0),   // step 3
-                new GripperOpenClose(gripper, false), //  step 2.5
+                new GripperOpenClose(gripper, false, lights), //  step 2.5
                     new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
     );
   }

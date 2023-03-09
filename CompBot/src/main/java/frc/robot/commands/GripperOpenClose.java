@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.GripperConstants;
+import frc.robot.Constants.Lights;
 import frc.robot.subsystems.Gripper;
 
 public class GripperOpenClose extends CommandBase {
@@ -14,13 +17,15 @@ public class GripperOpenClose extends CommandBase {
   private boolean open;
   private Timer timer;
   private double waitTime;
+  PWM lights;
   //private boolean expel;
-  public GripperOpenClose(Gripper gripper, boolean open) {
+  public GripperOpenClose(Gripper gripper, boolean open, PWM lights) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;
     addRequirements(gripper);
     this.open = open;
     timer = new Timer();
+    this.lights = lights;
   }
 
   // Called when the command is initially scheduled.
@@ -33,15 +38,19 @@ public class GripperOpenClose extends CommandBase {
       if (gripper.expel()) 
       {
         gripper.rollersGo();
+        lights.setSpeed(Lights.RED);
       }
       else {
         gripper.rollerSpit();
+        if(gripper.getPieceType() == GripperConstants.CUBE) lights.setSpeed(Lights.CUBE_COLOR);
+        else lights.setSpeed(Lights.CONE_COLOR);
       }
     }
     else {
       waitTime=0.4;
       gripper.closegripper();
       //gripper.rollersStop();
+      lights.setSpeed(Lights.GREEN);
     }
   }
 

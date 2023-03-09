@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.List;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
@@ -23,10 +24,12 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.Lights;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoPlaceNMove;
 import frc.robot.commands.AutoPlacenMoveontostation;
+import frc.robot.commands.BleedIt;
 import frc.robot.commands.DriveGeneric;
 import frc.robot.commands.DriverStation;
 import frc.robot.commands.GetAprilTag;
@@ -48,6 +51,7 @@ public class RobotContainer {
     private GamePieceCam pixycam;
     private AprilTagCamera camera;
     private DriveGeneric driveGeneric;
+    private PWM lights;
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   //  private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
@@ -87,13 +91,15 @@ public class RobotContainer {
         if (old?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp){
                 pixycam = new GamePieceCam();
         }
+        lights = new PWM(Lights.CHANNEL);
+        lights.setSpeed(Lights.GREEN);
         configureButtonBindings();
 
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
-        m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper));
+        m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
-        m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper));
+        m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper, lights));
         SmartDashboard.putData(m_chooser);
    }
 
@@ -178,20 +184,28 @@ public class RobotContainer {
                 new JoystickButton(buttonBox1, OIConstants.targetLowerNudge_BB1).
                   onTrue(new InstantCommand(() -> arm.retargetRaise(-ArmConstants.targetRaiseNudgeamount)));
         
+                new JoystickButton(buttonBox1, OIConstants.targetExtendNudge_BB1).
+                  onFalse(new InstantCommand(() -> arm.retargetRetract(0.,true)));
+                new JoystickButton(buttonBox1, OIConstants.targetRetractNudge_BB1).
+                  onFalse(new InstantCommand(() -> arm.retargetRetract(0.,true)));
+                new JoystickButton(buttonBox1, OIConstants.targetRaiseNudge_BB1).
+                  onFalse(new InstantCommand(() -> arm.retargetRaise(0.,true)));
+                new JoystickButton(buttonBox1, OIConstants.targetLowerNudge_BB1).
+                  onFalse(new InstantCommand(() -> arm.retargetRaise(0.,true)));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth2));
                 // onTrue(arm.extensionCommand(ArmConstants.cubeDepth1));
         }
 
         if (old?Constants.GRIPPER_AVAILABLE:Constants.GRIPPER_AVAILABLE_Comp){
                 new JoystickButton(buttonBox1, OIConstants.kgripperopenbutton_BB1).
-                  onTrue(new GripperOpenClose(gripper, true));
+                  onTrue(new GripperOpenClose(gripper, true, lights));
                 new JoystickButton(buttonBox1, OIConstants.kgripperclosebutton_BB1).
-                    onTrue(new GripperOpenClose(gripper, false));
+                    onTrue(new GripperOpenClose(gripper, false, lights));
                 // TODO: open requires high pressure
-                // TODO: need to bleed pressure when switching from high to low
         
                 new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
-                    onTrue(new InstantCommand(() -> gripper.setCubeP()));
+                    onTrue(new InstantCommand(() -> gripper.setCubeP())
+                           .andThen(new BleedIt(gripper)));
                 new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
                     onFalse(new InstantCommand(() -> gripper.setConeP()));
         } 

@@ -21,7 +21,7 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
-
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
     private PowerDistribution PDH;
     private AnalogInput pixyCam;
     private GamePieceCam gamepieceCam;
+    private PWM lights;
     private boolean choice;  // choose which robot to control, true is competion bot
     // private Timer timer = new Timer();
     /**
@@ -282,7 +283,7 @@ public class Robot extends TimedRobot {
         // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
         //}
     
-       // swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
+        swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
 
        if (Timer.getMatchTime() < 5.) {
         swerveSubsystem.setBrakeMode();
