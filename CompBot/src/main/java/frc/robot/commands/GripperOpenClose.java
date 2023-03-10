@@ -12,13 +12,13 @@ import frc.robot.Constants.Lights;
 import frc.robot.subsystems.Gripper;
 
 public class GripperOpenClose extends CommandBase {
-  /** Open and closes the gripper. */
   private Gripper gripper;
   private boolean open;
   private Timer timer;
   private double waitTime;
-  PWM lights;
+  private PWM lights;
   //private boolean expel;
+  /** Open and close the gripper. */
   public GripperOpenClose(Gripper gripper, boolean open, PWM lights) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.gripper = gripper;

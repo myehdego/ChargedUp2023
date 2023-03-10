@@ -321,11 +321,10 @@ public final class Constants {
         public static final int gripCloseTest                 = 0;
 
         public static final double kDeadband = 0.05;
-        
-
     }
 
     public static final class CamConstant {
+        // april tag USB camera connected to RaspBerry Pi runnind PhotonVision
         public static final double PitchAngle =           0.; // Pitch angle of camera in degrees
         public static final double CameraLocationX =      0.; // camera location relative to robots center
         public static final double CameraLocationY =      0.;
@@ -333,7 +332,12 @@ public final class Constants {
         public static final double CameraLocationX_COMP = 0.; // camera location relative to robots center
         public static final double CameraLocationY_COMP = 0.;
         public static final double CameraLocationZ_COMP = 0.;
+
+        // Pixy camera connected to analog pins
+        public static final int PIXY_DETECTION_PORT = 1;
+        public static final int PIXY_OFFSET_PORT = 0;
     }
+
     public static final class Pneumatics {
         public static final int openChannel = 0;      // the gripper channel to open
         public static final int closeChannel = 1;     // the gripper channel to close

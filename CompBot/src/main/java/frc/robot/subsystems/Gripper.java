@@ -28,7 +28,7 @@ public class Gripper extends SubsystemBase {
   //private Compressor compressor = pch.makeCompressor();
   private DoubleSolenoid gripper; 
   private DoubleSolenoid bleeder;
-  private boolean inOrSpit;
+  private boolean inOrSpit;  // determines direction of the rollers
   private int pieceType;
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
 
@@ -40,12 +40,13 @@ public class Gripper extends SubsystemBase {
     roller.restoreFactoryDefaults();
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
     roller.setIdleMode(IdleMode.kBrake);
-    pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10, Pneumatics.CONEPRESSURE);
-    pieceType=GripperConstants.CONE;  // TODO get this info from pressure switch
     bleeder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
           Pneumatics.BLEED_CHANNEL_BLEED, Pneumatics.BLEED_CHANNEL_CLOSE);
     inOrSpit = true;
     deBleed();
+    //  set these based on info from pressure switch when that info is available on setup
+    //pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10, Pneumatics.CONEPRESSURE);
+    //pieceType=GripperConstants.CONE;
   }
 
   /** turn on rollers to input a game piece*/
@@ -92,6 +93,11 @@ public class Gripper extends SubsystemBase {
   public void setConeP() {
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
     pieceType = GripperConstants.CONE;
+  }
+
+  public void initPnGP(boolean cone) {
+    if (cone) setConeP();
+    else setCubeP();
   }
 
   /** report the type of game piece that is desired.

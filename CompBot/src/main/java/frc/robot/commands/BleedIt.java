@@ -13,11 +13,16 @@ public class BleedIt extends CommandBase {
   Timer timer;
   /** Bleed the pressure */
   public BleedIt(Gripper gripper) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(gripper);
     this.gripper = gripper;
     timer = new Timer();
   }
+
+  /*
+   * open bleed valve,
+   * wait a little
+   * close it again
+   */
 
   // Called when the command is initially scheduled.
   @Override

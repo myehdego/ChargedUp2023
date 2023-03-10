@@ -16,9 +16,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DriveGeneric extends CommandBase {
-  /** Drive a given distance in any direction
-   * In field coordinates
-   */
   int randomNumber = Math.floorMod(System.currentTimeMillis(), 1000);
   SwerveSubsystem driver;
   Pose2d startpose, targetpose;
@@ -30,8 +27,11 @@ public class DriveGeneric extends CommandBase {
   double tol;
   boolean stopwhendone = true;
   boolean iShouldStop = false;
+  /** Drive a given distance in any direction
+   *  in field coordinates.
+   *  Distances in meters
+   */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
@@ -40,6 +40,10 @@ public class DriveGeneric extends CommandBase {
     controller = new PIDController(0, 0, 0);  // set p in init
   }
 
+  /** Drive a given distance in any direction
+   *  in field coordinates and .
+   *  Distances in meters
+   */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist) {
     this(driveon, xdist, ydist, true);
   }

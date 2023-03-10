@@ -17,9 +17,9 @@ public class Stopondock extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveGeneric(drive, FieldConstants.chargingstationwidth/2, 0, true),
+      new DriveGeneric(drive, FieldConstants.chargingstationwidth, 0, true),
       new Docked(drive), 
-      new DriveGeneric(drive, FieldConstants.Halflength, 0, true)
+      new DriveGeneric(drive, -FieldConstants.chargingstationwidth/2., 0, true)
     );
   }
 }

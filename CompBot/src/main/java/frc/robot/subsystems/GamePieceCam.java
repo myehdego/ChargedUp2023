@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.CamConstant;
 
 public class GamePieceCam extends SubsystemBase {
   private AnalogInput pixyCam;
@@ -22,8 +23,8 @@ public class GamePieceCam extends SubsystemBase {
    *  Current implementation returns the yaw angle
    *   from directly forward in degrees*/
   public GamePieceCam() {
-    pixyCam = new AnalogInput(0);  //TODO probably ought to define these connections in Constants.java
-    pixyCamPin1 = new AnalogInput(1);
+    pixyCam = new AnalogInput(CamConstant.PIXY_OFFSET_PORT);  //TODO probably ought to define these connections in Constants.java
+    pixyCamPin1 = new AnalogInput(CamConstant.PIXY_DETECTION_PORT);
   }
 
   /** return the yaw angle to the observed game piece
@@ -35,6 +36,7 @@ public class GamePieceCam extends SubsystemBase {
     return -val;  // when installed on its left side
   }
 
+  /** report whether a game piece is detected */
   public boolean isVisible() {
     return iSeeSomething;
   }
@@ -42,6 +44,9 @@ public class GamePieceCam extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // if pin 1 is connected, use it.
     iSeeSomething = pixyCamPin1.getAverageValue() > gotOneThreshold;
+    // if pin1 not connected, use Yaw value
+    //iSeeSomething = (pixyCam.getAverageValue()<maxval)?true:false;
   }
 }
