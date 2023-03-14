@@ -44,18 +44,15 @@ public class Balancer extends CommandBase {
   public void initialize() {
     //y is to the left
     zero = pigeon.getPitch();   // who cares?
+    controller.setP(zero);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (pigeon.getPitch() > 1.36) {
-      
-    }
-    else if (pigeon.getPitch() < 1.36) {
-      
-    }
-    else {}
+   zero = pigeon.getPitch();
+   double balancer = controller.calculate(zero, 0);
+   drive.driveit(-balancer, 0, 0, false);
   };
 
   // Called once the command ends or is interrupted.

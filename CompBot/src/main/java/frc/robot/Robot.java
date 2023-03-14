@@ -1,17 +1,7 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.GamePieceCam;
-import frc.robot.subsystems.Gripper;
-import frc.robot.subsystems.SwerveSubsystem;
-import edu.wpi.first.cameraserver.CameraServer;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 //import edu.wpi.first.math.geometry.Pose2d;
 //import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,12 +13,20 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GamePieceCam;
+import frc.robot.subsystems.Gripper;
+import frc.robot.subsystems.SwerveSubsystem;
 
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
@@ -114,8 +112,10 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        int dummy;
        if(Constants.PIXY_AVAILABLE_Comp)
-        m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.);  // TODO check it out
+        //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.);  // TODO check it out
+        dummy=1;
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -217,14 +217,16 @@ public class Robot extends TimedRobot {
         //                    + " R: " + String.format("%.3f", turningSpeed));
 
         if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) {
+            System.out.println("ready to look for pixy button");
             if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
                 int err = pixyCam.getAverageValue();
+                System.out.println("PixyY = "+err);
                 SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
                 //double errY = gamepieceCam.getYaw();
                 //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
                 turningSpeed = Math.max(-.3,
                                 Math.min(.3,
-                                (err-1600)*-3.e-4  )); 
+                                (err-1000)*-2.e-4  )); 
                                 //errY/22. )); 
                 smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
                 //SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);

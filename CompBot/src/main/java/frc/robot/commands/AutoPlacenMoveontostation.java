@@ -39,10 +39,9 @@ public class AutoPlacenMoveontostation extends SequentialCommandGroup {
                 ,new WaitCommand(2)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
-                new Stopondock(drive),   // step 3
-                //new DriveGeneric(drive, Units.feetToMeters(20),0),   // step 3
-                new GripperOpenClose(gripper, false, lights), //  step 2.5
-                    new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
+                  new StoponDockGeneric(drive,2),   // step 3
+                  new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
+                  new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
     );
   }
 }

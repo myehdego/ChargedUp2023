@@ -8,18 +8,20 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class Stopondock extends SequentialCommandGroup {
-  /** drive from grid, over the Charging Station
+public class StoponDockGeneric extends SequentialCommandGroup {
+  /** drive from grid, past the Charging Station
+   *  drive sideways infront of the Charging station
    *  drive back on charging station 
    *  balance
    */
-  public Stopondock(SwerveSubsystem drive) {
+  public StoponDockGeneric(SwerveSubsystem drive, double sideDist) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveGeneric(drive, FieldConstants.chargingstationwidth/2, 0, true),
+      new DriveGeneric(drive, FieldConstants.chargingstationwidth, 0, true),
+      new DriveGeneric(drive, 0, sideDist, true),
       new Docked(drive), 
-      new DriveGeneric(drive, FieldConstants.Halflength, 0, true)
+      new DriveGeneric(drive, FieldConstants.chargingstationwidth/2, 0, true)
     );
   }
 }
