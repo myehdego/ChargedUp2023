@@ -28,7 +28,7 @@ public final class Constants {
   public static final boolean GRIPPER_AVAILABLE_Comp = true;
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
-  public static final boolean PIXY_AVAILABLE_Comp = false;
+  public static final boolean PIXY_AVAILABLE_Comp = true;
   //public static final int SYSTEMCHOOSER = 0;
 
 
@@ -329,12 +329,13 @@ public final class Constants {
         public static final double CameraLocationX =      0.; // camera location relative to robots center
         public static final double CameraLocationY =      0.;
         public static final double CameraLocationZ =      0.;
-        public static final double CameraLocationX_COMP = 0.; // camera location relative to robots center
+        public static final double CameraLocationX_COMP = Units.inchesToMeters(5.); // camera location relative to robots center
         public static final double CameraLocationY_COMP = 0.;
-        public static final double CameraLocationZ_COMP = 0.;
+        public static final double CameraLocationZ_COMP = Units.inchesToMeters(45.);
+        public static final double PitchAngle_Comp =      -30.; // Pitch angle of camera in degrees
 
         // Pixy camera connected to analog pins
-        public static final int PIXY_DETECTION_PORT = 1;
+        public static final int PIXY_DETECTION_PORT = 9;
         public static final int PIXY_OFFSET_PORT = 0;
     }
 

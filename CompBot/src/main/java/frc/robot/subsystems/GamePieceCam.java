@@ -23,15 +23,17 @@ public class GamePieceCam extends SubsystemBase {
    *  Current implementation returns the yaw angle
    *   from directly forward in degrees*/
   public GamePieceCam() {
-    pixyCam = new AnalogInput(CamConstant.PIXY_OFFSET_PORT);  //TODO probably ought to define these connections in Constants.java
+    pixyCam = new AnalogInput(CamConstant.PIXY_OFFSET_PORT);
     pixyCamPin1 = new AnalogInput(CamConstant.PIXY_DETECTION_PORT);
   }
 
-  /** return the yaw angle to the observed game piece
-   *  relative to directly forward, degrees [-22, 22]
+  /** return the yaw angle (around the upward Y axis) to the observed game piece.
+   *  Angle is relative to directly forward, degrees [-22, 22]
    */
   public double getYaw() {
-    double val = (pixyCam.getAverageValue()-center)*(fov/maxval);
+    double val;
+    if (isVisible()) val = (pixyCam.getAverageValue()-center)*(fov/maxval);
+    else val=0.;
     //return val;  // when installed normally or on its right side
     return -val;  // when installed on its left side
   }
@@ -46,6 +48,7 @@ public class GamePieceCam extends SubsystemBase {
     // This method will be called once per scheduler run
     // if pin 1 is connected, use it.
     iSeeSomething = pixyCamPin1.getAverageValue() > gotOneThreshold;
+    System.out.println("GamePieceCam periodic");  //  test to ensure it is running
     // if pin1 not connected, use Yaw value
     //iSeeSomething = (pixyCam.getAverageValue()<maxval)?true:false;
   }

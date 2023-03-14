@@ -85,9 +85,9 @@ public class Robot extends TimedRobot {
        
         m_robotContainer = new RobotContainer(!choice);
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
-        if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp){
-            pixyCam = new AnalogInput(0);
-            //gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
+        if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE){
+            //pixyCam = new AnalogInput(0);
+            gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
         } 
         pigeon = new WPI_Pigeon2(1);
         PortForwarder.add(1182, "photonvision.local",5800 );
@@ -115,8 +115,10 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-       if(Constants.PIXY_AVAILABLE_Comp)
-        m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.);  // TODO check it out
+       if(Constants.PIXY_AVAILABLE_Comp){
+        //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.);  // TODO check it out
+        m_robotContainer.displayGameCamSuccess(gamepieceCam.isVisible());  // TODO check it out
+       }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -218,15 +220,15 @@ public class Robot extends TimedRobot {
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
 
-        if (choice?Constants.PIXY_AVAILABLE:Constants.PIXY_AVAILABLE_Comp) {
+        if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE) {
             if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
-                int err = pixyCam.getAverageValue();
-                SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
-                //double errY = gamepieceCam.getYaw();
+                //int err = pixyCam.getAverageValue();
+                //SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
+                double err = gamepieceCam.getYaw();
                 //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
                 turningSpeed = Math.max(-.3,
                                 Math.min(.3,
-                                (err-1600)*-3.e-4  )); 
+                                (err-1000)*-2.e-4  )); 
                                 //errY/22. )); 
                 smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
                 //SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
