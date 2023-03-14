@@ -21,25 +21,14 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.wpilibj.AnalogInput;
+//import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.GamePieceCam;
-import frc.robot.subsystems.Gripper;
-import frc.robot.subsystems.SwerveSubsystem;
 
 
 //import com.ctre.phoenix.sensors.Pigeon2_Faults;
@@ -67,7 +56,7 @@ public class Robot extends TimedRobot {
     private WPI_Pigeon2 pigeon;
 
     private PowerDistribution PDH;
-    private AnalogInput pixyCam;
+    //private AnalogInput pixyCam;
     private GamePieceCam gamepieceCam;
     private PWM lights;
     private boolean choice;  // choose which robot to control, true is competion bot
@@ -98,9 +87,11 @@ public class Robot extends TimedRobot {
         if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE){
             //pixyCam = new AnalogInput(0);
             gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
-        } 
-        pigeon = new WPI_Pigeon2(1);
+        }
+        pigeon = m_robotContainer.getGyro();
+
         PortForwarder.add(1182, "photonvision.local",5800 );
+
         DataLogManager.start();
     }
 

@@ -23,10 +23,10 @@ import frc.robot.subsystems.SwerveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoPlaceHighNMoveRightSide extends SequentialCommandGroup {
   /** Place game piece:
-       *    1 extend arm to desired positiona, but don't wait longer than 3 seconds
-       *    2 open gripper
-       *    3 back away from grid
-       *    4 retract arms
+       *    <ol><li> extend arm to desired positiona, but don't wait longer than 3 seconds
+       *    <li> open gripper
+       *    <li> back away from grid
+       *    <li> retract arms
        *  
        *  Step 1 is a race between the ArmRun command and a Wait command. 
        *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
@@ -35,16 +35,14 @@ public class AutoPlaceHighNMoveRightSide extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
-                    new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R+50, true)  // step 1
+                    new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R+50, true)  // step 1a
                     ,new WaitCommand(1.5))   // cant wait forever to get in position
-                ,new InstantCommand(() -> arm.makeMeDone()),  // ensure step 1 is ended
-                  
-                Commands.race(new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1
-                    ,new WaitCommand(2))   // cant wait forever to get in position
-                
+                ,new InstantCommand(() -> arm.makeMeDone()),  // ensure step 1a is ended                 
+                Commands.race(new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1b
+                    ,new WaitCommand(2))   // cant wait forever to get in position                
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2 // gripper opens
                 ,new WaitCommand(1)
-                ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
+                ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1b is ended
                 ,Commands.parallel(     // do last steps in parallel
                     Commands.race(
                       new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(2),0),   // step 3 //goes back
@@ -53,10 +51,10 @@ public class AutoPlaceHighNMoveRightSide extends SequentialCommandGroup {
                     new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5 // closes gripper
                     // step 4
                     new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4 // retracts arm
-                    ,Commands.race( 
+                ,Commands.race( 
                     new DriveGeneric(drive, 0 , Units.feetToMeters(5.5)), // moves to the left
                     new WaitCommand(2))
                 ,new DriveGeneric(drive, -FieldConstants.chargingstationwidth/2 , 0) // goes to charging station
-                    );
+      );
   }
 }

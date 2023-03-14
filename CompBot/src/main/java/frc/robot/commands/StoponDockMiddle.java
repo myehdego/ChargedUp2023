@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class Stopondock extends SequentialCommandGroup {
+public class StoponDockMiddle extends SequentialCommandGroup {
   /** drive from grid, over the Charging Station
    *  drive back on charging station 
    *  balance
    */
-  public Stopondock(SwerveSubsystem drive) {
+  public StoponDockMiddle(SwerveSubsystem drive) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

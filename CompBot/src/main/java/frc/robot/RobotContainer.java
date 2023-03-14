@@ -1,6 +1,9 @@
 package frc.robot;
 
 import java.util.List;
+
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,15 +32,15 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
 import frc.robot.commands.AutoPlaceHighNMove;
 import frc.robot.commands.AutoPlaceHighNMoveRightSide;
+import frc.robot.commands.AutoPlaceMountFromRight;
 import frc.robot.commands.AutoPlaceNMove;
-import frc.robot.commands.AutoPlacenMoveontostation;
 import frc.robot.commands.BleedIt;
 import frc.robot.commands.DriveGeneric;
-import frc.robot.commands.DriverStation;
-import frc.robot.commands.GetAprilTag;
-import frc.robot.commands.GetRobotPosition;
+//import frc.robot.commands.DriverStation;
+//import frc.robot.commands.GetAprilTag;
+//import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
-import frc.robot.commands.PreRetract;
+//import frc.robot.commands.PreRetract;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Arm;
@@ -52,8 +55,9 @@ public class RobotContainer {
     private Gripper gripper;
     private GamePieceCam pixycam;
     private AprilTagCamera camera;
-    private DriveGeneric driveGeneric;
+    //private DriveGeneric driveGeneric;
     private PWM lights;
+    private WPI_Pigeon2 gyro;
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   //  private final Joystick buttonBox = new Joystick(OIConstants.kDRiverCOntrollerPort2);
@@ -95,6 +99,7 @@ public class RobotContainer {
         }
         lights = new PWM(Lights.CHANNEL);
         lights.setSpeed(Lights.GREEN);
+        gyro = new WPI_Pigeon2(1);
         configureButtonBindings();
 
         // ensure consistency between switch settings and subsystem states
@@ -103,10 +108,10 @@ public class RobotContainer {
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
         m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
         m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        m_chooser.addOption("test drive straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        m_chooser.addOption("StoponDock Right", new AutoPlaceMountFromRight(arm, swerveSubsystem, gripper, lights, gyro));
         SmartDashboard.putData(m_chooser);
    }
 
@@ -258,9 +263,9 @@ public class RobotContainer {
 
         /* TODO: What is our location in the GRID? */
 
-        double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
-        double level = switchBox.getRawAxis(OIConstants.levelSwitch);
-        double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
+        //double ySpeed = switchBox.getRawAxis(OIConstants.choiceswitch);
+        //double level = switchBox.getRawAxis(OIConstants.levelSwitch);
+        //double delay = switchBox.getRawAxis(OIConstants.delaySwitch);
 
         //return new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0);  // the simplest command
         //return new DriveGeneric(swerveSubsystem, Units.inchesToMeters(48), 0);  // for testing
@@ -330,6 +335,10 @@ public class RobotContainer {
 
     public SwerveSubsystem getSwerveSS() {
             return swerveSubsystem;
+    }
+
+    public WPI_Pigeon2 getGyro() {
+        return gyro;
     }
 
     public Arm getarmSS() {

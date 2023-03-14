@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Robot;
+import frc.robot.Constants.AutoConstants;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -18,14 +20,14 @@ public class Balancer extends CommandBase {
   //private WPI_Pigeon2 gyro;
   private WPI_Pigeon2 pigeon;
   double zero;
-/** drives to balances on the station based on pitch angle */
+  private PWM lights;
+/** drives to balance on the station based on pitch angle. */
   public Balancer(SwerveSubsystem drive, WPI_Pigeon2 gyro) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     this.drive=drive;
     this.pigeon = gyro;
-    controller = new PIDController(0, 0, 0);
-    //controller =   // TODO finish me
+    controller = new PIDController(AutoConstants.kPBalancer, 0, 0);
   }
 
   /* steps to make it happen:
@@ -42,15 +44,15 @@ public class Balancer extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //y is to the left
-    zero = pigeon.getPitch();   // who cares?
-    controller.setP(zero);
+    //y is to the left so positive pitch is nose down
+    //zero = pigeon.getPitch();   // who cares?
+    //controller.setP(AutoConstants.kPBalancer);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   zero = pigeon.getPitch();
+   zero =  Math.sin(Math.toRadians(pigeon.getPitch()-1));
    double balancer = controller.calculate(zero, 0);
    drive.driveit(-balancer, 0, 0, false);
   };
@@ -64,6 +66,6 @@ public class Balancer extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false;  // run balancer until the end of the match - never end
   }
 }

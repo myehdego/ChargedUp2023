@@ -246,6 +246,7 @@ public final class Constants {
                 new TrapezoidProfile.Constraints(
                         kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularAccelerationRadiansPerSecondSquared);
+        public static final double kPBalancer = .05;  // sin -> Vbus
     }
 
     public static final class OIConstants {
