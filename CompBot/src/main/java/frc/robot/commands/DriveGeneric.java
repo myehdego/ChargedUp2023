@@ -31,6 +31,9 @@ public class DriveGeneric extends CommandBase {
    *  in field coordinates.
    *  Distances in meters
    */
+  /** Drive a given distance in any direction
+   * In field coordinates
+   */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
     addRequirements(driveon);
     this.driver = driveon;
@@ -61,7 +64,7 @@ public class DriveGeneric extends CommandBase {
     dist = Math.sqrt(xdist*xdist+ydist*ydist);
     // target = encS+dist;
     tol = 0.04*dist;
-    controller.setP(.3/dist);
+    controller.setP(.9/dist);
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));

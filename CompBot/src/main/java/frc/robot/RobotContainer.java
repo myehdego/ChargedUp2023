@@ -27,6 +27,8 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.Lights;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmRun;
+import frc.robot.commands.AutoPlaceHighNMove;
+import frc.robot.commands.AutoPlaceHighNMoveRightSide;
 import frc.robot.commands.AutoPlaceNMove;
 import frc.robot.commands.AutoPlacenMoveontostation;
 import frc.robot.commands.BleedIt;
@@ -102,6 +104,8 @@ public class RobotContainer {
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
         m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
+        m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
         SmartDashboard.putData(m_chooser);
    }

@@ -19,24 +19,29 @@ import frc.robot.subsystems.SwerveSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoPlaceNMove extends SequentialCommandGroup {
+public class AutoPlaceHighNMove extends SequentialCommandGroup {
   /** Place game piece:
-       *    <ol><li> extend arm to desired positiona, but don't wait longer than 3 seconds
-       *    <li> open gripper
-       *    <li> back away from grid
-       *    <li> retract arms
+       *    1 extend arm to desired positiona, but don't wait longer than 3 seconds
+       *    2 open gripper
+       *    3 back away from grid
+       *    4 retract arms
        *  
-       *  <p>Step 1 is a race between the ArmRun command and a Wait command. 
-       *  <p>Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
+       *  Step 1 is a race between the ArmRun command and a Wait command. 
+       *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
        */
-  public AutoPlaceNMove(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
+  public AutoPlaceHighNMove(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
-                    new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R-50, true),  // step 1
-                    new WaitCommand(5))   // cant wait forever to get in position
+                    new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R+50, true)  // step 1
+                    ,new WaitCommand(1.5))   // cant wait forever to get in position
+                ,new InstantCommand(() -> arm.makeMeDone()),  // ensure step 1 is ended
+                  
+                Commands.race(new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1
+                    ,new WaitCommand(2))   // cant wait forever to get in position
+                
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2
-                ,new WaitCommand(2)
+                ,new WaitCommand(1)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
                   new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
