@@ -97,13 +97,16 @@ public class RobotContainer {
         lights.setSpeed(Lights.GREEN);
         configureButtonBindings();
 
+        // ensure consistency between switch settings and subsystem states
+        gripper.initPnGP(buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
+
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
         m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
         m_chooser.addOption("StoponDock", new AutoPlacenMoveontostation(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
         m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("test drive stright", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
         SmartDashboard.putData(m_chooser);
    }
 

@@ -12,7 +12,6 @@ public class Docked extends CommandBase {
   SwerveSubsystem docked;
 
   public Docked(SwerveSubsystem docked) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(docked);
     this.docked = docked;
   }

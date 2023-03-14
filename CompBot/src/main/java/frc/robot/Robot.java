@@ -1,5 +1,18 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.Lights;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GamePieceCam;
+import frc.robot.subsystems.Gripper;
+import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -121,6 +134,7 @@ public class Robot extends TimedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
+        lights.setSpeed(Lights.CELEBRATE);
     }
 
     @Override

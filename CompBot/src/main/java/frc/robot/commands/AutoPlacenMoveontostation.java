@@ -21,17 +21,15 @@ import frc.robot.subsystems.SwerveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoPlacenMoveontostation extends SequentialCommandGroup {
   /** Place game piece:
-       *    1 extend arm to desired positiona, but don't wait longer than 3 seconds
-       *    2 open gripper
-       *    3 back away from grid
-       *    4 retract arms
+       *    <ol><li> extend arm to desired positiona, but don't wait longer than 3 seconds
+       *    <li> open gripper
+       *    <li> back away from grid
+       *    <li> retract arms
        *  
-       *  Step 1 is a race between the ArmRun command and a Wait command. 
-       *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
+       *  <p>Step 1 is a race between the ArmRun command and a Wait command. 
+       *  <p>Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
        */
   public AutoPlacenMoveontostation(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
                     new ArmRun(arm, ArmConstants.cubeDepth1*1.1,ArmConstants.cubeDepth1R-10, true),  // step 1
                     new WaitCommand(5))   // cant wait forever to get in position

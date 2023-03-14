@@ -28,10 +28,13 @@ public class DriveGeneric extends CommandBase {
   boolean stopwhendone = true;
   boolean iShouldStop = false;
   /** Drive a given distance in any direction
+   *  in field coordinates.
+   *  Distances in meters
+   */
+  /** Drive a given distance in any direction
    * In field coordinates
    */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
@@ -41,7 +44,8 @@ public class DriveGeneric extends CommandBase {
   }
 
   /** Drive a given distance in any direction
-   * In field coordinates
+   *  in field coordinates and .
+   *  Distances in meters
    */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist) {
     this(driveon, xdist, ydist, true);

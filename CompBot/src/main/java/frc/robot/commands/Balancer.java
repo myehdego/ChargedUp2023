@@ -18,7 +18,7 @@ public class Balancer extends CommandBase {
   //private WPI_Pigeon2 gyro;
   private WPI_Pigeon2 pigeon;
   double zero;
-/** drives to balances on the station based on angle */
+/** drives to balances on the station based on pitch angle */
   public Balancer(SwerveSubsystem drive, WPI_Pigeon2 gyro) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
