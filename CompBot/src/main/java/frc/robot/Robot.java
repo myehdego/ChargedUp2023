@@ -226,6 +226,7 @@ public class Robot extends TimedRobot {
                 //int err = pixyCam.getAverageValue();
                 //SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
                 double err = gamepieceCam.getYaw();
+                SmartDashboard.putNumber("PixyX",  err);
                 //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
                 turningSpeed = Math.max(-.3,
                                 Math.min(.3,

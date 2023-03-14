@@ -55,6 +55,8 @@ public class Balancer extends CommandBase {
    zero =  Math.sin(Math.toRadians(pigeon.getPitch()-1));
    double balancer = controller.calculate(zero, 0);
    drive.driveit(-balancer, 0, 0, false);
+   /* if need pitch rate, see pigeon.getRawGyro */
+   // do we need to ensure robot stays aligned with field?
   };
 
   // Called once the command ends or is interrupted.

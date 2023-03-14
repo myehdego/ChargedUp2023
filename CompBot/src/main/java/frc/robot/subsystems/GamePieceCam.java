@@ -48,7 +48,7 @@ public class GamePieceCam extends SubsystemBase {
     // This method will be called once per scheduler run
     // if pin 1 is connected, use it.
     iSeeSomething = pixyCamPin1.getAverageValue() > gotOneThreshold;
-    System.out.println("GamePieceCam periodic");  //  test to ensure it is running
+    System.out.println("GamePieceCam periodic "+pixyCamPin1.getAverageValue());  //  test to ensure it is running
     // if pin1 not connected, use Yaw value
     //iSeeSomething = (pixyCam.getAverageValue()<maxval)?true:false;
   }
