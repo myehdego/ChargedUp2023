@@ -16,6 +16,7 @@ public class ArmRun extends CommandBase {
   double Target;
   double RaiserTarget;
   boolean Closed = false;
+  boolean floor = false;
 
   /** open loop command move arm to a target */
   public ArmRun(Arm arm, double Target, double RaiserTarget) {
@@ -23,21 +24,26 @@ public class ArmRun extends CommandBase {
     this.arm = arm;
     this.Target = Target;
     this.RaiserTarget = RaiserTarget;
-    System.out.println("RaiserTarget " + RaiserTarget);
+    //System.out.println("RaiserTarget " + RaiserTarget);
   }
 
   /** command move arm to a target */
   public ArmRun(Arm arm, double Target, double RaiserTarget, boolean closed) {
     this(arm, Target, RaiserTarget);
     this.Closed = closed;
+    this.floor = false;
   }
-
+  public ArmRun(Arm arm, double Target, double RaiserTarget, boolean closed, boolean floor) {
+    this(arm, Target, RaiserTarget, closed);
+    this.floor = floor;
+  }
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (Closed) {
       arm.pidCoefficient(Math.abs(Target - arm.getExtenderPos()), Math.abs(RaiserTarget - arm.getRaiserPos()));
-      arm.closedLoopController(Target, RaiserTarget);
+      arm.closedLoopController(Target, RaiserTarget, floor);
     } else {
       arm.extend(arm.getExtenderPos() < Target);
       arm.raise(arm.getRaiserPos() < RaiserTarget);

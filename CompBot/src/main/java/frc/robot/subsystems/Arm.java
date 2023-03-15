@@ -154,14 +154,23 @@ public class Arm extends SubsystemBase {
   double latestTargetE;  // target position for retractor
   double latestTargetR;  // target position for raiser
   /** run retractor motor closed loop controller */
-  public void closedLoopController(double Target, double RaiserTarget) {
+  public void closedLoopController(double Target, double RaiserTarget, boolean floor) {
     IamDone = false;
     closed = true;
     closedR = true;
     latestTargetE = Target;
     latestTargetR = RaiserTarget;
     retractorPidController.setReference(Target, ControlType.kPosition);
-    raiserPidController.setReference(RaiserTarget, ControlType.kPosition);
+    raiserPidController.setReference(RaiserTarget+(floor?temp_raiserIncrement:0.), ControlType.kPosition);
+  }
+  public void closedLoopController(double Target, double RaiserTarget) {
+    closedLoopController(Target, RaiserTarget,false);
+  }
+  
+  double temp_raiserIncrement=0.;
+  public void incForCube (boolean cube) {
+    if(cube)temp_raiserIncrement = 60;
+    else temp_raiserIncrement = 0.;
   }
 
   /**  Adjusts the target for the retractor pidcontroller

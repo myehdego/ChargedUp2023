@@ -44,7 +44,7 @@ public class AutoPlaceHighNMove extends SequentialCommandGroup {
                 ,new WaitCommand(1)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
-                  new DriveGeneric(drive, FieldConstants.leaveCommunityDist,0),   // step 3
+                  new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),0),   // step 3
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
                   new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
     );

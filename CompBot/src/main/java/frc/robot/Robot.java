@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
             gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
         }
         pigeon = m_robotContainer.getGyro();
+        lights = m_robotContainer.getLights();
 
         PortForwarder.add(1182, "photonvision.local",5800 );
 

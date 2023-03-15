@@ -107,7 +107,7 @@ public class RobotContainer {
 
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
-        m_chooser.setDefaultOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
         m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("test drive straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
@@ -156,7 +156,7 @@ public class RobotContainer {
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).    // end any currently running PICcontroller 
                   //andThen(new InstantCommand(() -> arm.setFloor(true))).
                   andThen(new WaitCommand(.5)).                 // wait long enough to end it
-                  andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true)));  // actually make it go
+                  andThen(new ArmRun(arm,ArmConstants.floorPosition,ArmConstants.floorPositionR,true, true)));  // actually make it go
                 
                 new JoystickButton(buttonBox0, OIConstants.kSubStationPos_BB0).   //substation 
                   onTrue(new InstantCommand(() -> arm.makeMeDone()).
@@ -217,9 +217,13 @@ public class RobotContainer {
         
                 new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
                     onTrue(new InstantCommand(() -> gripper.setCubeP())
-                           .andThen(new BleedIt(gripper)));
+                           .andThen(new BleedIt(gripper))
+                           .andThen(new InstantCommand(() -> arm.incForCube(true)))
+                    );
                 new JoystickButton(buttonBox1, OIConstants.PRESSURESwitch_BB1).
-                    onFalse(new InstantCommand(() -> gripper.setConeP()));
+                    onFalse(new InstantCommand(() -> gripper.setConeP())
+                    .andThen(new InstantCommand(() -> arm.incForCube(false)))
+                    );
         } 
         if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE_Comp) {
                 //new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
@@ -335,6 +339,10 @@ public class RobotContainer {
 
     public SwerveSubsystem getSwerveSS() {
             return swerveSubsystem;
+    }
+
+    public PWM getLights () {
+        return lights;
     }
 
     public WPI_Pigeon2 getGyro() {

@@ -28,7 +28,7 @@ public final class Constants {
   public static final boolean GRIPPER_AVAILABLE_Comp = true;
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
-  public static final boolean PIXY_AVAILABLE_Comp = true;
+  public static final boolean PIXY_AVAILABLE_Comp = false;
   //public static final int SYSTEMCHOOSER = 0;
 
 
@@ -355,7 +355,7 @@ public final class Constants {
 
     public static final class FieldConstants {
       public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
-      public static final double leaveCommunityDist = Units.feetToMeters(16.);  // distance from Grid to farthest edge of Community
+      public static final double leaveCommunityDist = Units.inchesToMeters(140.+5);  // distance from Grid to farthest edge of Community
       public static final double Halflength = Units.feetToMeters(11);
     }
 
