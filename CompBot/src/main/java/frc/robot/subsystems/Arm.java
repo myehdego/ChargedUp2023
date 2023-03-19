@@ -169,7 +169,7 @@ public class Arm extends SubsystemBase {
   
   double temp_raiserIncrement=0.;
   public void incForCube (boolean cube) {
-    if(cube)temp_raiserIncrement = 60;
+    if(cube)temp_raiserIncrement = 80;
     else temp_raiserIncrement = 0.;
   }
 

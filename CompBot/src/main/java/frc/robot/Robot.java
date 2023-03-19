@@ -290,11 +290,11 @@ public class Robot extends TimedRobot {
         // swerveSubsystem.driveit(xSpeed, ySpeed, turningSpeed, fieldoriented);
         //}
     
-        swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
+        //swerveSubsystem.reportStatesToSmartDashbd(moduleStates);
 
        if (Timer.getMatchTime() < 5.) {
         swerveSubsystem.setBrakeMode();
-        SmartDashboard.putNumber("Match time", Timer.getMatchTime());
+        //SmartDashboard.putNumber("Match time", Timer.getMatchTime());
        }
     }
 

@@ -154,6 +154,7 @@ public final class Constants {
                                            kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 1.8;
+        public static final double kptwist = .5;
   
     //    CAN_Number = new int[10];
     //    CAN_Name   = new string[30];
@@ -370,8 +371,8 @@ public final class Constants {
     public static final class Lights {
       public static final int CHANNEL = 9;
       public static final double GREEN = .77;
-      public static final double RED = .61;
-      public static final double CONE_COLOR = .69;
+      public static final double RED = -.11;
+      public static final double CONE_COLOR = .67;
       public static final double CUBE_COLOR = .91;
       public static final double BLUE = .87;
       public static final double CELEBRATE = -.79;

@@ -108,7 +108,7 @@ public class AprilTagCamera extends SubsystemBase {
     /* Look for an april tag */
     result = camera.getLatestResult();
     boolean hasTargets = result.hasTargets();
-    SmartDashboard.putBoolean("hasTarget", hasTargets); 
+    //SmartDashboard.putBoolean("hasTarget", hasTargets); 
   }
 
   private static final double taglocations[] [] = {

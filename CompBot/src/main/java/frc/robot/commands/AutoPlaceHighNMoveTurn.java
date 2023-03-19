@@ -19,7 +19,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoPlaceHighNMove extends SequentialCommandGroup {
+public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
   /** Place game piece:
        *    1 extend arm to desired positiona, but don't wait longer than 3 seconds
        *    2 open gripper
@@ -29,7 +29,7 @@ public class AutoPlaceHighNMove extends SequentialCommandGroup {
        *  Step 1 is a race between the ArmRun command and a Wait command. 
        *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
        */
-  public AutoPlaceHighNMove(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
+  public AutoPlaceHighNMoveTurn(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
@@ -44,9 +44,15 @@ public class AutoPlaceHighNMove extends SequentialCommandGroup {
                 ,new WaitCommand(1)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // do last steps in parallel
-                  new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),0,.6),   // step 3
+                  Commands.race(
+                    new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),0,.6),   // step 3
+                    new WaitCommand(3)),   // cant wait forever to get in position
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
-                  new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
+                  new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
+                )
+                ,new twist(drive, 30)
+                ,new InstantCommand(() -> arm.makeMeDone())
+                ,new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true)
     );
   }
 }

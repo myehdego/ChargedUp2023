@@ -27,6 +27,7 @@ public class DriveGeneric extends CommandBase {
   double tol;
   boolean stopwhendone = true;
   boolean iShouldStop = false;
+  private double variableP;
   /** Drive a given distance in any direction
    *  in field coordinates.
    *  Distances in meters
@@ -41,6 +42,7 @@ public class DriveGeneric extends CommandBase {
     this.ydist = ydist;
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
+    variableP=.9;
   }
 
   /** Drive a given distance in any direction
@@ -49,6 +51,10 @@ public class DriveGeneric extends CommandBase {
    */
   public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist) {
     this(driveon, xdist, ydist, true);
+  }
+  public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist,double varP) {
+    this(driveon, xdist, ydist, true);
+    this.variableP=varP;
   }
 
   /** stop DriveGeneric Command whether accomplished or not */
@@ -64,7 +70,7 @@ public class DriveGeneric extends CommandBase {
     dist = Math.sqrt(xdist*xdist+ydist*ydist);
     // target = encS+dist;
     tol = 0.04*dist;
-    controller.setP(.9/dist);
+    controller.setP(variableP/dist);
     startpose = driver.getPose();
     Transform2d transform = new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0));
     targetpose = startpose.plus(new Transform2d(new Translation2d(xdist, ydist), new Rotation2d(0)));
