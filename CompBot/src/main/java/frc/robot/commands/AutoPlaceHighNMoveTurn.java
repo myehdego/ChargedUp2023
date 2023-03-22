@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -29,7 +30,7 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
        *  Step 1 is a race between the ArmRun command and a Wait command. 
        *  Steps 3 and 4 should be accomplished in parallel, but 4 should wait a second before it starts
        */
-  public AutoPlaceHighNMoveTurn(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights) {
+  public AutoPlaceHighNMoveTurn(Arm arm, SwerveSubsystem drive, Gripper gripper, PWM lights, GamePieceCam gamePieceCam) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
@@ -50,7 +51,7 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
                   new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
                 )
-                ,new twist(drive, 30)
+                ,new twist(drive, gamePieceCam)
                 ,new InstantCommand(() -> arm.makeMeDone())
                 ,new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true)
     );

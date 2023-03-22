@@ -41,6 +41,7 @@ import frc.robot.commands.DriveGeneric;
 //import frc.robot.commands.GetAprilTag;
 //import frc.robot.commands.GetRobotPosition;
 import frc.robot.commands.GripperOpenClose;
+import frc.robot.commands.twist;
 //import frc.robot.commands.PreRetract;
 //import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -111,9 +112,10 @@ public class RobotContainer {
         m_chooser.addOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
         m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("drop cone High, leave, turn", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("drop cone High, leave, turn", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, lights, pixycam));
         m_chooser.addOption("test drive straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
         m_chooser.addOption("StoponDock Right", new AutoPlaceMountFromRight(arm, swerveSubsystem, gripper, lights, gyro));
+        m_chooser.addOption("test pixy", new twist(swerveSubsystem, pixycam));
         SmartDashboard.putData(m_chooser);
    }
 

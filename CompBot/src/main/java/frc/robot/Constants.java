@@ -24,11 +24,11 @@ public final class Constants {
   public static final boolean GRIPPER_AVAILABLE = false;
   public static final boolean ARM_AVAILABLE = false;
   public static final boolean PHOTONVISION_AVAILABLE = false;
-  public static final boolean PIXY_AVAILABLE = false;
+  public static final boolean PIXY_AVAILABLE = true;
   public static final boolean GRIPPER_AVAILABLE_Comp = true;
   public static final boolean ARM_AVAILABLE_Comp = true;
   public static final boolean PHOTONVISION_AVAILABLE_Comp = false;
-  public static final boolean PIXY_AVAILABLE_Comp = false;
+  public static final boolean PIXY_AVAILABLE_Comp = true;
   //public static final int SYSTEMCHOOSER = 0;
 
 

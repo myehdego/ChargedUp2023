@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class twist extends CommandBase {
@@ -24,11 +25,13 @@ public class twist extends CommandBase {
   double endangle, currentangle;
   SwerveSubsystem drive;
   Timer timer;
-  public twist(SwerveSubsystem drive, double twistdegrees) {
+  GamePieceCam gamePieceCam;
+  public twist(SwerveSubsystem drive, GamePieceCam gamePieceCam) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     this.drive = drive;
-    this.twistdegrees = twistdegrees;
+    // this.twistdegrees = twistdegrees;
+    this.gamePieceCam = gamePieceCam;
     controller = new PIDController(0,0 ,0 );
     timer=new Timer();
   }
@@ -36,9 +39,9 @@ public class twist extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double endangle = drive.getPose().getRotation().getDegrees()+twistdegrees;
-    controller.setP(DriveConstants.kptwist*1/Math.abs(twistdegrees));
-    System.out.println(endangle);
+   // double endangle = drive.getPose().getRotation().getDegrees()+twistdegrees;
+    controller.setP(1./22.);
+    System.out.println("twist started");
     timer.reset();
     timer.start();
   }
@@ -46,16 +49,25 @@ public class twist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double yaw = gamePieceCam.getYaw();
     currentangle = drive.getPose().getRotation().getDegrees();
-    double resolve = controller.calculate(currentangle, endangle);
-    double speed;
-    if(twistdegrees > 0) {
-      resolve = .3;
+    double resolve;
+    if(yaw > 40.) {
+      resolve = 0.3;
     }
     else {
-      resolve = -.3;
+      resolve = controller.calculate(yaw, 0.);
     }
+    //double resolve = controller.calculate(currentangle, endangle);
+    double speed;
+    // if(twistdegrees > 0) {
+    //   resolve = .3;
+    // }
+    // else {
+    //   resolve = -.3;
+    // }
     drive.driveit(0, 0, resolve, stopwhendone);
+    System.out.println("resolve "+ resolve);
     //System.out.println(currentangle);
   }
 
@@ -70,6 +82,6 @@ public class twist extends CommandBase {
   @Override
   public boolean isFinished() {
     //return Math.abs(currentangle - endangle) < 3 || Math.abs(currentangle+360-endangle)<3||
-    return timer.hasElapsed(2.5);
+    return timer.hasElapsed(2.5) || controller.getPositionError() < 1;
   }
 }
