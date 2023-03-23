@@ -247,7 +247,8 @@ public final class Constants {
                 new TrapezoidProfile.Constraints(
                         kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularAccelerationRadiansPerSecondSquared);
-        public static final double kPBalancer = .05;  // sin -> Vbus
+        public static final double kPBalancer = .6;  // sin -> Vbus
+        public static final double Balancemultiplier = .55;
     }
 
     public static final class OIConstants {
@@ -358,6 +359,8 @@ public final class Constants {
       public static final double chargingstationwidth = Units.inchesToMeters(48.+13.11*2); // Width of the charging station.
       public static final double leaveCommunityDist = Units.inchesToMeters(140.+5);  // distance from Grid to farthest edge of Community
       public static final double Halflength = Units.feetToMeters(11);
+      public static final double Gridtostation = Units.feetToMeters(6.);
+
     }
 
     public static int COMPBOT;

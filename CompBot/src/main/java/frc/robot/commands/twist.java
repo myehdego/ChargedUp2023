@@ -20,15 +20,16 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class twist extends CommandBase {
   /** Rotate robot to face a game piece */
   double twistdegrees;
+  double endangle;
   PIDController controller;
   SwerveSubsystem drive;
   Timer timer;  // give up after a short while
   GamePieceCam gamePieceCam;
-  public twist(SwerveSubsystem drive, GamePieceCam gamePieceCam) {
+  public twist(SwerveSubsystem drive, double twistdegrees) {
     addRequirements(drive);
     this.drive = drive;
-    this.gamePieceCam = gamePieceCam;
-    controller = new PIDController(.4/22.,0 ,0 );
+    this.twistdegrees = twistdegrees;
+    controller = new PIDController(.4/Math.abs(twistdegrees),0 ,0 );
     timer=new Timer();
     // TODO: should it stop rotating if it has gone around once and not found a game piece?
   }
@@ -37,6 +38,7 @@ public class twist extends CommandBase {
   @Override
   public void initialize() {
     //controller.setP(1./22.);
+    endangle = drive.getPose().getRotation().getDegrees()+twistdegrees;
     System.out.println("twist started");
     timer.reset();
     timer.start();
@@ -45,19 +47,15 @@ public class twist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double yaw = gamePieceCam.getYaw();
+    double currentangle = drive.getPose().getRotation().getDegrees();
     double resolve;
     //if(gamePieceCam.isVisible()) {
-    if(yaw > 40.) {
-      resolve = 0.3;
-    }
-    else {
       //resolve = controller.calculate(gamePieceCam.getYaw(), 0.);
-      resolve = controller.calculate(yaw, 0.);
-    }
+      resolve = controller.calculate(currentangle, endangle);
+    
     //resolve = Math.min(resolve,.7);
     drive.driveit(0, 0, resolve, false);
-    System.out.println("resolve "+ resolve);
+    // System.out.println("resolve "+ resolve);
   }
 
   // Called once the command ends or is interrupted.

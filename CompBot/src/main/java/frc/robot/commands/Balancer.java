@@ -20,6 +20,8 @@ public class Balancer extends CommandBase {
   //private WPI_Pigeon2 gyro;
   private WPI_Pigeon2 pigeon;
   double zero;
+  double sign = 1;
+  double multiplier = 1;
   private PWM lights;
 /** drives to balance on the station based on pitch angle. */
   public Balancer(SwerveSubsystem drive, WPI_Pigeon2 gyro) {
@@ -47,6 +49,7 @@ public class Balancer extends CommandBase {
     //y is to the left so positive pitch is nose down
     //zero = pigeon.getPitch();   // who cares?
     //controller.setP(AutoConstants.kPBalancer);
+    sign = Math.signum(Math.sin(Math.toRadians(pigeon.getPitch()-1)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +57,12 @@ public class Balancer extends CommandBase {
   public void execute() {
    zero =  Math.sin(Math.toRadians(pigeon.getPitch()-1));
    double balancer = controller.calculate(zero, 0);
-   drive.driveit(-balancer, 0, 0, false);
+   double newsign = zero*sign;
+    if(newsign < 0) {
+      multiplier = AutoConstants.Balancemultiplier;
+    }
+    
+   drive.driveit(balancer*multiplier, 0, 0, false);
    /* if need pitch rate, see pigeon.getRawGyro */
    // do we need to ensure robot stays aligned with field?
   };
