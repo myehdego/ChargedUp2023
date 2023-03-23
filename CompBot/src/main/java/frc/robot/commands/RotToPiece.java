@@ -24,7 +24,9 @@ public class RotToPiece extends PIDCommand {
         // The controller that the command will use
         new PIDController(.3/22., 0, 0),    // P = .3 * 1./(FOV/2)
         // This should return the measurement
-        () -> camera.getYaw(),
+        () -> {
+                return camera.getYaw()>40? 22.: camera.getYaw();
+              },
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output

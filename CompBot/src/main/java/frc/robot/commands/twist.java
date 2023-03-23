@@ -47,12 +47,15 @@ public class twist extends CommandBase {
   public void execute() {
     double yaw = gamePieceCam.getYaw();
     double resolve;
+    //if(gamePieceCam.isVisible()) {
     if(yaw > 40.) {
       resolve = 0.3;
     }
     else {
+      //resolve = controller.calculate(gamePieceCam.getYaw(), 0.);
       resolve = controller.calculate(yaw, 0.);
     }
+    //resolve = Math.min(resolve,.7);
     drive.driveit(0, 0, resolve, false);
     System.out.println("resolve "+ resolve);
   }
