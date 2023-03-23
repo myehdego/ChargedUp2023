@@ -18,29 +18,25 @@ import frc.robot.subsystems.GamePieceCam;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class twist extends CommandBase {
-  /** Creates a new twist. */
+  /** Rotate robot to face a game piece */
   double twistdegrees;
   PIDController controller;
-  boolean stopwhendone;
-  double endangle, currentangle;
   SwerveSubsystem drive;
-  Timer timer;
+  Timer timer;  // give up after a short while
   GamePieceCam gamePieceCam;
   public twist(SwerveSubsystem drive, GamePieceCam gamePieceCam) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     this.drive = drive;
-    // this.twistdegrees = twistdegrees;
     this.gamePieceCam = gamePieceCam;
-    controller = new PIDController(0,0 ,0 );
+    controller = new PIDController(.4/22.,0 ,0 );
     timer=new Timer();
+    // TODO: should it stop rotating if it has gone around once and not found a game piece?
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   // double endangle = drive.getPose().getRotation().getDegrees()+twistdegrees;
-    controller.setP(1./22.);
+    //controller.setP(1./22.);
     System.out.println("twist started");
     timer.reset();
     timer.start();
@@ -50,7 +46,6 @@ public class twist extends CommandBase {
   @Override
   public void execute() {
     double yaw = gamePieceCam.getYaw();
-    currentangle = drive.getPose().getRotation().getDegrees();
     double resolve;
     if(yaw > 40.) {
       resolve = 0.3;
@@ -58,30 +53,21 @@ public class twist extends CommandBase {
     else {
       resolve = controller.calculate(yaw, 0.);
     }
-    //double resolve = controller.calculate(currentangle, endangle);
-    double speed;
-    // if(twistdegrees > 0) {
-    //   resolve = .3;
-    // }
-    // else {
-    //   resolve = -.3;
-    // }
-    drive.driveit(0, 0, resolve, stopwhendone);
+    drive.driveit(0, 0, resolve, false);
     System.out.println("resolve "+ resolve);
-    //System.out.println(currentangle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drive.stopModules();
-    System.out.println(currentangle);
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return Math.abs(currentangle - endangle) < 3 || Math.abs(currentangle+360-endangle)<3||
-    return timer.hasElapsed(2.5) || controller.getPositionError() < 1;
+    return timer.hasElapsed(2.5)   // give up after a short while
+          || controller.getPositionError() < 1.;  // or quit when accomplished
   }
 }

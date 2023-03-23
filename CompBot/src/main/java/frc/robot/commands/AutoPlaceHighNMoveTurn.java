@@ -44,16 +44,17 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2
                 ,new WaitCommand(1)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
-                ,Commands.parallel(     // do last steps in parallel
+                ,Commands.parallel(     // drive and stow arm in parallel
                   Commands.race(
                     new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),0,.6),   // step 3
                     new WaitCommand(3)),   // cant wait forever to get in position
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
                   new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
                 )
-                ,new twist(drive, gamePieceCam)
+                ,new twist(drive, gamePieceCam)   // face a game piece
                 ,new InstantCommand(() -> arm.makeMeDone())
                 ,new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true)
+                // TODO: go get it?
     );
   }
 }

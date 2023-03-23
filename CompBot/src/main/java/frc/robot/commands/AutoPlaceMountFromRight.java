@@ -43,7 +43,7 @@ public class AutoPlaceMountFromRight extends SequentialCommandGroup {
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1b is ended
                 ,Commands.parallel(     // do last steps in parallel
                   new StoponDockGeneric(drive, gyro, Units.feetToMeters(5.5)),   // step 3
-                  new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
+                  new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), // step 4
                   new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true)))  // step 4
     );
   }

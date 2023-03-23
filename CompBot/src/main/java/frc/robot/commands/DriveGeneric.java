@@ -103,6 +103,6 @@ public class DriveGeneric extends CommandBase {
   public boolean isFinished() {
     return controller.getPositionError() < tol ||
     //iShouldStop;
-    driver.shouldistop();
+      driver.shouldistop();
   }
 }

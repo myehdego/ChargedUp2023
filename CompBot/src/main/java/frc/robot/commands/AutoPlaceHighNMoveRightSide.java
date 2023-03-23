@@ -43,7 +43,7 @@ public class AutoPlaceHighNMoveRightSide extends SequentialCommandGroup {
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2 // gripper opens
                 ,new WaitCommand(1)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1b is ended
-                ,Commands.parallel(     // do last steps in parallel
+                ,Commands.parallel(     // drive and retract arm in parallel
                     Commands.race(
                       new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(2),0),   // step 3 //goes back
                       new WaitCommand(4)),

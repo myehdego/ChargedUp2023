@@ -68,6 +68,6 @@ public class Balancer extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;  // run balancer until the end of the match - never end
+    return false;  // run balancer until the end of autonomous period - never end
   }
 }
