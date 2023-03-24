@@ -22,18 +22,19 @@ public class RotToPiece extends PIDCommand {
   public RotToPiece(SwerveSubsystem drive, GamePieceCam camera) {
     super(
         // The controller that the command will use
-        new PIDController(.3/22., 0, 0),    // P = .3 * 1./(FOV/2)
+        new PIDController(.4/22., 0, 0),    // P = .3 * 1./(FOV/2)
         // This should return the measurement
         () -> {
-                return camera.getYaw()>40? 22.: camera.getYaw();
+                //return camera.getYaw()>40? 22.: camera.getYaw();
+                return camera.isVisible()? camera.getYaw(): 22.;
               },
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
           // Use the output here
-          drive.driveMe(output);
-          //drive.driveit(0.,0.,output);
+          //drive.driveMe(output);
+          drive.driveit(0.,0.,output,true);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     
@@ -42,6 +43,12 @@ public class RotToPiece extends PIDCommand {
     addRequirements(drive, camera);
     // Configure additional PID options by calling `getController` here.
   }
+
+  /* @Override
+  public void execute() {
+    this.execute();
+    System.out.println(this.getController().getPositionError());
+  } */
 
   // Returns true when the command should end.
   @Override

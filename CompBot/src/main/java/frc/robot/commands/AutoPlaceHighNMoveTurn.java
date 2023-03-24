@@ -51,7 +51,8 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
                   new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
                 )
-                ,new twist(drive, 180)   // face a game piece
+                //,new RotToPiece(drive, gamePieceCam)   // face a game piece
+                ,new twist(drive, 180)   // turn toward where we expect a game piece
                 ,new InstantCommand(() -> arm.makeMeDone())
                 ,new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true)
                 // TODO: go get it?
