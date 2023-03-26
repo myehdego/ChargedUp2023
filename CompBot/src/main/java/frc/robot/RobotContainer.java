@@ -72,7 +72,7 @@ public class RobotContainer {
     
     private final Joystick buttonBox0 = new Joystick(OIConstants.kButtonBoxPort_0);
     private final Joystick buttonBox1 = new Joystick(OIConstants.kButtonBoxPort_1);
-    private final Joystick switchBox = new Joystick(OIConstants.kDriverControllerPort4);
+    //private final Joystick switchBox = new Joystick(OIConstants.kDriverControllerPort4);
     SendableChooser<Command> m_chooser;
 
     boolean old;  // true if original swerve constants
@@ -383,6 +383,7 @@ public class RobotContainer {
     }
 
     public void displayGameCamSuccess(boolean lightIt) {
-        switchBox.setOutput(OIConstants.gameObjectLight, lightIt);
+        //switchBox.setOutput(OIConstants.gameObjectLight, lightIt);
+        //lights.setSpeed(Lights.FOUNDGAMEPIECE);
     }
 }

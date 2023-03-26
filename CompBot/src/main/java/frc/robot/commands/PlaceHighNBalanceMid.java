@@ -39,12 +39,13 @@ public class PlaceHighNBalanceMid extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
                     new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R+50, true)  // step 1
-                    ,new WaitCommand(1.5))   // cant wait forever to get in position
+                    ,new WaitCommand(1.5)   // cant wait forever to get in position
+                )
                 ,new InstantCommand(() -> arm.makeMeDone()),  // ensure step 1 is ended
-                  
-                Commands.race(new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1
-                    ,new WaitCommand(2))   // cant wait forever to get in position
-                
+                Commands.race(
+                    new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1
+                    ,new WaitCommand(2)
+                )   // cant wait forever to get in position
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2
                 ,new WaitCommand(.5)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended

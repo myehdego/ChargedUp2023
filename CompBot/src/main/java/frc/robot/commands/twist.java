@@ -20,18 +20,18 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class twist extends CommandBase {
   /** Rotate robot to face a game piece */
   double twistdegrees;
-  double endangle;
+  double endangle, currentangle;
   PIDController controller;
   SwerveSubsystem drive;
   Timer timer;  // give up after a short while
   GamePieceCam gamePieceCam;
+  private boolean closedLoop=true;
   public twist(SwerveSubsystem drive, double twistdegrees) {
     addRequirements(drive);
     this.drive = drive;
     this.twistdegrees = twistdegrees;
     controller = new PIDController(.4/Math.abs(twistdegrees),0 ,0 );
     timer=new Timer();
-    // TODO: should it stop rotating if it has gone around once and not found a game piece?
   }
 
   // Called when the command is initially scheduled.
@@ -39,7 +39,8 @@ public class twist extends CommandBase {
   public void initialize() {
     //controller.setP(1./22.);
     endangle = drive.getPose().getRotation().getDegrees()+twistdegrees;
-    System.out.println("twist started");
+    // TODO: is endangle in the range of getDegrees()? 
+    //System.out.println("twist started");
     timer.reset();
     timer.start();
   }
@@ -47,11 +48,13 @@ public class twist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentangle = drive.getPose().getRotation().getDegrees();
+    currentangle = drive.getPose().getRotation().getDegrees();
     double resolve;
-    //if(gamePieceCam.isVisible()) {
-      //resolve = controller.calculate(gamePieceCam.getYaw(), 0.);
+    if (closedLoop){
       resolve = controller.calculate(currentangle, endangle);
+    } else {
+      resolve = Math.copySign(.3, endangle-currentangle);
+    }
     
     //resolve = Math.min(resolve,.7);
     drive.driveit(0, 0, resolve, false);
@@ -68,7 +71,10 @@ public class twist extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    boolean done;
+    if (closedLoop) done=controller.getPositionError() < 1.;
+    else done = Math.abs(endangle - currentangle) < 2.;
     return timer.hasElapsed(2.5)   // give up after a short while
-          || controller.getPositionError() < 1.;  // or quit when accomplished
+          || done;  // or quit when accomplished
   }
 }

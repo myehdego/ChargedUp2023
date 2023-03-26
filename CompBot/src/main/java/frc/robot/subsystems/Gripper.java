@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 //import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticHub;
@@ -31,6 +32,8 @@ public class Gripper extends SubsystemBase {
   private boolean inOrSpit;  // determines direction of the rollers
   private int pieceType;
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
+  // How we might use a sensor to detect a grabbable game piece
+  //private DigitalInput sensor;
 
   public Gripper() {
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
@@ -47,6 +50,9 @@ public class Gripper extends SubsystemBase {
     //  set these based on info from pressure switch when that info is available on setup
     //pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10, Pneumatics.CONEPRESSURE);
     //pieceType=GripperConstants.CONE;
+
+    // How we might use a sensor to detect a grabbable game piece
+    //sensor = new DigitalInput(GripperConstants.CONTACTSWITCH_PIN);
   }
 
   /** turn on rollers to input a game piece*/
@@ -114,13 +120,21 @@ public class Gripper extends SubsystemBase {
     if ( gripper.get() == Value.kForward) return true;
     return false;
   } 
-
   
   public boolean closegripper() {
     gripper.set(Value.kReverse);
     if ( gripper.get() == Value.kReverse) return true;
     return false;
   } 
+
+  // How we might use a sensor to detect a grabbable game piece
+  /** reports whether the sensor has been tripped to indicate
+   * something is grabbable
+   */
+  public boolean grabbable() {
+    //return sensor.get();  // test to see which sensor value indicates closed
+    return true;  // toss this if sensor is implemented
+  }
 
   @Override
   public void periodic() {

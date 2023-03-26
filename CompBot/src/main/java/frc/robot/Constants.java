@@ -18,6 +18,7 @@ import edu.wpi.first.math.util.Units;
  *    RobotConstants
  *    FieldConstants
  *    GripperConstants
+ *    Lights
  */
 
 public final class Constants {
@@ -369,6 +370,7 @@ public final class Constants {
       public static final double rollerspeed = .5;
       public static final int CUBE = 0;
       public static final int CONE = 1;
+      public static final int CONTACTSWITCH_PIN = 8;
     }
 
     public static final class Lights {
@@ -379,6 +381,7 @@ public final class Constants {
       public static final double CUBE_COLOR = .91;
       public static final double BLUE = .87;
       public static final double CELEBRATE = -.79;
+      public static final double FOUNDGAMEPIECE = -.43;  // CRG grabbed something out of the air
     }
 }
 
