@@ -17,6 +17,7 @@ public class FaceGrid extends CommandBase {
   public FaceGrid(SwerveSubsystem drive) {
     this.drive = drive;
     addRequirements(drive);
+    controller = new PIDController(1.2/180., 0, 0);
     controller = new PIDController(1./180., 0, 0);
     //controller.enableContinuousInput(-180., 180.);
     //controller.setTolerance(3., 10.);  // degrees, degrees/sec

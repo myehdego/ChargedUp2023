@@ -43,6 +43,7 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                 
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2
                 ,new WaitCommand(.3)
+                ,new WaitCommand(.5)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // drive away and stow arm in parallel
                   Commands.race(
@@ -58,11 +59,11 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                 ,new RotToPiece(drive, gamePieceCam)   // face a game piece
                 //,new twist(drive, 180)   // turn toward where we expect a game piece
                 ,Commands.race(
-                    new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true),
-                    new WaitCommand(2)
-                )
-                /* go get it */
+                  new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true),
+                  new WaitCommand(1))
+                /* TODO: go get it?  */
                 ,new GripperOpenClose(gripper, true, lights)  //open the claw to get an object
+                ,new WaitCommand(.5)
                 ,new GoToGamePiece(drive, gripper)  // TODO limit the distance it drives
                 ,new GripperOpenClose(gripper, false, lights)  // close on a game piece
                 ,new FaceGrid(drive)   // TODO only turn if it got a game piece

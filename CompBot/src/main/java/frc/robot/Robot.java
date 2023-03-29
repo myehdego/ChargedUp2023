@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
         }
         pigeon = m_robotContainer.getGyro();
         lights = m_robotContainer.getLights();
-
+        gripper = m_robotContainer.getGripperSS();
         PortForwarder.add(1182, "photonvision.local",5800 );
 
         DataLogManager.start();
@@ -116,6 +116,7 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
+        gripper.periodic();
         CommandScheduler.getInstance().run();
        if(Constants.PIXY_AVAILABLE_Comp){
         //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.)
@@ -141,7 +142,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         pigeon.setYaw(180);
-        gripper = m_robotContainer.getGripperSS();
+     //   gripper = m_robotContainer.getGripperSS();  // moved to robot int
         gripper.setexpel(false);
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
