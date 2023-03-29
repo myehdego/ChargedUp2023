@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -34,6 +36,8 @@ public class Gripper extends SubsystemBase {
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
   // How we might use a sensor to detect a grabbable game piece
   //private DigitalInput sensor;
+  //private SparkMaxLimitSwitch sensor;
+  private RelativeEncoder rollerEncoder;
 
   public Gripper() {
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
@@ -52,7 +56,10 @@ public class Gripper extends SubsystemBase {
     //pieceType=GripperConstants.CONE;
 
     // How we might use a sensor to detect a grabbable game piece
-    //sensor = new DigitalInput(GripperConstants.CONTACTSWITCH_PIN);
+    //sensor = new DigitalInput(GripperConstants.CONTACTSWITCH_PIN);  // connected to RoboRIO
+    //sensor = roller.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);  // connected to a motorController
+    //sensor.enableLimitSwitch(true);
+    rollerEncoder = roller.getEncoder();
   }
 
   /** turn on rollers to input a game piece*/
@@ -83,6 +90,7 @@ public class Gripper extends SubsystemBase {
     inOrSpit = spit;
   }
 
+  /** set gripper strength suitable for cube */
   public void setCubeP() {
     pch.enableCompressorAnalog(Pneumatics.CUBEPRESSURE-10., Pneumatics.CUBEPRESSURE);
     pieceType = GripperConstants.CUBE;
@@ -96,11 +104,16 @@ public class Gripper extends SubsystemBase {
     bleeder.set(Value.kReverse);
   }
 
+  /** set gripper strength suitable for cone */
   public void setConeP() {
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
     pieceType = GripperConstants.CONE;
   }
 
+  /**config gripper for selected game piece.
+   * 
+   * @param cone true; else set for cube
+  */
   public void initPnGP(boolean cone) {
     if (cone) setConeP();
     else setCubeP();
@@ -133,7 +146,11 @@ public class Gripper extends SubsystemBase {
    */
   public boolean grabbable() {
     //return sensor.get();  // test to see which sensor value indicates closed
-    return true;  // toss this if sensor is implemented
+    //return sensor.isPressed();
+    if (rollerEncoder.getVelocity()> -3000)   // -5000 is the unencumbered speed for sucking
+      return true;
+    else
+      return false;
   }
 
   @Override

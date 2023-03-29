@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
+//import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,7 +19,9 @@ public class Face extends CommandBase {
     this.drive = drive;
     this.heading = heading;
     addRequirements(drive);
-    controller = new PIDController(.5/180., 0, 0);
+    controller = new PIDController(1./180., 0, 0);
+    //controller.enableContinuousInput(-180., 180.);
+    //controller.setTolerance(3., 10.);  // degrees, degrees/sec
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +32,7 @@ public class Face extends CommandBase {
   @Override
   public void execute() {
     double curAngle = drive.getHeading();
-    double omega = controller.calculate(curAngle, heading);
+    double omega = -controller.calculate(curAngle, heading);
     drive.driveit(0.,0.,omega,true);
   }
 
@@ -43,6 +45,6 @@ public class Face extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError()<3.;
+    return controller.getPositionError()<3.;   // controller.atSetpoint()
   }
 }

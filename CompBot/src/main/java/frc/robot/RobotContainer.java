@@ -110,6 +110,8 @@ public class RobotContainer {
 
         // ensure consistency between switch settings and subsystem states
         gripper.initPnGP(buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
+        // also set the arm floor inc
+        arm.incForCube(!buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
 
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
@@ -138,29 +140,7 @@ public class RobotContainer {
           onTrue(new InstantCommand(() -> 
           swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0)))));
         // whenPressed(() -> swerveSubsystem.resetOdometry(new Pose2d(0., 0., new Rotation2d(0.0))));
-        // TODO test this drive stuff
-        /* new JoystickButton(buttonBox1, OIConstants.kDrivertostationbutton).
-                onTrue(new DriverStation(swerveSubsystem)); */
-        /* new JoystickButton(driverJoytick, OIConstants.kNudgeLeftButton).
-                onTrue(new NudgeDrive(swerveSubsystem, 0, 0)); */
         
-        // Test commands for generic drive
-  /* 
-        new JoystickButton(buttonBox, OIConstants.kEndDriveGeneric).
-                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()));
-        new JoystickButton(buttonBox, OIConstants.kDriveGenericx).
-                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
-                andThen(new WaitCommand(.5)).
-                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), 0)));
-        new JoystickButton(buttonBox, OIConstants.kDriveGenericy).
-                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
-                andThen(new WaitCommand(.5)).
-                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, 0, Units.inchesToMeters(14))));
-        new JoystickButton(buttonBox, OIConstants.kDriveGenericxy).
-                onTrue(new InstantCommand(() -> swerveSubsystem.makemestop()).
-                andThen(new WaitCommand(.5)).
-                andThen(driveGeneric = new DriveGeneric(swerveSubsystem, Units.inchesToMeters(14), Units.inchesToMeters(14))));
- */       
                 // mechJoytick Buttons
          if (old?Constants.ARM_AVAILABLE:Constants.ARM_AVAILABLE_Comp) { 
                 new JoystickButton(buttonBox0, OIConstants.kFloorPos_BB0).   //floor level

@@ -74,7 +74,7 @@ public class Arm extends SubsystemBase {
     retractorMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.retractorReverseLimit);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     retractorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);  // TODO set me
+    raiserMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.raiserForwardLimit);
     raiserMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.raiserReverseLimit);
     raiserMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     raiserMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
@@ -168,6 +168,10 @@ public class Arm extends SubsystemBase {
   }
   
   double temp_raiserIncrement=0.;
+  /**increment the position from the floor for the selected game piece.
+   * 
+   * @param cube true, else set for cone
+   */
   public void incForCube (boolean cube) {
     if(cube)temp_raiserIncrement = 80;
     else temp_raiserIncrement = 0.;

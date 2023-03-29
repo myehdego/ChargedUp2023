@@ -28,6 +28,7 @@ public class StoponDockGeneric extends SequentialCommandGroup {
            new WaitCommand(4)),
       Commands.race( 
             new DriveGeneric(drive, 0 , sideDist), // step 2
+            //new DriveGenericHead(drive, 0 , sideDist, 180.), // step 2
             new WaitCommand(2)),
       new Docked(drive), 
       new DriveGeneric(drive, FieldConstants.chargingstationwidth/2, 0, true)

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class DriveGeneric extends CommandBase {
+public class DriveGenericHead extends CommandBase {
   int randomNumber = Math.floorMod(System.currentTimeMillis(), 1000);
   SwerveSubsystem driver;
   Pose2d startpose, targetpose;
@@ -23,37 +23,44 @@ public class DriveGeneric extends CommandBase {
   double ydist;
   double encS;
   PIDController controller;
+  PIDController headingController;
   double target, dist;
   double tol;
   boolean stopwhendone = true;
   boolean iShouldStop = false;
   private double variableP;
-  /** Drive a given distance in any direction in field coordinates.
+  /** Drive a given distance in any direction in field coordinates and attain/maintain heading.
    * 
    * @param xdist and
    * @param ydist are component distances in meters
-   * @param stopwhendone  false directs the motors to continue their state when the final position is accomplished
+   * @param heading  is the desired heading in degrees
+   * @param stopwhendone
    */
-  public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, boolean stopwhendone) {
+  public DriveGenericHead(SwerveSubsystem driveon, double xdist, double ydist, double heading, boolean stopwhendone) {
     addRequirements(driveon);
     this.driver = driveon;
     this.xdist = xdist;
     this.ydist = ydist;
+    this.target = heading;
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=.9;
+    headingController = new PIDController(.4/180, 0., 0.);
+    headingController.enableContinuousInput(-180., 180.);
+    headingController.setTolerance(3.);
   }
 
   /** Drive a given distance in any direction in field coordinates.
    * 
    * @param xdist and
    * @param ydist are component distances in meters
+   * @param heading  is the desired heading in degrees
    */
-  public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist) {
-    this(driveon, xdist, ydist, true);
+  public DriveGenericHead(SwerveSubsystem driveon, double xdist, double ydist, double heading) {
+    this(driveon, xdist, ydist, heading, true);
   }
-  public DriveGeneric(SwerveSubsystem driveon, double xdist, double ydist, double varP) {
-    this(driveon, xdist, ydist, true);
+  public DriveGenericHead(SwerveSubsystem driveon, double xdist, double ydist, double heading, double varP) {
+    this(driveon, xdist, ydist, heading, true);
     this.variableP=varP;
   }
 
@@ -85,7 +92,8 @@ public class DriveGeneric extends CommandBase {
     Pose2d currentpose = driver.getPose();
     double whereiam = PhotonUtils.getDistanceToPose(currentpose, startpose);
     double speed = controller.calculate(whereiam, dist);
-    driver.driveit(speed*xdist/dist, speed*ydist/dist, 0, true);
+    double omega = -headingController.calculate(driver.getHeading(), target);
+    driver.driveit(speed*xdist/dist, speed*ydist/dist, omega, true);
 
     //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
     //SmartDashboard.putString("CurrentPose", currentpose.toString());

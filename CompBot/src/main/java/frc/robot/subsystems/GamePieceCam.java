@@ -15,11 +15,11 @@ public class GamePieceCam extends SubsystemBase {
   private DigitalInput pixyCamPin1;
   //private static final int center = 1600;  // analog x
   //private static final int maxval = 3200;  // analog x
-  private static final int center = 1300;  // analog y  TODO need to calibrate these
+  private static final int center = 1300;  // analog y
   private static final int maxval = 2600;  // analog y
   private static final double fov = 45; //degrees
   private boolean iSeeSomething = false;
-  private static final int gotOneThreshold = 3000;  // TODO need to calibrate
+  private static final int gotOneThreshold = 3000;
   /** Use Pixy Camera to recognize a game piece
    *   and return info about it. 
    *  Current implementation returns the yaw angle

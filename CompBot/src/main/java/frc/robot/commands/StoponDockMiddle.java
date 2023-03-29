@@ -27,9 +27,10 @@ public class StoponDockMiddle extends SequentialCommandGroup {
         new DriveGeneric(drive, FieldConstants.chargingstationwidth+FieldConstants.Gridtostation+Units.feetToMeters(2.5), 0, true),
         new WaitCommand(4)
       ),
-      new Docked(drive), 
+      new Docked(drive),
       Commands.race(
-        new DriveGeneric(drive, -FieldConstants.chargingstationwidth/2-Units.feetToMeters(2.5), 0, true),
+        //new DriveGeneric(drive, -FieldConstants.chargingstationwidth/2-Units.feetToMeters(2.5), 0, true),
+        new DriveGenericHead(drive, -FieldConstants.chargingstationwidth/2-Units.feetToMeters(2.5), 0, 180.),
         new WaitCommand(1)
       ),
       new Balancer(drive, gyro)

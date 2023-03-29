@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
+//import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -17,7 +17,9 @@ public class FaceGrid extends CommandBase {
   public FaceGrid(SwerveSubsystem drive) {
     this.drive = drive;
     addRequirements(drive);
-    controller = new PIDController(.5/180., 0, 0);
+    controller = new PIDController(1./180., 0, 0);
+    //controller.enableContinuousInput(-180., 180.);
+    //controller.setTolerance(3., 10.);  // degrees, degrees/sec
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +32,7 @@ public class FaceGrid extends CommandBase {
     double curAngle = drive.getHeading();
     // since 180  = -180 this could get ugly if we do not ensure monotonicity
     curAngle = curAngle<0?curAngle+360.:curAngle;
-    double omega = controller.calculate(curAngle, 180.);
+    double omega = -controller.calculate(curAngle, 180.);
     drive.driveit(0.,0.,omega,true);
   }
 
@@ -43,6 +45,6 @@ public class FaceGrid extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError()<3.;
+    return controller.getPositionError()<3.;   // controller.atSetpoint()
   }
 }

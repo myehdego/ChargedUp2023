@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.photonvision.PhotonUtils;
+
 //import edu.wpi.first.wpilibj.SPI;
 //import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
@@ -115,6 +117,13 @@ public class SwerveSubsystem extends SubsystemBase {
     /** Gets the pose in meters relative to the field coordinate system */
     public Pose2d getPose() {
         return odometer.getPoseMeters();
+    }
+
+    /** How far from some pose */
+    public double distTravelled(Pose2d from) {
+        double dist = 0.;
+        dist = PhotonUtils.getDistanceToPose(from, getPose());
+        return dist;
     }
 
     public void resetOdometry(Pose2d pose) {

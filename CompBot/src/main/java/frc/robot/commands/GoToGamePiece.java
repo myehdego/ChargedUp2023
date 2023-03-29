@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -13,6 +13,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class GoToGamePiece extends CommandBase {
   SwerveSubsystem drive;
   Gripper gripper;
+  private Pose2d startPose;
   /** grab a game piece.
    * <p> presuming the robot is facing a game piece:
    *  <ol>
@@ -28,7 +29,8 @@ public class GoToGamePiece extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.driveit(.2, 0, 0., false);
+    startPose = drive.getPose();
+    drive.driveit(.4, 0, 0., false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,6 +46,8 @@ public class GoToGamePiece extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return gripper.grabbable();
+    return gripper.grabbable()
+    // TODO for safety, limit distance?
+    || drive.distTravelled(startPose) > Units.feetToMeters(3.);
   }
 }

@@ -16,13 +16,11 @@ public class RotToPiece extends PIDCommand {
   SwerveSubsystem drive ;
   GamePieceCam camera;
   /** rotate the robot to face a game piece
-   *   o 
-   * TODO: implement a swerveSS command to rotate the robot
    */
   public RotToPiece(SwerveSubsystem drive, GamePieceCam camera) {
     super(
         // The controller that the command will use
-        new PIDController(.4/22., 0, 0),    // P = .3 * 1./(FOV/2)
+        new PIDController(.4/22., 0, 0),    // P = .4 * 1./(FOV/2)
         // This should return the measurement
         () -> {
                 //return camera.getYaw()>40? 22.: camera.getYaw();
@@ -46,8 +44,8 @@ public class RotToPiece extends PIDCommand {
 
   /* @Override
   public void execute() {
-    this.execute();
-    System.out.println(this.getController().getPositionError());
+    super.execute();
+    System.out.println(getController().getPositionError());
   } */
 
   // Returns true when the command should end.

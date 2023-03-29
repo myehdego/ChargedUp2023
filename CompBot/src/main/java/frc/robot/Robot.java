@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
         if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE){
             //pixyCam = new AnalogInput(0);
-            gamepieceCam = m_robotContainer.getGamePieceCam();   // TODO: one or the other (choose me)
+            gamepieceCam = m_robotContainer.getGamePieceCam();
         }
         pigeon = m_robotContainer.getGyro();
         lights = m_robotContainer.getLights();
@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
        if(Constants.PIXY_AVAILABLE_Comp){
-        //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.);  // TODO check it out
+        //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.)
         m_robotContainer.displayGameCamSuccess(gamepieceCam.isVisible());  // TODO check it out
        }
     }
