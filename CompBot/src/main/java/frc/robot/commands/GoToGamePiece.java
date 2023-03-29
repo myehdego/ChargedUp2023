@@ -28,7 +28,7 @@ public class GoToGamePiece extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.driveit(.2, 0, 0., false);
+    drive.driveit(.4, 0, 0., false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

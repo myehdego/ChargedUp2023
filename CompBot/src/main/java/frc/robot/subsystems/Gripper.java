@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 //import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANIDs;
 import frc.robot.Constants.GripperConstants;
@@ -34,8 +36,10 @@ public class Gripper extends SubsystemBase {
   private CANSparkMax roller = new CANSparkMax(CANIDs.GripperRollerMotor, MotorType.kBrushless);
   // How we might use a sensor to detect a grabbable game piece
   //private DigitalInput sensor;
+  private RelativeEncoder rollerencoder; 
 
   public Gripper() {
+
     gripper = new DoubleSolenoid(PneumaticsModuleType.REVPH,
            Pneumatics.openChannel, Pneumatics.closeChannel);
 /*     lifter = new DoubleSolenoid(PneumaticsModuleType.REVPH,
@@ -43,6 +47,8 @@ public class Gripper extends SubsystemBase {
     roller.restoreFactoryDefaults();
     roller.setInverted(CANIDs.GripperRollerMotorInverted);
     roller.setIdleMode(IdleMode.kBrake);
+
+    rollerencoder = roller.getEncoder();
     bleeder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 
           Pneumatics.BLEED_CHANNEL_BLEED, Pneumatics.BLEED_CHANNEL_CLOSE);
     inOrSpit = true;
@@ -133,11 +139,17 @@ public class Gripper extends SubsystemBase {
    */
   public boolean grabbable() {
     //return sensor.get();  // test to see which sensor value indicates closed
+    double rpm = rollerencoder.getVelocity();
+    if (rpm > -3000)
     return true;  // toss this if sensor is implemented
+     else
+     return false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+SmartDashboard.putNumber("RollerV", rollerencoder.getVelocity());
+
   }
 }

@@ -38,7 +38,7 @@ public class GamePieceCam extends SubsystemBase {
     if (isVisible()) val = (pixyCam.getAverageValue()-center)*(fov/maxval);
     else val=999009.;
     //return val;  // when installed normally or on its right side
-    System.out.println("Yaw "+ val);
+   // System.out.println("Yaw "+ val);
     return -val;  // when installed on its left side
   }
 
