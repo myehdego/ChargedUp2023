@@ -20,7 +20,7 @@ public class RotToPiece extends PIDCommand {
   public RotToPiece(SwerveSubsystem drive, GamePieceCam camera) {
     super(
         // The controller that the command will use
-        new PIDController(.5/22., 0, 0),    // P = .3 * 1./(FOV/2)
+        new PIDController(.4/22., 0, 0),    // P = .3 * 1./(FOV/2)
         // This should return the measurement
         () -> {
                 //return camera.getYaw()>40? 22.: camera.getYaw();

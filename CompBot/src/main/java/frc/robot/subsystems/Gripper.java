@@ -108,6 +108,10 @@ boolean igotone = false;
     pieceType = GripperConstants.CUBE;
   }
 
+  public double getP() {
+    return pch.getPressure(1);
+  }
+
   public void bleed() {
     bleeder.set(Value.kForward);
   }
@@ -120,6 +124,10 @@ boolean igotone = false;
   public void setConeP() {
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
     pieceType = GripperConstants.CONE;
+  }
+
+  public int getGP() {
+    return pieceType;
   }
 
   /**config gripper for selected game piece.
