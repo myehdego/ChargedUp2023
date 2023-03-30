@@ -140,6 +140,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        lights.setSpeed(0.93);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         pigeon.setYaw(180);
      //   gripper = m_robotContainer.getGripperSS();  // moved to robot int

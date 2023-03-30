@@ -16,11 +16,12 @@ public class FaceGrid extends CommandBase {
   SwerveSubsystem drive;
   PIDController controller;
   Gripper gripper;
-  Boolean doihave1;
+  Boolean doihave1 = false;
   /** turn the robot toward the Grid. */
-  public FaceGrid(SwerveSubsystem drive) {
+  public FaceGrid(SwerveSubsystem drive, Gripper gripper) {
     this.drive = drive;
-    addRequirements(drive);
+    this.gripper = gripper;
+    addRequirements(drive, gripper);
     controller = new PIDController(1.2/180., 0, 0);
     //controller.enableContinuousInput(-180., 180.);
     //controller.setTolerance(3., 10.);  // degrees, degrees/sec
@@ -30,6 +31,7 @@ public class FaceGrid extends CommandBase {
   @Override
   public void initialize() {
     doihave1 = gripper.Doihave1();
+    // SmartDashboard.putBoolean("doihave1", doihave1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

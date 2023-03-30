@@ -68,7 +68,7 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
                // ,new WaitCommand(.5) // was .5
                 ,new GoToGamePiece(drive, gripper)  // TODO limit the distance it drives
                 ,new GripperOpenClose(gripper, false, lights)  // close on a game piece
-                ,new FaceGrid(drive)   // TODO only turn if it got a game piece
+                ,new FaceGrid(drive, gripper)   // TODO only turn if it got a game piece
                 /* */
     );
   }

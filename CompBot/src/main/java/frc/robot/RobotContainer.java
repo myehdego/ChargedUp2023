@@ -18,6 +18,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -38,6 +39,7 @@ import frc.robot.commands.AutoPlaceNMove;
 import frc.robot.commands.Balancer;
 import frc.robot.commands.BleedIt;
 import frc.robot.commands.DriveGeneric;
+import frc.robot.commands.DriveGenericHead;
 //import frc.robot.commands.DriverStation;
 //import frc.robot.commands.GetAprilTag;
 //import frc.robot.commands.GetRobotPosition;
@@ -62,7 +64,7 @@ public class RobotContainer {
     private GamePieceCam pixycam;
     private AprilTagCamera camera;
     //private DriveGeneric driveGeneric;
-    private PWM lights;
+    private PWM lights, notlights;
     private WPI_Pigeon2 gyro;
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
@@ -107,6 +109,7 @@ public class RobotContainer {
         lights.setSpeed(Lights.GREEN);
         gyro = new WPI_Pigeon2(1);
         configureButtonBindings();
+        notlights = new PWM(8);
 
         // ensure consistency between switch settings and subsystem states
         gripper.initPnGP(buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
@@ -116,16 +119,20 @@ public class RobotContainer {
 
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
-        m_chooser.setDefaultOption("Cone High, Leave, Turn, Cube", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, lights, pixycam)); 
+        m_chooser.setDefaultOption("Cone High, Leave, Turn, Cube", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, notlights, pixycam)); 
         m_chooser.addOption("Cone Mid, Leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
 //        m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High, Leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
         m_chooser.addOption("Cone High, Middle Balance", new PlaceHighNBalanceMid(arm, swerveSubsystem, gripper, lights, pixycam, gyro));
         m_chooser.addOption("Stop on Dock Right", new AutoPlaceMountFromRight(arm, swerveSubsystem, gripper, lights, gyro));
-//        m_chooser.addOption("Test Pixy", new RotToPiece(swerveSubsystem, pixycam));
         m_chooser.addOption("Test Balancer", new Balancer(swerveSubsystem, gyro));
 //        m_chooser.addOption("Over and Back Balancer", new StoponDockMiddle(swerveSubsystem, gyro));
 //        m_chooser.addOption("Test Drive Straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        // m_chooser.addOption("Test drivegeneric head", Commands.sequence(
+        //                     new InstantCommand(() -> gyro.setYaw(145)),
+        //                     new DriveGenericHead(swerveSubsystem, -FieldConstants.chargingstationwidth/2-Units.feetToMeters(2.5), 0, 180.))
+        //                      );
+        m_chooser.addOption("Test Pixy", new RotToPiece(swerveSubsystem, pixycam));
         SmartDashboard.putData(m_chooser);
    }
 

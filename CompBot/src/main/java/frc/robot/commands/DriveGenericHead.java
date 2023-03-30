@@ -45,7 +45,7 @@ public class DriveGenericHead extends CommandBase {
     this.stopwhendone = stopwhendone;
     controller = new PIDController(0, 0, 0);  // set p in init
     variableP=.9;
-    headingController = new PIDController(.4/180, 0., 0.);
+    headingController = new PIDController(.4/45, 0., 0.);
     headingController.enableContinuousInput(-180., 180.);
     headingController.setTolerance(3.);
   }
@@ -93,6 +93,8 @@ public class DriveGenericHead extends CommandBase {
     double whereiam = PhotonUtils.getDistanceToPose(currentpose, startpose);
     double speed = controller.calculate(whereiam, dist);
     double omega = -headingController.calculate(driver.getHeading(), target);
+    SmartDashboard.putNumber("Omega", omega);
+    SmartDashboard.putNumber("Controller error", controller.getPositionError());
     driver.driveit(speed*xdist/dist, speed*ydist/dist, omega, true);
 
     //SmartDashboard.putString("Error", controller.getPositionError() + " < " + tol);
