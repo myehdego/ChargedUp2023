@@ -8,24 +8,28 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class FaceGrid extends CommandBase {
   SwerveSubsystem drive;
   PIDController controller;
+  Gripper gripper;
+  Boolean doihave1;
   /** turn the robot toward the Grid. */
   public FaceGrid(SwerveSubsystem drive) {
     this.drive = drive;
     addRequirements(drive);
     controller = new PIDController(1.2/180., 0, 0);
-    controller = new PIDController(1./180., 0, 0);
     //controller.enableContinuousInput(-180., 180.);
     //controller.setTolerance(3., 10.);  // degrees, degrees/sec
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    doihave1 = gripper.Doihave1();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -46,6 +50,8 @@ public class FaceGrid extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError()<3.;   // controller.atSetpoint()
+    
+    return Math.abs(controller.getPositionError())<3. || !doihave1;   // controller.atSetpoint()
+    
   }
 }

@@ -240,7 +240,7 @@ public class Robot extends TimedRobot {
         }
         if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
             double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
-            System.out.println(augment);
+            //System.out.println(augment);
             smoothedXSpeed+=augment*.036;
         }
         xSpeed = smoothedXSpeed;

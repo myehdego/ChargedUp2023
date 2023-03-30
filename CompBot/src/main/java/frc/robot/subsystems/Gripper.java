@@ -93,6 +93,15 @@ public class Gripper extends SubsystemBase {
     inOrSpit = spit;
   }
 
+boolean igotone = false;
+  public void IGot1(boolean IGot1) {
+    igotone = IGot1;
+  }
+
+  public boolean Doihave1() {
+    return igotone;
+  }
+
   /** set gripper strength suitable for cube */
   public void setCubeP() {
     pch.enableCompressorAnalog(Pneumatics.CUBEPRESSURE-10., Pneumatics.CUBEPRESSURE);
@@ -150,8 +159,10 @@ public class Gripper extends SubsystemBase {
   public boolean grabbable() {
     //return sensor.get();  // test to see which sensor value indicates closed
     //return sensor.isPressed();
-    if (rollerEncoder.getVelocity()> -3000)   // -5000 is the unencumbered speed for sucking
+    if (rollerEncoder.getVelocity()> -3000)  { // -5000 is the unencumbered speed for sucking
+      igotone = true;
       return true;
+    }
     else
       return false;
   }

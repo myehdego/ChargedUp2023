@@ -55,7 +55,7 @@ public class GamePieceCam extends SubsystemBase {
     //System.out.println("GamePieceCam periodic "+pixyCamPin1.get());  //  test to ensure it is running
     //System.out.println("Yaw "+pixyCam.getAverageValue());
     if(iSeeSomething) {
-      SmartDashboard.putNumber("Pixy Yaw", getYaw());
+      //SmartDashboard.putNumber("Pixy Yaw", getYaw());
     }
     //SmartDashboard.putNumber("Pixy Yaw", pixyCam.getAverageValue());
     // if pin1 not connected, use Yaw value
