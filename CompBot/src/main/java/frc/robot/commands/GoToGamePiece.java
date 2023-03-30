@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -30,7 +31,7 @@ public class GoToGamePiece extends CommandBase {
   @Override
   public void initialize() {
     startPose = drive.getPose();
-    drive.driveit(.4, 0, 0., false);
+    drive.driveit(.3, 0, 0., false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,6 +47,7 @@ public class GoToGamePiece extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //SmartDashboard.putNumber("Get Piece", Units.metersToFeet(drive.distTravelled(startPose)));
     return gripper.grabbable()
     // TODO for safety, limit distance?
     || drive.distTravelled(startPose) > Units.feetToMeters(3.);

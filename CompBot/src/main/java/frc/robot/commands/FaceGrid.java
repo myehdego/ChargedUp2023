@@ -7,6 +7,7 @@ package frc.robot.commands;
 //import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -18,14 +19,14 @@ public class FaceGrid extends CommandBase {
     this.drive = drive;
     addRequirements(drive);
     controller = new PIDController(1.2/180., 0, 0);
-    controller = new PIDController(1./180., 0, 0);
+    //controller = new PIDController(1./180., 0, 0);
     //controller.enableContinuousInput(-180., 180.);
     //controller.setTolerance(3., 10.);  // degrees, degrees/sec
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() { }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -46,6 +47,7 @@ public class FaceGrid extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.getPositionError()<3.;   // controller.atSetpoint()
+    //SmartDashboard.putNumber("FaceGrid",controller.getPositionError() );
+    return Math.abs(controller.getPositionError())<3.;   // controller.atSetpoint()
   }
 }

@@ -112,19 +112,20 @@ public class RobotContainer {
         gripper.initPnGP(buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
         // also set the arm floor inc
         arm.incForCube(!buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
+        SmartDashboard.putBoolean("initSwitch", buttonBox1.getRawButton(OIConstants.PRESSURESwitch_BB1));
 
         m_chooser = new SendableChooser<>();
        // m_chooser.setDefaultOption("drive stright", new DriveGeneric(swerveSubsystem, FieldConstants.leaveCommunityDist, 0));
-        m_chooser.addOption("drop cone and leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
-        m_chooser.setDefaultOption("drop cone High and leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
-        m_chooser.addOption("drop cone High, leave, turn", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, lights, pixycam));
-        m_chooser.addOption("PlaceHighNBalance", new PlaceHighNBalanceMid(arm, swerveSubsystem, gripper, lights, pixycam, gyro));
-        m_chooser.addOption("StoponDock Right", new AutoPlaceMountFromRight(arm, swerveSubsystem, gripper, lights, gyro));
-        m_chooser.addOption("test pixy", new RotToPiece(swerveSubsystem, pixycam));
-        m_chooser.addOption("test balancer", new Balancer(swerveSubsystem, gyro));
-        m_chooser.addOption("Over and back balancer", new StoponDockMiddle(swerveSubsystem, gyro));
-        m_chooser.addOption("test drive straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
+        m_chooser.setDefaultOption("Cone High, Leave, Turn, Cube", new AutoPlaceHighNMoveTurn(arm, swerveSubsystem, gripper, lights, pixycam)); 
+        m_chooser.addOption("Cone Mid, Leave", new AutoPlaceNMove(arm, swerveSubsystem, gripper, lights));
+//        m_chooser.addOption("Cone High Right Side", new AutoPlaceHighNMoveRightSide(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("Cone High, Leave", new AutoPlaceHighNMove(arm, swerveSubsystem, gripper, lights));
+        m_chooser.addOption("Cone High, Middle Balance", new PlaceHighNBalanceMid(arm, swerveSubsystem, gripper, lights, pixycam, gyro));
+        m_chooser.addOption("Stop on Dock Right", new AutoPlaceMountFromRight(arm, swerveSubsystem, gripper, lights, gyro));
+//        m_chooser.addOption("Test Pixy", new RotToPiece(swerveSubsystem, pixycam));
+        m_chooser.addOption("Test Balancer", new Balancer(swerveSubsystem, gyro));
+//        m_chooser.addOption("Over and Back Balancer", new StoponDockMiddle(swerveSubsystem, gyro));
+//        m_chooser.addOption("Test Drive Straight", new DriveGeneric(swerveSubsystem, Units.feetToMeters(3), 0));
         SmartDashboard.putData(m_chooser);
    }
 

@@ -99,6 +99,10 @@ public class Gripper extends SubsystemBase {
     pieceType = GripperConstants.CUBE;
   }
 
+  public double getP() {
+    return pch.getPressure(1);
+  }
+
   public void bleed() {
     bleeder.set(Value.kForward);
   }
@@ -111,6 +115,10 @@ public class Gripper extends SubsystemBase {
   public void setConeP() {
     pch.enableCompressorAnalog(Pneumatics.CONEPRESSURE-10., Pneumatics.CONEPRESSURE);
     pieceType = GripperConstants.CONE;
+  }
+
+  public int getGP() {
+    return pieceType;
   }
 
   /**config gripper for selected game piece.

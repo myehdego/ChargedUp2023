@@ -35,35 +35,37 @@ public class AutoPlaceHighNMoveTurn extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(Commands.race(  // first one done ends both
                     new ArmRun(arm, ArmConstants.cubeDepth1,ArmConstants.cubeDepth1R+50, true)  // step 1
-                    ,new WaitCommand(1.5))   // cant wait forever to get in position
+                    ,new WaitCommand(1.5))   //  was 1.5 cant wait forever to get in position
                 ,new InstantCommand(() -> arm.makeMeDone()),  // ensure step 1 is ended
                   
                 Commands.race(new ArmRun(arm, ArmConstants.cubeDepth2,ArmConstants.cubeDepth2R, true)  // step 1
                     ,new WaitCommand(2))   // cant wait forever to get in position
                 
                 ,new GripperOpenClose(gripper, true, lights)  //  step 2
-                ,new WaitCommand(.3)
-                ,new WaitCommand(.5)
+                ,new WaitCommand(.2)
                 ,new InstantCommand(() -> arm.makeMeDone())  // ensure step 1 is ended
                 ,Commands.parallel(     // drive away and stow arm in parallel
                   Commands.race(
-                    new DriveGeneric(drive, FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),0,.6),   // step 3
-                    new WaitCommand(3)),   // cant wait forever to get in position
+                    new DriveGeneric(drive, Units.feetToMeters(20.6),
+                         /*FieldConstants.leaveCommunityDist+Units.feetToMeters(4.),*/
+                         0,.7),   // step 3
+                    new WaitCommand(3.4)),   // was 3  cant wait forever to get in position
                   new WaitCommand(1).andThen(new GripperOpenClose(gripper, false, lights)), //  step 2.5
-                  new WaitCommand(1).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
+                  new WaitCommand(1.5).andThen(new ArmRun(arm, ArmConstants.retracto0,ArmConstants.retracto0R, true))
                   /* TODO could we save a little bit of time by
                     turning toward the game pieces as we drive but after the arm is stowed
                   */
                 )
                 ,new InstantCommand(() -> arm.makeMeDone())
+                ,new GripperOpenClose(gripper, true, lights)  //open the claw to get an object
                 ,new RotToPiece(drive, gamePieceCam)   // face a game piece
                 //,new twist(drive, 180)   // turn toward where we expect a game piece
                 ,Commands.race(
                   new ArmRun(arm, ArmConstants.floorPosition, ArmConstants.floorPositionR, true),
-                  new WaitCommand(1))
+                  new WaitCommand(1.5)) /// maybe try 1.25
                 /* TODO: go get it?  */
-                ,new GripperOpenClose(gripper, true, lights)  //open the claw to get an object
-                ,new WaitCommand(.5)
+               // ,new GripperOpenClose(gripper, true, lights)  //open the claw to get an object
+               // ,new WaitCommand(.5) // was .5
                 ,new GoToGamePiece(drive, gripper)  // TODO limit the distance it drives
                 ,new GripperOpenClose(gripper, false, lights)  // close on a game piece
                 ,new FaceGrid(drive)   // TODO only turn if it got a game piece
