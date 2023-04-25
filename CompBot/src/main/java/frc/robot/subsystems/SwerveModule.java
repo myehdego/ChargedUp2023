@@ -107,6 +107,9 @@ public class SwerveModule {
         turningPidController.setFF( 0.);
         turningPidController.setD( 0.);
         turningPidController.setOutputRange(-1., 1.);
+        turningPidController.setPositionPIDWrappingMaxInput(Math.PI*2.);
+        turningPidController.setPositionPIDWrappingMinInput(0.);
+        turningPidController.setPositionPIDWrappingEnabled(true);
         wturningPidController = new PIDController(2., 0., 0.);
         wturningPidController.enableContinuousInput(0., Math.PI*2.);
         resetEncoders();
@@ -179,10 +182,10 @@ public class SwerveModule {
         driveMotor.set(state.speedMetersPerSecond / 
             (comp?DriveConstants.kPhysicalMaxSpeedMetersPerSecond_Comp:
                   DriveConstants.kPhysicalMaxSpeedMetersPerSecond));
-        //turningPidController.setReference(state.angle.getRadians(),ControlType.kPosition);
+        turningPidController.setReference(state.angle.getRadians(),ControlType.kPosition);
         double turnControl = wturningPidController.calculate(getTurningPosition(), state.angle.getRadians());
-        turningMotor.set(Math.max(-1.,Math.min(1.,turnControl)));
-//        SmartDashboard.putString("Swerve[" + absoluteEncoder.getDeviceID() + "] state", state.toString());
+        //turningMotor.set(Math.max(-1.,Math.min(1.,turnControl)));
+        SmartDashboard.putNumberArray("Swerve[" + absoluteEncoder.getDeviceID() + "] turn", new double[]{turnControl,turningMotor.get()});
     }
 
     public void smartDashreportState(SwerveModuleState state) {
