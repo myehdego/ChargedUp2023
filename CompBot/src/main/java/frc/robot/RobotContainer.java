@@ -134,7 +134,7 @@ public class RobotContainer {
         //                      );
         m_chooser.addOption("Test Pixy", new RotToPiece(swerveSubsystem, pixycam));
         SmartDashboard.putData(m_chooser);
-   }
+    }
 
     public RobotContainer() {
         this(true);
