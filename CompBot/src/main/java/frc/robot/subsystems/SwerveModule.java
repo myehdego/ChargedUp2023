@@ -14,7 +14,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -30,7 +30,7 @@ public class SwerveModule {
     private final RelativeEncoder driveEncoder;
     private final RelativeEncoder turningEncoder;
     private final SparkMaxPIDController turningPidController;
-    private final PIDController wturningPidController;
+    //private final PIDController wturningPidController;
 
     private final WPI_CANCoder absoluteEncoder;
     private final boolean absoluteEncoderReversed;
@@ -107,11 +107,11 @@ public class SwerveModule {
         turningPidController.setFF( 0.);
         turningPidController.setD( 0.);
         turningPidController.setOutputRange(-1., 1.);
-        turningPidController.setPositionPIDWrappingMaxInput(Math.PI*2.);
-        turningPidController.setPositionPIDWrappingMinInput(0.);
+        turningPidController.setPositionPIDWrappingMaxInput(Math.PI);
+        turningPidController.setPositionPIDWrappingMinInput(-Math.PI);
         turningPidController.setPositionPIDWrappingEnabled(true);
-        wturningPidController = new PIDController(2., 0., 0.);
-        wturningPidController.enableContinuousInput(0., Math.PI*2.);
+        //wturningPidController = new PIDController(2., 0., 0.);
+        //wturningPidController.enableContinuousInput(0., Math.PI*2.);
         resetEncoders();
     }
 
@@ -183,9 +183,9 @@ public class SwerveModule {
             (comp?DriveConstants.kPhysicalMaxSpeedMetersPerSecond_Comp:
                   DriveConstants.kPhysicalMaxSpeedMetersPerSecond));
         turningPidController.setReference(state.angle.getRadians(),ControlType.kPosition);
-        double turnControl = wturningPidController.calculate(getTurningPosition(), state.angle.getRadians());
+        //double turnControl = wturningPidController.calculate(getTurningPosition(), state.angle.getRadians());
         //turningMotor.set(Math.max(-1.,Math.min(1.,turnControl)));
-        SmartDashboard.putNumberArray("Swerve[" + absoluteEncoder.getDeviceID() + "] turn", new double[]{turnControl,turningMotor.get()});
+        //SmartDashboard.putNumberArray("Swerve[" + absoluteEncoder.getDeviceID() + "] turn", new double[]{turnControl,turningMotor.get()});
     }
 
     public void smartDashreportState(SwerveModuleState state) {
