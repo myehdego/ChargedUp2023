@@ -14,7 +14,7 @@ public class Face extends CommandBase {
   SwerveSubsystem drive;
   PIDController controller;
   double heading;
-  /** turn the robot toward the Grid. */
+  /** turn the robot to a specified heading. */
   public Face(SwerveSubsystem drive, double heading) {
     this.drive = drive;
     this.heading = heading;

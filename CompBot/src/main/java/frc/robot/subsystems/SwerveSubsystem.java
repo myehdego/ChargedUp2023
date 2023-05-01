@@ -105,11 +105,17 @@ public class SwerveSubsystem extends SubsystemBase {
         pigeon.reset();
     }
 
+    /** get heading of the robot
+     *  described in degrees clockwise from forward
+     */
     public double getHeading() {
         return Math.IEEEremainder(pigeon.getAngle(), 360);
        // return Math.IEEEremainder(gyro.getAngle(), 360);
     }
 
+    /** return a Rotation2d representing the heading of the robot
+     * described in radians clockwise from forward
+     */
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
     }
