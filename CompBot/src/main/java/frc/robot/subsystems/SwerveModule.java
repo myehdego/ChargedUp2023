@@ -36,7 +36,6 @@ public class SwerveModule {
     private final boolean absoluteEncoderReversed;
 
     private String reportName="";
-    private boolean comp=false; // true for competition bot
 
     public SwerveModule(int driveMotorId, int turningMotorId, 
             boolean driveMotorReversed, boolean turningMotorReversed,
@@ -46,7 +45,6 @@ public class SwerveModule {
             driveMotorReversed, turningMotorReversed,
             absoluteEncoderId, absoluteEncoderReversed);
         this.reportName = name;
-        this.comp=false;
     }
     public SwerveModule(int driveMotorId, int turningMotorId, 
         boolean driveMotorReversed, boolean turningMotorReversed,
@@ -55,7 +53,6 @@ public class SwerveModule {
         this(driveMotorId, turningMotorId, 
             driveMotorReversed, turningMotorReversed,
             absoluteEncoderId, absoluteEncoderReversed);
-        this.comp = comp;
     }
     public SwerveModule(int driveMotorId, int turningMotorId, 
         boolean driveMotorReversed, boolean turningMotorReversed,
@@ -65,7 +62,6 @@ public class SwerveModule {
         this(driveMotorId, turningMotorId, 
             driveMotorReversed, turningMotorReversed,
             absoluteEncoderId, absoluteEncoderReversed);
-        this.comp = comp;
         this.reportName=name;
     }
 
@@ -89,16 +85,12 @@ public class SwerveModule {
         turningEncoder = turningMotor.getEncoder();
 
         driveEncoder.setPositionConversionFactor(
-            comp?ModuleConstants.kDriveEncoderRot2Meter_Comp:
             ModuleConstants.kDriveEncoderRot2Meter);
         driveEncoder.setVelocityConversionFactor(
-            comp?ModuleConstants.kDriveEncoderRPM2MeterPerSec_Comp:
             ModuleConstants.kDriveEncoderRPM2MeterPerSec);
         turningEncoder.setPositionConversionFactor(
-            comp?ModuleConstants.kTurningEncoderRot2Rad_Comp:
             ModuleConstants.kTurningEncoderRot2Rad);
         turningEncoder.setVelocityConversionFactor(
-            comp?ModuleConstants.kTurningEncoderRPM2RadPerSec_Comp:
             ModuleConstants.kTurningEncoderRPM2RadPerSec);
 
         turningPidController = turningMotor.getPIDController();
@@ -180,8 +172,7 @@ public class SwerveModule {
         }
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / 
-            (comp?DriveConstants.kPhysicalMaxSpeedMetersPerSecond_Comp:
-                  DriveConstants.kPhysicalMaxSpeedMetersPerSecond));
+            DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         turningPidController.setReference(state.angle.getRadians(),ControlType.kPosition);
         //double turnControl = wturningPidController.calculate(getTurningPosition(), state.angle.getRadians());
         //turningMotor.set(Math.max(-1.,Math.min(1.,turnControl)));

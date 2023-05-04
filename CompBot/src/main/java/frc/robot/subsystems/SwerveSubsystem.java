@@ -35,55 +35,49 @@ public class SwerveSubsystem extends SubsystemBase {
 // Creating my odometry object from the kinematics object and the initial wheel positions.
 // Here, our starting pose is 5 meters along the long end of the field and in the
 // center of the field along the short end, facing the opposing alliance wall.
-    boolean Old;
     private SwerveDriveOdometry odometer;
         
 ////////////////////////////////////////////////////////////////////////////////////
 
-    public SwerveSubsystem(boolean Old) {
-        this.Old = Old;
+    public SwerveSubsystem() {
         //if (Old) {  // use backup bot swerve parameters
             frontLeft = new SwerveModule(
-                Old?DriveConstants.kFrontLeftDriveMotorPort:DriveConstants.kFrontLeftDriveMotorPort_Comp,
-                Old?DriveConstants.kFrontLeftTurningMotorPort:DriveConstants.kFrontLeftTurningMotorPort_Comp,
+                DriveConstants.kFrontLeftDriveMotorPort,
+                DriveConstants.kFrontLeftTurningMotorPort,
                 DriveConstants.kFrontLeftDriveEncoderReversed,
                 DriveConstants.kFrontLeftTurningEncoderReversed,
-                Old?DriveConstants.kFrontLeftAbsoluteEncoderPort:DriveConstants.kFrontLeftAbsoluteEncoderPort_Comp,
+                DriveConstants.kFrontLeftAbsoluteEncoderPort,
                 DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
                 ,"FL"
-                ,!Old
                 );
             frontRight = new SwerveModule(
-                Old?DriveConstants.kFrontRightDriveMotorPort:DriveConstants.kFrontRightDriveMotorPort_Comp,
-                Old?DriveConstants.kFrontRightTurningMotorPort:DriveConstants.kFrontRightTurningMotorPort_Comp,
+                DriveConstants.kFrontRightDriveMotorPort,
+                DriveConstants.kFrontRightTurningMotorPort,
                 DriveConstants.kFrontRightDriveEncoderReversed,
                 DriveConstants.kFrontRightTurningEncoderReversed,
-                Old?DriveConstants.kFrontRightAbsoluteEncoderPort:DriveConstants.kFrontRightAbsoluteEncoderPort_Comp,
+                DriveConstants.kFrontRightAbsoluteEncoderPort,
                 DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
                 ,"FR"
-                ,!Old
                 );
             backLeft = new SwerveModule(
-                Old?DriveConstants.kBackLeftDriveMotorPort:DriveConstants.kBackLeftDriveMotorPort_Comp,
-                Old?DriveConstants.kBackLeftTurningMotorPort:DriveConstants.kBackLeftTurningMotorPort_Comp,
+                DriveConstants.kBackLeftDriveMotorPort,
+                DriveConstants.kBackLeftTurningMotorPort,
                 DriveConstants.kBackLeftDriveEncoderReversed,
                 DriveConstants.kBackLeftTurningEncoderReversed,
-                Old?DriveConstants.kBackLeftAbsoluteEncoderPort:DriveConstants.kBackLeftAbsoluteEncoderPort_Comp,
+                DriveConstants.kBackLeftAbsoluteEncoderPort,
                 DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
                 ,"BL"
-                ,!Old
                 );
             backRight = new SwerveModule(
-                Old?DriveConstants.kBackRightDriveMotorPort:DriveConstants.kBackRightDriveMotorPort_Comp,
-                Old?DriveConstants.kBackRightTurningMotorPort:DriveConstants.kBackRightTurningMotorPort_Comp,
+                DriveConstants.kBackRightDriveMotorPort,
+                DriveConstants.kBackRightTurningMotorPort,
                 DriveConstants.kBackRightDriveEncoderReversed,
                 DriveConstants.kBackRightTurningEncoderReversed,
-                Old?DriveConstants.kBackRightAbsoluteEncoderPort:DriveConstants.kBackRightAbsoluteEncoderPort_Comp,
+                DriveConstants.kBackRightAbsoluteEncoderPort,
                 DriveConstants.kBackRightDriveAbsoluteEncoderReversed
                 ,"BR"
-                ,!Old
                 );
-            odometer = new SwerveDriveOdometry(Old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics_Comp,
+            odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
                 pigeon.getRotation2d(),
                 getModuleStates(), 
                 new Pose2d(0.0, 0.0, new Rotation2d()));
@@ -96,9 +90,6 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
-    }
-    public SwerveSubsystem() {
-        this(true);
     }
 
     public void zeroHeading() {
@@ -201,8 +192,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public SwerveModuleState[] chassis2ModuleStates(ChassisSpeeds speeds){
-        return Old?DriveConstants.kDriveKinematics_Comp.toSwerveModuleStates(speeds):
-                   DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+        return DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     }
 
     public SwerveModulePosition [] getModuleStates() {

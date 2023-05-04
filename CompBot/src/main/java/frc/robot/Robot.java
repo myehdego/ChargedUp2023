@@ -4,13 +4,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.Lights;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.GamePieceCam;
-import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.cameraserver.CameraServer;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -48,16 +43,11 @@ public class Robot extends TimedRobot {
     private RobotContainer m_robotContainer;
     private SlewRateLimiter xLimiter, yLimiter, turningLimiter;
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
-    private final Joystick buttonBox0 = new Joystick(OIConstants.kButtonBoxPort_0);
-    private final Joystick buttonBox1 = new Joystick(OIConstants.kButtonBoxPort_1);
     private SwerveSubsystem swerveSubsystem;
-    private Arm arm;
-    Gripper gripper;
     private WPI_Pigeon2 pigeon;
 
     private PowerDistribution PDH;
     //private AnalogInput pixyCam;
-    private GamePieceCam gamepieceCam;
     private PWM lights;
     private boolean choice;  // choose which robot to control, true is competion bot
     // private Timer timer = new Timer();
@@ -84,13 +74,7 @@ public class Robot extends TimedRobot {
        
         m_robotContainer = new RobotContainer(!choice);
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
-        if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE){
-            //pixyCam = new AnalogInput(0);
-            gamepieceCam = m_robotContainer.getGamePieceCam();
-        }
         pigeon = m_robotContainer.getGyro();
-        lights = m_robotContainer.getLights();
-        gripper = m_robotContainer.getGripperSS();
         PortForwarder.add(1182, "photonvision.local",5800 );
 
         DataLogManager.start();
@@ -116,18 +100,12 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods. This must be called from the
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
-        gripper.periodic();
         CommandScheduler.getInstance().run();
-       if(Constants.PIXY_AVAILABLE_Comp){
-        //m_robotContainer.displayGameCamSuccess(gamepieceCam.getYaw()>-999.)
-        m_robotContainer.displayGameCamSuccess(gamepieceCam.isVisible());  // TODO check it out
-       }
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
-        lights.setSpeed(Lights.CELEBRATE);
     }
 
     @Override
@@ -142,9 +120,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         lights.setSpeed(0.93);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        pigeon.setYaw(180);
-     //   gripper = m_robotContainer.getGripperSS();  // moved to robot int
-        gripper.setexpel(false);
+        //pigeon.setYaw(180);
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
@@ -171,10 +147,6 @@ public class Robot extends TimedRobot {
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
         this.swerveSubsystem.setCoastMode();
-        // }
-        arm = m_robotContainer.getarmSS();
-        // arm.resetEncoders();
-        gripper = m_robotContainer.getGripperSS();
     }
 
     double smoothedXSpeed = 0.;
@@ -224,21 +196,6 @@ public class Robot extends TimedRobot {
         //                    + " Y: " + String.format("%.3f", ySpeed)
         //                    + " R: " + String.format("%.3f", turningSpeed));
 
-        if (choice?Constants.PIXY_AVAILABLE_Comp:Constants.PIXY_AVAILABLE) {
-            if (driverJoytick.getRawButton(OIConstants.PixyFollowButton)){
-                //int err = pixyCam.getAverageValue();
-                //SmartDashboard.putNumber("PixyX",  pixyCam.getAverageValue());
-                double err = gamepieceCam.getYaw();
-                SmartDashboard.putNumber("PixyX",  err);
-                //double turnSpeedB = (err<1500)?.1:(err>1700?-0.1:0.);
-                turningSpeed = Math.max(-.3,
-                                Math.min(.3,
-                                (err-1000)*-2.e-4  )); 
-                                //errY/22. )); 
-                smoothedTurningSpeed = turningSpeed; // We're not smoothing yet
-                //SmartDashboard.putNumber("turnSpeed",smoothedTurningSpeed);
-            }
-        }
         if (driverJoytick.getRawButton(OIConstants.BALANCE_AUGMENTER)) {
             double augment = Math.sin(Math.toRadians(pigeon.getPitch()-1));
             //System.out.println(augment);
@@ -304,80 +261,10 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        arm = m_robotContainer.getarmSS();
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        // Arm Tests/ setup
-        if (buttonBox0.getRawButtonPressed(OIConstants.armSoftLimitSwitch_BB0) || 
-            buttonBox0.getRawButtonReleased(OIConstants.armSoftLimitSwitch_BB0)){
-            // arm.softLimitONOFF();
-            System.out.println("Soft limit is " + arm.softLimitONOFF());
-        }
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestExtendButton_BB1)){  // 
-            arm.extend(ArmConstants.TEST_SPEED);
-            System.out.println(arm.getExtenderPos());
-            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        }
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRetractButton_BB1)){  // 
-            arm.retract(ArmConstants.TEST_SPEED);
-            System.out.println(arm.getExtenderPos());
-            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        }
-        if (buttonBox1.getRawButtonReleased(OIConstants.armTestExtendButton_BB1) || 
-            buttonBox1.getRawButtonReleased(OIConstants.armTestRetractButton_BB1)){  // 
-            arm.stopExtend();
-            System.out.println(arm.getExtenderPos());
-        }
-       /*  if (buttonBox0.getRawButton(OIConstants.armTestStopRetractButton)){  // 
-            arm.stopExtend();
-            System.out.println(arm.getExtenderPos());
-            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        } */
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestRaiseButton_BB1)){  // 
-            arm.raise(ArmConstants.TEST_SPEED);
-            System.out.println(arm.getRaiserPos());
-            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        }
-        if (buttonBox1.getRawButtonPressed(OIConstants.armTestLowerButton_BB1)){  // 
-            arm.lower(ArmConstants.TEST_SPEED);
-            System.out.println(arm.getRaiserPos());
-            //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        }
-        if (buttonBox1.getRawButtonReleased(OIConstants.armTestRaiseButton_BB1) || 
-            buttonBox1.getRawButtonReleased(OIConstants.armTestLowerButton_BB1)){  // 
-            arm.stopRaise();
-            System.out.println(arm.getRaiserPos());
-        }
-        if (buttonBox0.getRawButton(OIConstants.armTestResetButton_BB0)) {  // 
-            arm.resetEncoders();
-            System.out.println(arm.getExtenderPos());
-            System.out.println(arm.getRaiserPos());
-        }
-       // arm.healthStatus();
-        
-        //SmartDashboard.putNumber("Arm extender position", arm.getExtenderPos()); 
-        //SmartDashboard.putNumber("Arm raiser position", arm.getRaiserPos());
-
-        /* Gripper test/set up functions:
-           run rollers
-           cycle solenoids
-           toggle pressure
-        */
-        if (buttonBox0.getRawButtonPressed(OIConstants.gripRollerTestButton)) {
-            gripper.rollersGo();
-        }
-        if (buttonBox0.getRawButtonReleased(OIConstants.gripRollerTestButton)) {
-            gripper.rollersStop();
-        }
-        if (buttonBox0.getRawButton(OIConstants.gripOpenTest)){
-            gripper.opengripper();
-        }
-        if (buttonBox0.getRawButton(OIConstants.gripCloseTest)){
-            gripper.closegripper();
-        }
-        // TODO: finish the gripper test/set-up utilities
     }
 }
