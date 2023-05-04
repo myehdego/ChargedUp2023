@@ -45,9 +45,8 @@ public class RobotContainer {
     
     private final Joystick driverJoytick = new Joystick(OIConstants.kDriverControllerPort);
   
-    boolean old;  // true if original swerve constants
     
-    public RobotContainer(boolean Old) {
+    public RobotContainer() {
         /*  swapped out to put drive function in teleopPeriodic
         swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
                 swerveSubsystem,
@@ -56,19 +55,14 @@ public class RobotContainer {
                 () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
                 () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
         */
-        this.old=Old;
         swerveSubsystem = new SwerveSubsystem();
         SmartDashboard.putData(swerveSubsystem);
         
-        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE){
+        if (Constants.PHOTONVISION_AVAILABLE){
                 camera = new AprilTagCamera();
         }
         gyro = new WPI_Pigeon2(1);
         configureButtonBindings();
-    }
-
-    public RobotContainer() {
-        this(true);
     }
 
     private void configureButtonBindings() { 
@@ -82,7 +76,7 @@ public class RobotContainer {
         
                 // mechJoytick Buttons
          
-        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE) {
+        if (Constants.PHOTONVISION_AVAILABLE) {
                 //new JoystickButton(buttonBox1, OIConstants.kgetRobotPositionButton).
                         //onTrue(new GetRobotPosition(camera));
                 //new JoystickButton(buttonBox1, OIConstants.kgetAprilTagButton).
@@ -139,7 +133,7 @@ public class RobotContainer {
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                  .setKinematics(old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics);
+                  .setKinematics(DriveConstants.kDriveKinematics);
 
         // 2. Generate trajectory
         double scale = -.4;
@@ -180,7 +174,7 @@ public class RobotContainer {
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
                 trajectory,
                 swerveSubsystem::getPose,
-                old?DriveConstants.kDriveKinematics:DriveConstants.kDriveKinematics,
+                DriveConstants.kDriveKinematics,
                 xController,
                 yController,
                 thetaController,
@@ -203,7 +197,7 @@ public class RobotContainer {
     }
 
     public AprilTagCamera getPhotonVisionSS() {
-        if (old?Constants.PHOTONVISION_AVAILABLE:Constants.PHOTONVISION_AVAILABLE) {
+        if (Constants.PHOTONVISION_AVAILABLE) {
                 return camera;
         } else return null;
     }

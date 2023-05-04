@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     private PowerDistribution PDH;
     //private AnalogInput pixyCam;
     private PWM lights;
-    private boolean choice;  // choose which robot to control, true is competion bot
+    //private boolean choice;  // choose which robot to control, true is competion bot
     // private Timer timer = new Timer();
     /**
      * This function is run when the robot is first started up and should be used
@@ -63,16 +63,16 @@ public class Robot extends TimedRobot {
         //      o perform all our button bindings,
         //      o put our autonomous chooser on the dashboard.
 
-        choice = Preferences.containsKey("Swerve");
+        //choice = Preferences.containsKey("Swerve");
         //systemChooser = new AnalogInput(Constants.SYSTEMCHOOSER);
         //choice = systemChooser.getValue() == Constants.COMPBOT;
-        if (choice) {
+        //if (choice) {
             PDH = new PowerDistribution(1, ModuleType.kRev);
-        } else {
-            PDH = new PowerDistribution(1, ModuleType.kCTRE);
-        }
+        //} else {
+        //    PDH = new PowerDistribution(1, ModuleType.kCTRE);
+        //}
        
-        m_robotContainer = new RobotContainer(!choice);
+        m_robotContainer = new RobotContainer();
         // System.out.println("PDP = " + PDP.getType());  // a quick death for Comp Bot
         pigeon = m_robotContainer.getGyro();
         PortForwarder.add(1182, "photonvision.local",5800 );
@@ -236,7 +236,6 @@ public class Robot extends TimedRobot {
 
         // 5. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = 
-           choice?DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds):
                   DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         /* this should be done in the SwerveSubsystem
         SwerveModuleState[] moduleStates = swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
