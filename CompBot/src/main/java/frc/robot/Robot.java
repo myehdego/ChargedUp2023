@@ -236,7 +236,7 @@ public class Robot extends TimedRobot {
 
         // 5. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = 
-           choice?DriveConstants.kDriveKinematics_Comp.toSwerveModuleStates(chassisSpeeds):
+           choice?DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds):
                   DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
         /* this should be done in the SwerveSubsystem
         SwerveModuleState[] moduleStates = swerveSubsystem.chassis2ModuleStates(chassisSpeeds);
